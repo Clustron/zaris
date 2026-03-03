@@ -1,10 +1,10 @@
-# 🚀 Clustron DKV --- Lease Sample (Expiry & Revoke Validation)
+# 🚀 Clustron DKV --- Distributed Rate Limiter Sample
 
-This sample demonstrates how to use **Leases** in Clustron DKV to manage
-time-bound ownership of keys.
+This sample demonstrates how to implement a **distributed fixed-window
+rate limiter** using Clustron DKV counters.
 
-It validates both automatic lease expiry and explicit lease revocation
-behavior.
+It simulates multiple requests and enforces a maximum request limit
+within a time window.
 
 ------------------------------------------------------------------------
 
@@ -13,13 +13,11 @@ behavior.
 This sample performs the following operations:
 
 -   Connect to a DKV cluster (InProc or Remote)
--   Grant a time-bound lease
--   Attach multiple keys to a lease
--   Observe automatic deletion on lease expiry
--   Use Watch API to detect deletion events
--   Explicitly revoke a lease
--   Compare expiry vs revoke behavior
--   Clean up created keys
+-   Use distributed counters to track request counts
+-   Apply TTL to automatically reset time windows
+-   Enforce a fixed request limit
+-   Simulate request traffic
+-   Demonstrate distributed-safe rate limiting
 
 ------------------------------------------------------------------------
 
@@ -157,64 +155,46 @@ Before running:
 
 ------------------------------------------------------------------------
 
-# 🧠 How Leases Work
+# 🧠 How the Rate Limiter Works
 
-A lease represents time-bound ownership of keys.
+This sample implements a **fixed time window rate limiter**.
 
-When a key is written with a lease:
+Configuration in code:
 
--   It is automatically deleted when the lease expires\
--   Or immediately deleted if the lease is revoked
-
-------------------------------------------------------------------------
-
-# 🔄 Sample Flow
-
-##  Lease Expiry Test
-
--   Grant a lease (10 seconds)\
--   Insert multiple keys bound to the lease\
--   Attach Watch to observe deletion\
--   Wait for lease to expire\
--   Verify keys are automatically removed
+-   Max Requests: 5\
+-   Window Duration: 10 seconds
 
 ------------------------------------------------------------------------
 
-##  Explicit Revoke Test
+## 🔄 Flow
 
--   Grant a second lease (30 seconds)\
--   Insert multiple keys bound to lease\
--   Explicitly revoke the lease\
--   Verify immediate key deletion
+1.  Compute the current time window key\
+2.  Increment a distributed counter for that window\
+3.  Attach TTL equal to the window duration\
+4.  If counter value exceeds limit → request is blocked\
+5.  When TTL expires → window automatically resets
 
 ------------------------------------------------------------------------
 
 # 📊 Key DKV Features Used
 
-  Feature            Purpose
-  ------------------ --------------------------
-  Leases             Time-bound key ownership
-  WithLease          Attach keys to lease
-  Watch API          Observe deletion events
-  Automatic expiry   Self-cleaning resources
-  Explicit revoke    Immediate cleanup
-  Prefix cleanup     Safe sample isolation
+  Feature                    Purpose
+  -------------------------- -------------------------
+  Counters                   Atomic request tracking
+  TTL                        Automatic window reset
+  Cluster-wide consistency   Distributed enforcement
+  Prefix isolation           Safe sample runs
 
 ------------------------------------------------------------------------
 
 # 📦 Summary
 
-This sample demonstrates that Clustron DKV leases:
+This sample demonstrates that Clustron DKV can be used to build:
 
--   Automatically clean up resources
--   Support explicit revocation
--   Enable time-bound ownership models
--   Work seamlessly with Watch API
--   Are suitable for distributed locking and coordination patterns
+-   Distributed rate limiters\
+-   API throttling systems\
+-   Abuse protection mechanisms\
+-   Request quota enforcement
 
-It models real-world patterns such as:
-
--   Distributed locks
--   Ephemeral keys
--   Session ownership
--   Time-bound resource allocation
+It shows how counters + TTL together provide a simple yet powerful
+distributed rate limiting pattern.

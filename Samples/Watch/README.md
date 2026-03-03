@@ -1,10 +1,10 @@
-# 🚀 Clustron DKV --- Lease Sample (Expiry & Revoke Validation)
+# 🚀 Clustron DKV --- Watch Sample
 
-This sample demonstrates how to use **Leases** in Clustron DKV to manage
-time-bound ownership of keys.
+This sample demonstrates how to use the **Watch API** in Clustron DKV to
+observe real-time changes on keys and key prefixes.
 
-It validates both automatic lease expiry and explicit lease revocation
-behavior.
+It simulates live updates and shows how clients can react to create,
+update, and delete events across a cluster.
 
 ------------------------------------------------------------------------
 
@@ -13,12 +13,13 @@ behavior.
 This sample performs the following operations:
 
 -   Connect to a DKV cluster (InProc or Remote)
--   Grant a time-bound lease
--   Attach multiple keys to a lease
--   Observe automatic deletion on lease expiry
--   Use Watch API to detect deletion events
--   Explicitly revoke a lease
--   Compare expiry vs revoke behavior
+-   Watch a single key
+-   Watch a key prefix
+-   Include initial snapshot on watch start
+-   Receive real-time change events
+-   Track revision numbers
+-   Simulate background updates and deletes
+-   Stop watchers gracefully
 -   Clean up created keys
 
 ------------------------------------------------------------------------
@@ -125,13 +126,6 @@ dotnet run
 }
 ```
 
-Use InProc mode for:
-
--   API exploration\
--   Unit testing\
--   Local development\
--   CI environments
-
 ------------------------------------------------------------------------
 
 # 🌐 Running in Remote Mode (Real Cluster)
@@ -157,64 +151,80 @@ Before running:
 
 ------------------------------------------------------------------------
 
-# 🧠 How Leases Work
+# 🧠 How the Watch API Works
 
-A lease represents time-bound ownership of keys.
+The Watch API allows clients to subscribe to:
 
-When a key is written with a lease:
+-   A specific key\
+-   A key prefix
 
--   It is automatically deleted when the lease expires\
--   Or immediately deleted if the lease is revoked
+Watchers receive events when:
+
+-   A key is created\
+-   A key is updated\
+-   A key is deleted
+
+Each event includes:
+
+-   Event type\
+-   Key\
+-   Revision number\
+-   Value (if applicable)
 
 ------------------------------------------------------------------------
 
 # 🔄 Sample Flow
 
-##  Lease Expiry Test
+##  Start Watchers
 
--   Grant a lease (10 seconds)\
--   Insert multiple keys bound to the lease\
--   Attach Watch to observe deletion\
--   Wait for lease to expire\
--   Verify keys are automatically removed
+-   Watch a single key with snapshot enabled\
+-   Watch a prefix for multiple related keys
 
 ------------------------------------------------------------------------
 
-##  Explicit Revoke Test
+##  Simulate Live Updates
 
--   Grant a second lease (30 seconds)\
--   Insert multiple keys bound to lease\
--   Explicitly revoke the lease\
--   Verify immediate key deletion
+A background task:
+
+-   Updates keys periodically\
+-   Deletes keys occasionally\
+-   Generates real-time watch events
+
+------------------------------------------------------------------------
+
+## Stop Watchers
+
+-   Stop subscriptions gracefully\
+-   Print event summary
 
 ------------------------------------------------------------------------
 
 # 📊 Key DKV Features Used
 
-  Feature            Purpose
-  ------------------ --------------------------
-  Leases             Time-bound key ownership
-  WithLease          Attach keys to lease
-  Watch API          Observe deletion events
-  Automatic expiry   Self-cleaning resources
-  Explicit revoke    Immediate cleanup
-  Prefix cleanup     Safe sample isolation
+  Feature             Purpose
+  ------------------- -------------------------
+  WatchKeyAsync       Subscribe to single key
+  WatchPrefixAsync    Subscribe to prefix
+  Snapshot            Initial state retrieval
+  Revision tracking   Event ordering
+  Real-time events    Reactive systems
+  Prefix cleanup      Safe sample isolation
 
 ------------------------------------------------------------------------
 
 # 📦 Summary
 
-This sample demonstrates that Clustron DKV leases:
+This sample demonstrates how Clustron DKV enables:
 
--   Automatically clean up resources
--   Support explicit revocation
--   Enable time-bound ownership models
--   Work seamlessly with Watch API
--   Are suitable for distributed locking and coordination patterns
+-   Reactive distributed systems\
+-   Event-driven architectures\
+-   Change notifications\
+-   Cache invalidation workflows\
+-   Real-time coordination
 
-It models real-world patterns such as:
+It models real-world use cases such as:
 
--   Distributed locks
--   Ephemeral keys
--   Session ownership
--   Time-bound resource allocation
+-   Live configuration updates\
+-   Distributed cache synchronization\
+-   Event streaming\
+-   Reactive microservices

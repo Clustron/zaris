@@ -1,210 +1,203 @@
-# Clustron DKV -- Basic Sample
+﻿# 🚀 Clustron DKV --- Basic Sample
 
-This sample demonstrates the core Clustron DKV client APIs including:
+This sample demonstrates the core **Clustron DKV Client SDK**
+programming model.
 
--   Connecting to a cluster\
--   Storing an object (`PUT`)\
--   Retrieving an object (`GET`)\
--   Reading metadata (TTL, labels, content type)\
--   Using distributed counters\
--   TTL expiration behavior\
--   Cleaning up created keys
-
-This is the recommended starting point for learning the DKV programming
-model.
+It is the recommended starting point for learning how to work with DKV.
 
 ------------------------------------------------------------------------
 
-## What This Sample Does
+# 📌 What This Sample Demonstrates
 
-The sample performs the following steps:
+This sample performs the following operations:
 
-1.  Loads configuration from `appsettings.json`
-2.  Initializes the DKV client
-3.  Stores a `Customer` object with:
-    -   Entity type (`customer`)
-    -   TTL (30 seconds)
-    -   Content type (`application/json`)
-    -   Labels (`env`, `sample`)
-4.  Retrieves and prints:
-    -   The stored object
-    -   TTL
-    -   Content type
-    -   Creation time
-    -   Labels
-5.  Demonstrates distributed counter usage
-6.  Waits for TTL expiration and verifies removal
-7.  Cleans up all created keys
+-   Connect to a DKV cluster (InProc or Remote)
+-   Store an object (`PUT`)
+-   Retrieve an object (`GET`)
+-   Read metadata (TTL, labels, content type)
+-   Use distributed counters
+-   Observe TTL expiration
+-   Clean up created keys
 
 ------------------------------------------------------------------------
 
-## Quick Start (Default: InProc Mode)
+# ⚙️ Configuration
 
-By default, this sample runs in **InProc mode**.
+All samples use a unified configuration structure via
+`appsettings.json`.
 
-This means:
+## 🧠 Configuration Schema
 
--   No DKV server setup is required\
--   Everything runs embedded inside your process\
--   Ideal for quick API testing
+``` json
+{
+  "Dkv": {
+    "ClusterId": "string",
+    "Mode": "InProc | Remote",
+    "Seeds": [
+      {
+        "Host": "string",
+        "Port": number
+      }
+    ],
+    "LogFilePath": "string | null"
+  }
+}
+```
 
-### Default `appsettings.json`
+------------------------------------------------------------------------
+
+## 🔹 ClusterId
+
+The **Store ID** created in DKV.
+
+This must match the store name defined when creating your cluster store.
+
+Example:
+
+``` json
+"ClusterId": "teststore"
+```
+
+------------------------------------------------------------------------
+
+## 🔹 Mode
+
+  Value    Description
+  -------- -----------------------------------------------
+  InProc   Embedded in-memory store (no server required)
+  Remote   Connects to external DKV server nodes
+
+------------------------------------------------------------------------
+
+## 🔹 Seeds
+
+A list of one or more DKV server nodes.
+
+Only one seed is required. After connecting, the client automatically:
+
+-   Discovers cluster topology\
+-   Connects to all nodes\
+-   Handles failover\
+-   Manages topology updates
+
+Example:
+
+``` json
+"Seeds": [
+  { "Host": "127.0.0.1", "Port": 7070 },
+  { "Host": "127.0.0.1", "Port": 7071 }
+]
+```
+
+------------------------------------------------------------------------
+
+## 🔹 LogFilePath (Optional)
+
+Specifies where client logs are written.
+
+``` json
+"LogFilePath": "logs/dkv.log"
+```
+
+Use `null` to disable file logging.
+
+------------------------------------------------------------------------
+
+# 🏃 Running the Sample
+
+``` bash
+dotnet run
+```
+
+------------------------------------------------------------------------
+
+# 🧪 Running in InProc Mode (No Server Required)
 
 ``` json
 {
   "Dkv": {
     "ClusterId": "sample-cluster",
     "Mode": "InProc",
-    "LogFilePath": "logs/dkv.log"
+    "Seeds": [],
+    "LogFilePath": null
   }
 }
 ```
 
-### Run the Sample
+Use InProc mode for:
 
-``` bash
-dotnet run
-```
-
-You should see successful PUT, GET, counter, and TTL expiration output.
-
-------------------------------------------------------------------------
-
-## Running Against a Real DKV Cluster (Remote Mode)
-
-To run this sample against an actual DKV cluster:
-
-1.  Install and start DKV servers\
-2.  Create a store\
-3.  Update `appsettings.json` to use Remote mode\
-4.  Run the sample
-
-Full setup guide:\
-https://github.com/zeroheartbeat/clustron-dkv/blob/main/docs/getting-started.md
+-   API exploration\
+-   Unit testing\
+-   Local development\
+-   CI environments
 
 ------------------------------------------------------------------------
 
-## Remote Mode Configuration Example
+# 🌐 Running in Remote Mode (Real Cluster)
 
 ``` json
 {
   "Dkv": {
-    "ClusterId": "my-store",
+    "ClusterId": "teststore",
     "Mode": "Remote",
-    "RemoteHost": "192.168.1.10",
-    "RemotePort": 4100,
-    "LogFilePath": "logs/dkv.log"
+    "Seeds": [
+      { "Host": "127.0.0.1", "Port": 7070 },
+      { "Host": "127.0.0.1", "Port": 7071 }
+    ],
+    "LogFilePath": null
   }
 }
 ```
 
-------------------------------------------------------------------------
+Before running:
 
-## Configuration Properties Explained
-
-### ClusterId
-
-The **Store ID** that you created.
-
-When creating a store using Admin tools or CLI, you provide a store
-name.\
-That store name becomes your `ClusterId`.
-
-If your store name is:
-
-`my-store`
-
-Then:
-
-``` json
-"ClusterId": "my-store"
-```
+-   Ensure DKV servers are running\
+-   Ensure the store exists\
+-   Ensure the port matches the configured `ClientPort`
 
 ------------------------------------------------------------------------
 
-### Mode
+# 🔄 How Remote Connectivity Works
 
-Determines how the client runs.
-
-  Value    Meaning
-  -------- ----------------------------------------------
-  InProc   Embedded in-memory store inside your process
-  Remote   Connects to external DKV server nodes
-
-Use `Remote` when connecting to a real cluster.
-
-------------------------------------------------------------------------
-
-### RemoteHost
-
-The IP address (or hostname) of a DKV server node.
-
-This acts as the **seed server**.
-
-You only need to configure one server.\
-After connecting, the client automatically:
-
--   Discovers all cluster nodes\
--   Connects to the entire cluster\
--   Handles topology and failover internally
-
-Example:
-
-``` json
-"RemoteHost": "192.168.1.10"
-```
-
-------------------------------------------------------------------------
-
-### RemotePort
-
-The `ClientPort` selected when creating the store.
-
-This port is used for client operations.\
-It is **not** the replication port.
-
-If during store creation you selected:
-
-`ClientPort: 4100`
-
-Then:
-
-``` json
-"RemotePort": 4100
-```
-
-------------------------------------------------------------------------
-
-### LogFilePath
-
-Optional path for client logs.
-
-Example:
-
-``` json
-"LogFilePath": "logs/dkv.log"
-```
-
-------------------------------------------------------------------------
-
-## How Remote Connectivity Works
-
-1.  Client connects to the seed server (`RemoteHost:RemotePort`)
-2.  Server returns cluster topology
-3.  Client connects to all nodes automatically
-4.  Client handles:
-    -   Failover\
-    -   Reconnection\
-    -   Node joins/leaves\
+1.  Client connects to one configured seed node\
+2.  The server returns cluster topology\
+3.  The client connects to all cluster nodes automatically\
+4.  The client handles:
+    -   Node joins
+    -   Node leaves
+    -   Failover
+    -   Reconnection
     -   Topology updates
 
-You only configure one server.
+You only configure the seeds once.
 
 ------------------------------------------------------------------------
 
-## Summary
+# 🧪 What the Sample Actually Does
 
-  Scenario   Server Required
-  ---------- -----------------
-  InProc     No
-  Remote     Yes
+1.  Loads configuration\
+2.  Initializes the client\
+3.  Clears previous keys\
+4.  Stores a `Customer` object with:
+    -   Entity type: `customer`
+    -   TTL: 30 seconds
+    -   Content type: `application/json`
+    -   Labels: `env=demo`, `sample=basic`
+5.  Retrieves and prints metadata and values\
+6.  Demonstrates distributed counter usage\
+7.  Waits for TTL expiration\
+8.  Cleans up created keys
+
+------------------------------------------------------------------------
+
+# 📦 Summary
+
+  Mode     Server Required   Use Case
+  -------- ----------------- -------------------
+  InProc   No                Local development
+  Remote   Yes               Real cluster
+
+------------------------------------------------------------------------
+
+This sample provides the foundation for building distributed systems
+using **Clustron DKV**.

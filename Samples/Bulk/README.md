@@ -1,10 +1,10 @@
-# 🚀 Clustron DKV --- Lease Sample (Expiry & Revoke Validation)
+# 🚀 Clustron DKV --- Bulk Operations Sample
 
-This sample demonstrates how to use **Leases** in Clustron DKV to manage
-time-bound ownership of keys.
+This sample demonstrates how to use the **Clustron DKV Client SDK** for
+high-performance bulk operations.
 
-It validates both automatic lease expiry and explicit lease revocation
-behavior.
+It showcases batch-based PUT, GET, and DELETE operations using optimized
+client APIs.
 
 ------------------------------------------------------------------------
 
@@ -13,12 +13,10 @@ behavior.
 This sample performs the following operations:
 
 -   Connect to a DKV cluster (InProc or Remote)
--   Grant a time-bound lease
--   Attach multiple keys to a lease
--   Observe automatic deletion on lease expiry
--   Use Watch API to detect deletion events
--   Explicitly revoke a lease
--   Compare expiry vs revoke behavior
+-   Insert multiple objects using `PutManyAsync`
+-   Retrieve multiple objects using `GetManyAsync`
+-   Delete multiple objects using `DeleteManyAsync`
+-   Verify deletion results
 -   Clean up created keys
 
 ------------------------------------------------------------------------
@@ -86,7 +84,8 @@ Example:
 
 ``` json
 "Seeds": [
-  { "Host": "127.0.0.1", "Port": 7070 }
+  { "Host": "127.0.0.1", "Port": 7070 },
+  { "Host": "127.0.0.1", "Port": 7071 }
 ]
 ```
 
@@ -142,7 +141,8 @@ Use InProc mode for:
     "ClusterId": "teststore",
     "Mode": "Remote",
     "Seeds": [
-      { "Host": "127.0.0.1", "Port": 7070 }
+      { "Host": "127.0.0.1", "Port": 7070 },
+      { "Host": "127.0.0.1", "Port": 7071 }
     ],
     "LogFilePath": null
   }
@@ -157,64 +157,25 @@ Before running:
 
 ------------------------------------------------------------------------
 
-# 🧠 How Leases Work
+# 🧪 What the Sample Actually Does
 
-A lease represents time-bound ownership of keys.
-
-When a key is written with a lease:
-
--   It is automatically deleted when the lease expires\
--   Or immediately deleted if the lease is revoked
-
-------------------------------------------------------------------------
-
-# 🔄 Sample Flow
-
-##  Lease Expiry Test
-
--   Grant a lease (10 seconds)\
--   Insert multiple keys bound to the lease\
--   Attach Watch to observe deletion\
--   Wait for lease to expire\
--   Verify keys are automatically removed
-
-------------------------------------------------------------------------
-
-##  Explicit Revoke Test
-
--   Grant a second lease (30 seconds)\
--   Insert multiple keys bound to lease\
--   Explicitly revoke the lease\
--   Verify immediate key deletion
-
-------------------------------------------------------------------------
-
-# 📊 Key DKV Features Used
-
-  Feature            Purpose
-  ------------------ --------------------------
-  Leases             Time-bound key ownership
-  WithLease          Attach keys to lease
-  Watch API          Observe deletion events
-  Automatic expiry   Self-cleaning resources
-  Explicit revoke    Immediate cleanup
-  Prefix cleanup     Safe sample isolation
+1.  Loads configuration\
+2.  Initializes the client\
+3.  Performs bulk insert of 5 `Customer` objects\
+4.  Retrieves all inserted customers in a single batch call\
+5.  Deletes all customers in a single batch call\
+6.  Verifies deletion results\
+7.  Performs cleanup using a key prefix
 
 ------------------------------------------------------------------------
 
 # 📦 Summary
 
-This sample demonstrates that Clustron DKV leases:
+  Operation     API Used
+  ------------- -------------------
+  Bulk PUT      `PutManyAsync`
+  Bulk GET      `GetManyAsync`
+  Bulk DELETE   `DeleteManyAsync`
 
--   Automatically clean up resources
--   Support explicit revocation
--   Enable time-bound ownership models
--   Work seamlessly with Watch API
--   Are suitable for distributed locking and coordination patterns
-
-It models real-world patterns such as:
-
--   Distributed locks
--   Ephemeral keys
--   Session ownership
--   Time-bound resource allocation
+This sample demonstrates how to efficiently handle batch operations in
+**Clustron DKV**.

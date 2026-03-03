@@ -1,10 +1,10 @@
-# 🚀 Clustron DKV --- Lease Sample (Expiry & Revoke Validation)
+# 🚀 Clustron DKV --- Compare-And-Swap (CAS) Sample
 
-This sample demonstrates how to use **Leases** in Clustron DKV to manage
-time-bound ownership of keys.
+This sample demonstrates how to use **optimistic concurrency control**
+in Clustron DKV using Compare-And-Swap (CAS) semantics.
 
-It validates both automatic lease expiry and explicit lease revocation
-behavior.
+It shows how to safely update and delete items using version-based
+conditional operations.
 
 ------------------------------------------------------------------------
 
@@ -13,12 +13,11 @@ behavior.
 This sample performs the following operations:
 
 -   Connect to a DKV cluster (InProc or Remote)
--   Grant a time-bound lease
--   Attach multiple keys to a lease
--   Observe automatic deletion on lease expiry
--   Use Watch API to detect deletion events
--   Explicitly revoke a lease
--   Compare expiry vs revoke behavior
+-   Insert an item using `IfAbsent`
+-   Retrieve item along with its version
+-   Perform a successful CAS update using `IfMatch`
+-   Attempt a failed CAS update using a stale version
+-   Perform a CAS delete using version matching
 -   Clean up created keys
 
 ------------------------------------------------------------------------
@@ -86,7 +85,8 @@ Example:
 
 ``` json
 "Seeds": [
-  { "Host": "127.0.0.1", "Port": 7070 }
+  { "Host": "127.0.0.1", "Port": 7070 },
+  { "Host": "127.0.0.1", "Port": 7071 }
 ]
 ```
 
@@ -157,64 +157,36 @@ Before running:
 
 ------------------------------------------------------------------------
 
-# 🧠 How Leases Work
+# 🧠 What is CAS (Compare-And-Swap)?
 
-A lease represents time-bound ownership of keys.
+CAS is an **optimistic concurrency mechanism** that ensures an update or
+delete only succeeds if the item's version matches the expected version.
 
-When a key is written with a lease:
-
--   It is automatically deleted when the lease expires\
--   Or immediately deleted if the lease is revoked
+It prevents lost updates in concurrent environments.
 
 ------------------------------------------------------------------------
 
-# 🔄 Sample Flow
+# 🧪 What the Sample Actually Does
 
-##  Lease Expiry Test
-
--   Grant a lease (10 seconds)\
--   Insert multiple keys bound to the lease\
--   Attach Watch to observe deletion\
--   Wait for lease to expire\
--   Verify keys are automatically removed
-
-------------------------------------------------------------------------
-
-##  Explicit Revoke Test
-
--   Grant a second lease (30 seconds)\
--   Insert multiple keys bound to lease\
--   Explicitly revoke the lease\
--   Verify immediate key deletion
-
-------------------------------------------------------------------------
-
-# 📊 Key DKV Features Used
-
-  Feature            Purpose
-  ------------------ --------------------------
-  Leases             Time-bound key ownership
-  WithLease          Attach keys to lease
-  Watch API          Observe deletion events
-  Automatic expiry   Self-cleaning resources
-  Explicit revoke    Immediate cleanup
-  Prefix cleanup     Safe sample isolation
+1.  Inserts a customer using `Put.IfAbsent()`\
+2.  Retrieves the item and reads its `ItemVersion`\
+3.  Performs a successful update using `Put.WithIfMatch(version)`\
+4.  Attempts another update using a stale version (expected to fail with
+    `Conflict`)\
+5.  Performs a version-matched delete using `Delete.IfMatch(version)`\
+6.  Verifies deletion\
+7.  Cleans up using key prefix
 
 ------------------------------------------------------------------------
 
 # 📦 Summary
 
-This sample demonstrates that Clustron DKV leases:
+  Operation            API Used
+  -------------------- ----------------------------------
+  Insert If Absent     `Put.IfAbsent()`
+  Conditional Update   `Put.WithIfMatch()`
+  Conditional Delete   `Delete.IfMatch()`
+  Version Retrieval    `GetAsync()` (returns `Version`)
 
--   Automatically clean up resources
--   Support explicit revocation
--   Enable time-bound ownership models
--   Work seamlessly with Watch API
--   Are suitable for distributed locking and coordination patterns
-
-It models real-world patterns such as:
-
--   Distributed locks
--   Ephemeral keys
--   Session ownership
--   Time-bound resource allocation
+This sample demonstrates safe concurrent updates using version-based
+optimistic concurrency in **Clustron DKV**.

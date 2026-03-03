@@ -1,10 +1,10 @@
-# 🚀 Clustron DKV --- Lease Sample (Expiry & Revoke Validation)
+# 🚀 Clustron DKV --- Leader Election via Lease Sample
 
-This sample demonstrates how to use **Leases** in Clustron DKV to manage
-time-bound ownership of keys.
+This sample demonstrates how to implement **distributed leader
+election** using Clustron DKV leases and watch APIs.
 
-It validates both automatic lease expiry and explicit lease revocation
-behavior.
+It simulates multiple nodes competing to become the leader while
+handling failures and automatic re-election.
 
 ------------------------------------------------------------------------
 
@@ -13,12 +13,13 @@ behavior.
 This sample performs the following operations:
 
 -   Connect to a DKV cluster (InProc or Remote)
--   Grant a time-bound lease
--   Attach multiple keys to a lease
--   Observe automatic deletion on lease expiry
--   Use Watch API to detect deletion events
--   Explicitly revoke a lease
--   Compare expiry vs revoke behavior
+-   Simulate multiple competing nodes
+-   Use leases to claim leadership
+-   Use `Put.IfAbsent()` to ensure a single leader
+-   Use KeepAlive to maintain leadership
+-   Simulate node crashes
+-   Use Watch API to detect leader loss
+-   Automatically trigger re-election
 -   Clean up created keys
 
 ------------------------------------------------------------------------
@@ -157,64 +158,59 @@ Before running:
 
 ------------------------------------------------------------------------
 
-# 🧠 How Leases Work
+# 🧠 How Leader Election Works
 
-A lease represents time-bound ownership of keys.
+This sample simulates 3 nodes competing for leadership.
 
-When a key is written with a lease:
+Each node:
 
--   It is automatically deleted when the lease expires\
--   Or immediately deleted if the lease is revoked
-
-------------------------------------------------------------------------
-
-# 🔄 Sample Flow
-
-##  Lease Expiry Test
-
--   Grant a lease (10 seconds)\
--   Insert multiple keys bound to the lease\
--   Attach Watch to observe deletion\
--   Wait for lease to expire\
--   Verify keys are automatically removed
+1.  Requests a lease (`GrantAsync`)\
+2.  Attempts to write the leader key using `Put.IfAbsent().WithLease()`\
+3.  If successful → becomes leader\
+4.  Sends periodic `KeepAlive` calls to maintain leadership\
+5.  Simulates crash after a few seconds\
+6.  Other nodes detect deletion via Watch API\
+7.  Re-election automatically begins
 
 ------------------------------------------------------------------------
 
-##  Explicit Revoke Test
+# 🔄 Failure & Recovery Flow
 
--   Grant a second lease (30 seconds)\
--   Insert multiple keys bound to lease\
--   Explicitly revoke the lease\
--   Verify immediate key deletion
+-   If leader crashes → lease expires\
+-   Leader key is deleted\
+-   Watchers detect deletion event\
+-   Waiting nodes retry election\
+-   New leader is elected
+
+This ensures **automatic failover without central coordination**.
 
 ------------------------------------------------------------------------
 
 # 📊 Key DKV Features Used
 
-  Feature            Purpose
-  ------------------ --------------------------
-  Leases             Time-bound key ownership
-  WithLease          Attach keys to lease
-  Watch API          Observe deletion events
-  Automatic expiry   Self-cleaning resources
-  Explicit revoke    Immediate cleanup
-  Prefix cleanup     Safe sample isolation
+  Feature          Purpose
+  ---------------- -------------------------
+  Leases           Time-bound leadership
+  IfAbsent         Single-writer guarantee
+  KeepAlive        Maintain leadership
+  Watch API        Detect leader loss
+  Prefix cleanup   Safe sample isolation
 
 ------------------------------------------------------------------------
 
 # 📦 Summary
 
-This sample demonstrates that Clustron DKV leases:
+This sample demonstrates how Clustron DKV enables:
 
--   Automatically clean up resources
--   Support explicit revocation
--   Enable time-bound ownership models
--   Work seamlessly with Watch API
--   Are suitable for distributed locking and coordination patterns
+-   Distributed coordination
+-   Automatic leader election
+-   Crash recovery
+-   Lease-based ownership
+-   Watch-driven reactivity
 
-It models real-world patterns such as:
+It models real-world coordination patterns such as:
 
--   Distributed locks
--   Ephemeral keys
--   Session ownership
--   Time-bound resource allocation
+-   Master election
+-   Distributed schedulers
+-   Primary node selection
+-   Cluster coordination services

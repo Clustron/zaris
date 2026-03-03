@@ -11,23 +11,11 @@ namespace Clustron.Dkv.Samples.Shared
     public sealed class DkvOptions
     {
         public string ClusterId { get; set; } = default!;
-
         public string Mode { get; set; } = default!;
-
-        public string? RemoteHost { get; set; }
-
-        public int RemotePort { get; set; }
-
+        public List<DkvServerInfo>? Seeds { get; set; }
         public string? LogFilePath { get; set; }
 
-        public DkvClientMode GetMode()
-        {
-            if (!Enum.TryParse<DkvClientMode>(Mode, ignoreCase: true, out var mode))
-                throw new InvalidOperationException($"Invalid DkvClientMode: '{Mode}'");
-
-            return mode;
-        }
-
-        public bool IsRemote => GetMode() == DkvClientMode.Remote;
+        public DkvClientMode GetMode() =>
+            Enum.Parse<DkvClientMode>(Mode, ignoreCase: true);
     }
 }

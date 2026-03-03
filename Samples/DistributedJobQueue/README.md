@@ -1,10 +1,10 @@
-# 🚀 Clustron DKV --- Lease Sample (Expiry & Revoke Validation)
+# 🚀 Clustron DKV --- Simplified Enterprise Job Queue Sample
 
-This sample demonstrates how to use **Leases** in Clustron DKV to manage
-time-bound ownership of keys.
+This sample demonstrates how to build a **distributed, fault-tolerant
+job queue** using Clustron DKV primitives.
 
-It validates both automatic lease expiry and explicit lease revocation
-behavior.
+It simulates a small enterprise-style processing system with producers,
+multiple workers, optimistic concurrency, leases, and recovery logic.
 
 ------------------------------------------------------------------------
 
@@ -13,12 +13,13 @@ behavior.
 This sample performs the following operations:
 
 -   Connect to a DKV cluster (InProc or Remote)
--   Grant a time-bound lease
--   Attach multiple keys to a lease
--   Observe automatic deletion on lease expiry
--   Use Watch API to detect deletion events
--   Explicitly revoke a lease
--   Compare expiry vs revoke behavior
+-   Produce jobs with entity + labels
+-   Use search queries to fetch pending work
+-   Use CAS (Compare-And-Swap) for safe state transitions
+-   Use leases for worker-level locking
+-   Simulate worker failures
+-   Recover orphaned jobs
+-   Track authoritative completion state
 -   Clean up created keys
 
 ------------------------------------------------------------------------
@@ -157,64 +158,96 @@ Before running:
 
 ------------------------------------------------------------------------
 
-# 🧠 How Leases Work
+# 🧠 Architecture Overview
 
-A lease represents time-bound ownership of keys.
+This sample simulates:
 
-When a key is written with a lease:
+-   1 Producer
+-   3 Workers
+-   10 Jobs
 
--   It is automatically deleted when the lease expires\
--   Or immediately deleted if the lease is revoked
+Each job transitions through states:
 
-------------------------------------------------------------------------
+`pending → processing → completed`
 
-# 🔄 Sample Flow
+State transitions are protected by:
 
-##  Lease Expiry Test
-
--   Grant a lease (10 seconds)\
--   Insert multiple keys bound to the lease\
--   Attach Watch to observe deletion\
--   Wait for lease to expire\
--   Verify keys are automatically removed
+-   CAS (version matching)
+-   Lease-based locking
+-   Recovery logic
 
 ------------------------------------------------------------------------
 
-##  Explicit Revoke Test
+# 🔄 How Job Processing Works
 
--   Grant a second lease (30 seconds)\
--   Insert multiple keys bound to lease\
--   Explicitly revoke the lease\
--   Verify immediate key deletion
+##  Job Creation
+
+Jobs are stored with:
+
+-   Entity: `job`
+-   Label: `status=pending`
+
+------------------------------------------------------------------------
+
+##  Worker Execution
+
+Each worker:
+
+1.  Acquires a lease\
+2.  Searches for `status=pending` jobs\
+3.  Uses CAS to transition to `processing`\
+4.  Creates a lease-backed lock key\
+5.  Simulates processing\
+6.  Marks job as `completed` using CAS
+
+------------------------------------------------------------------------
+
+## Failure Simulation
+
+Workers randomly fail some jobs.
+
+On failure:
+
+-   Job status reverts to `pending`
+-   Lock is removed
+-   Another worker can retry
+
+------------------------------------------------------------------------
+
+##  Recovery Logic
+
+If a worker crashes:
+
+-   Jobs stuck in `processing`
+-   No lock present
+-   Worker detects and restores job to `pending`
+
+This demonstrates **self-healing distributed queue behavior**.
 
 ------------------------------------------------------------------------
 
 # 📊 Key DKV Features Used
 
-  Feature            Purpose
-  ------------------ --------------------------
-  Leases             Time-bound key ownership
-  WithLease          Attach keys to lease
-  Watch API          Observe deletion events
-  Automatic expiry   Self-cleaning resources
-  Explicit revoke    Immediate cleanup
-  Prefix cleanup     Safe sample isolation
+  Feature          Purpose
+  ---------------- ----------------------------------
+  Entities         Logical job grouping
+  Labels           Job state tracking
+  Search           Fetch pending work
+  CAS              Safe state transitions
+  Leases           Worker-level locking
+  TTL              (Optional in advanced scenarios)
+  Prefix cleanup   Safe sample isolation
 
 ------------------------------------------------------------------------
 
 # 📦 Summary
 
-This sample demonstrates that Clustron DKV leases:
+This sample demonstrates how Clustron DKV can be used to build:
 
--   Automatically clean up resources
--   Support explicit revocation
--   Enable time-bound ownership models
--   Work seamlessly with Watch API
--   Are suitable for distributed locking and coordination patterns
+-   Distributed job queues
+-   Fault-tolerant workers
+-   Optimistic concurrency workflows
+-   Self-healing recovery systems
 
-It models real-world patterns such as:
-
--   Distributed locks
--   Ephemeral keys
--   Session ownership
--   Time-bound resource allocation
+It models real-world enterprise processing patterns using core DKV
+primitives.

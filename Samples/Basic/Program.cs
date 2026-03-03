@@ -15,7 +15,7 @@ namespace Clustron.Dkv.Sample.Basic
         {
             ConsoleHelper.Header("Clustron DKV – Basic Sample");
 
-            // 1️⃣ Load configuration
+            // Load configuration
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false)
                 .Build();
@@ -26,29 +26,37 @@ namespace Clustron.Dkv.Sample.Basic
                 ?? throw new InvalidOperationException("Missing Dkv configuration section.");
 
             var mode = options.GetMode();
+            IDkvClient client;
+            // Initialize client (EXPLICIT API USAGE)
+            if (mode == DkvClientMode.Remote)
+            {
+                if (options.Seeds == null || options.Seeds.Count == 0)
+                    throw new InvalidOperationException("No seed servers configured.");
 
-            // 2️⃣ Initialize client (EXPLICIT API USAGE)
-            var client = await DKVClient.Initialize(
-                clusterId: options.ClusterId,
-                mode: mode,
-                remoteHost: mode == DkvClientMode.Remote ? options.RemoteHost : null,
-                remotePort: mode == DkvClientMode.Remote ? options.RemotePort : 0,
-                logFilePath: options.LogFilePath
-            );
+                client = await DKVClient.InitializeRemote(
+                    options.ClusterId,
+                    options.Seeds,
+                    options.LogFilePath);
+            }
+            else
+            {
+                client = await DKVClient.InitializeInProc(
+                    options.ClusterId,
+                    options.LogFilePath);
+            }
 
             ConsoleHelper.Success("Connected to cluster.");
 
-            // 3️⃣ Create sample context (isolates keys)
+            var restult = await client.ClearAsync();
+            // Create sample context (isolates keys)
             var context = new SampleContext("basic");
-            var cleanup = new SampleCleanup();
 
             ConsoleHelper.Info($"Session Prefix: {context.Prefix}");
 
-            // 4️⃣ PUT
+            //  PUT
             ConsoleHelper.Section("PUT");
 
             var key = context.Key("customer:1");
-            cleanup.Track(key);
 
             var customer = new Customer
             {
@@ -75,7 +83,7 @@ namespace Clustron.Dkv.Sample.Basic
             else
                 ConsoleHelper.Error($"PUT failed: {putResult.Status}");
 
-            // 5️⃣ GET
+            //  GET
             ConsoleHelper.Section("GET");
 
             var getResult = await client.GetAsync<Customer>(key);
@@ -106,30 +114,31 @@ namespace Clustron.Dkv.Sample.Basic
                 ConsoleHelper.Error($"GET failed: {getResult.Status}");
             }
 
-            // 6️⃣ COUNTER
+            //  COUNTER
             ConsoleHelper.Section("COUNTER");
 
             var counters = ((IDkv)client).Counters;
             var counterKey = context.Key("orders");
-            cleanup.Track(counterKey);
 
             var increment = await counters.AddAsync(counterKey, 1);
 
             if (increment.IsSuccess)
                 ConsoleHelper.Success($"Counter value: {increment.Value.Current}");
 
-            // 7️⃣ TTL Expiry Demo
+            //  TTL Expiry Demo
             ConsoleHelper.Section("TTL Expiry Demo");
-            ConsoleHelper.Info("Waiting 35 seconds...");
+            ConsoleHelper.Info("Waiting 45 seconds...");
 
             await Task.Delay(TimeSpan.FromSeconds(35));
 
             var expiredCheck = await client.GetAsync<Customer>(key);
             Console.WriteLine($"After TTL → Status: {expiredCheck.Status}");
 
-            // 8️⃣ Cleanup
+            //  Cleanup
             ConsoleHelper.Section("Cleanup");
-            await cleanup.CleanupAsync(client);
+
+            await client.ClearAsync(new ClearRequest(context.Prefix));
+
             ConsoleHelper.Success("Sample cleanup completed.");
 
             Console.WriteLine("\nDone.");

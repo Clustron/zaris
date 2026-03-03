@@ -13,7 +13,7 @@ namespace Clustron.Dkv.Samples.Shared
 
         public DkvClientMode Mode { get; set; } = DkvClientMode.Remote;
 
-        public string? RemoteHost { get; set; } = "127.0.0.1";
+        public string? RemoteHost { get; set; } = "";
 
         public int RemotePort { get; set; } = 9000;
 

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Clustron.DKV.Abstractions;
 using Clustron.DKV.Client;
+using Clustron.DKV.Client.Helpers;
 using Clustron.Dkv.Samples.Shared;
 using Microsoft.Extensions.Configuration;
 
@@ -12,9 +13,8 @@ namespace Clustron.Dkv.Sample.Lease
     {
         static async Task Main(string[] args)
         {
-            ConsoleHelper.Header("Clustron DKV – Lease Sample");
+            ConsoleHelper.Header("Clustron DKV – Lease Sample (Expiry Validation)");
 
-            // 1️⃣ Load configuration
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false)
                 .Build();
@@ -24,29 +24,27 @@ namespace Clustron.Dkv.Sample.Lease
                 .Get<DkvOptions>()
                 ?? throw new InvalidOperationException("Missing Dkv configuration.");
 
-            var mode = options.GetMode();
-
-            var client = await DKVClient.Initialize(
-                clusterId: options.ClusterId,
-                mode: mode,
-                remoteHost: mode == DkvClientMode.Remote ? options.RemoteHost : null,
-                remotePort: mode == DkvClientMode.Remote ? options.RemotePort : 0,
-                logFilePath: options.LogFilePath
-            );
+            IDkvClient client = options.GetMode() == DkvClientMode.Remote
+                ? await DKVClient.InitializeRemote(options.ClusterId, options.Seeds!, options.LogFilePath)
+                : await DKVClient.InitializeInProc(options.ClusterId, options.LogFilePath);
 
             ConsoleHelper.Success("Connected to cluster.");
 
             var context = new SampleContext("lease");
+
+            // 🔥 Start clean
+            await client.ClearAsync(new ClearRequest(context.Prefix));
+
             var leases = ((IDkv)client).Leases;
+            var watch = ((IDkv)client).Watch;
 
             // ============================================================
-            // 1️⃣ Grant Lease & Attach Keys
+            //  Grant Lease & Attach Keys
             // ============================================================
 
-            ConsoleHelper.Section("Grant Lease (30 seconds)");
+            ConsoleHelper.Section("Grant Lease (10 seconds)");
 
-            var lease = await leases.GrantAsync(TimeSpan.FromSeconds(30));
-
+            var lease = await leases.GrantAsync(TimeSpan.FromSeconds(10));
             if (!lease.IsSuccess)
             {
                 ConsoleHelper.Error("Lease grant failed.");
@@ -65,71 +63,86 @@ namespace Clustron.Dkv.Sample.Lease
             }
 
             ConsoleHelper.Info($"Inserted {keys.Count} keys bound to lease.");
-            Console.WriteLine($"Current Count: {client.Count}");
+            Console.WriteLine($"Count After Insert: {client.Count}");
+
+            ConsoleHelper.Info("Attaching WATCH to first key...");
+
+            var (sub, _) = await watch.WatchKeyAsync(
+                keys.First(),
+                null,
+                ev =>
+                {
+                    Console.WriteLine($"WATCH EVENT: {ev.EventType} for {ev.Key}");
+                });
 
             // ============================================================
-            // 2️⃣ Let Lease Expire
+            //  Let Lease Expire
             // ============================================================
 
             ConsoleHelper.Section("Waiting For Lease Expiry");
-            ConsoleHelper.Info("Waiting 35 seconds for lease to expire...");
+            ConsoleHelper.Info("Waiting 15 seconds for lease to expire...");
 
-            await Task.Delay(TimeSpan.FromSeconds(35));
+            await Task.Delay(TimeSpan.FromSeconds(15));
 
-            var check = await client.GetAsync<string>(keys.First());
+            ConsoleHelper.Section("Post-Expiry Verification");
 
-            Console.WriteLine($"After Expiry → Status: {check.Status}");
-            Console.WriteLine($"Current Count: {client.Count}");
+            foreach (var key in keys)
+            {
+                var result = await client.GetAsync<string>(key);
+                Console.WriteLine($"Key: {key} → Status: {result.Status}");
+            }
+
+            Console.WriteLine($"Count After Expiry: {client.Count}");
+
+            await sub.StopAsync();
 
             // ============================================================
-            // 3️⃣ KeepAlive Demo
+            // Compare With Explicit Revoke
             // ============================================================
 
-            ConsoleHelper.Section("KeepAlive Demonstration");
+            ConsoleHelper.Section("Revoke Comparison Test");
 
             var lease2 = await leases.GrantAsync(TimeSpan.FromSeconds(30));
+            if (!lease2.IsSuccess)
+            {
+                ConsoleHelper.Error("Second lease grant failed.");
+                return;
+            }
+
             ConsoleHelper.Success($"Lease2 Granted: {lease2.Value}");
-
-            var keepKey = context.Key("keepalive-key");
-            await client.PutAsync(keepKey, "keepalive", Put.WithLease(lease2.Value));
-
-            ConsoleHelper.Info("Waiting 20 seconds...");
-            await Task.Delay(TimeSpan.FromSeconds(20));
-
-            ConsoleHelper.Info("Sending KeepAlive...");
-            await leases.KeepAliveAsync(lease2.Value);
-
-            ConsoleHelper.Info("Waiting another 20 seconds...");
-            await Task.Delay(TimeSpan.FromSeconds(20));
-
-            var stillThere = await client.GetAsync<string>(keepKey);
-            Console.WriteLine($"After KeepAlive → Status: {stillThere.Status}");
-
-            // ============================================================
-            // 4️⃣ Revoke Demo
-            // ============================================================
-
-            ConsoleHelper.Section("Revoke Demonstration");
-
-            var lease3 = await leases.GrantAsync(TimeSpan.FromSeconds(30));
-            ConsoleHelper.Success($"Lease3 Granted: {lease3.Value}");
 
             var revokeKeys = Enumerable.Range(1, 3)
                 .Select(i => context.Key($"revoke-key-{i}"))
                 .ToList();
 
             foreach (var k in revokeKeys)
-                await client.PutAsync(k, "revoke", Put.WithLease(lease3.Value));
+                await client.PutAsync(k, "revoke", Put.WithLease(lease2.Value));
 
             Console.WriteLine($"Before Revoke → Count: {client.Count}");
 
-            await leases.RevokeAsync(lease3.Value);
+            await leases.RevokeAsync(lease2.Value);
 
-            var revokedCheck = await client.GetAsync<string>(revokeKeys.First());
-            Console.WriteLine($"After Revoke → Status: {revokedCheck.Status}");
-            Console.WriteLine($"After Revoke → Count: {client.Count}");
+            ConsoleHelper.Info("After Revoke:");
+
+            foreach (var key in revokeKeys)
+            {
+                var result = await client.GetAsync<string>(key);
+                Console.WriteLine($"Key: {key} → Status: {result.Status}");
+            }
+
+            Console.WriteLine($"Count After Revoke: {client.Count}");
 
             ConsoleHelper.Success("Lease sample completed.");
+
+            // ============================================================
+            // CLEANUP
+            // ============================================================
+
+            ConsoleHelper.Section("Cleanup");
+
+            await client.ClearAsync(new ClearRequest(context.Prefix));
+
+            ConsoleHelper.Success("Sample cleanup completed.");
 
             Console.WriteLine("\nDone.");
         }

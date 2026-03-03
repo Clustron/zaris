@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Clustron.DKV.Abstractions;
 using Clustron.DKV.Client;
 
@@ -6,15 +8,28 @@ namespace Clustron.Dkv.Samples.Shared
 {
     public static class SampleClientFactory
     {
-        public static Task<IDkvClient> ConnectAsync(DkvOptions options)
+        public static async Task<IDkvClient> ConnectAsync(DkvOptions options)
         {
-            return DKVClient.Initialize(
-                clusterId: options.ClusterId,
-                mode: options.GetMode(),
-                remoteHost: options.IsRemote ? options.RemoteHost : null,
-                remotePort: options.IsRemote ? options.RemotePort : 0,
-                logFilePath: options.LogFilePath
-            );
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+
+            var mode = options.GetMode();
+
+            if (mode == DkvClientMode.Remote)
+            {
+                if (options.Seeds == null || !options.Seeds.Any())
+                    throw new InvalidOperationException(
+                        "Remote mode requires at least one seed server in configuration.");
+
+                return await DKVClient.InitializeRemote(
+                    options.ClusterId,
+                    options.Seeds,
+                    options.LogFilePath);
+            }
+
+            return await DKVClient.InitializeInProc(
+                options.ClusterId,
+                options.LogFilePath);
         }
     }
 }

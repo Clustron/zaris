@@ -13,7 +13,7 @@ namespace Clustron.Dkv.Sample.Shared.Counters
         {
             ConsoleHelper.Header("Clustron DKV – Counters Sample");
 
-            // 1️⃣ Load configuration
+            //  Load configuration
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false)
                 .Build();
@@ -25,29 +25,37 @@ namespace Clustron.Dkv.Sample.Shared.Counters
 
             var mode = options.GetMode();
 
-            // 2️⃣ Initialize client
-            var client = await DKVClient.Initialize(
-                clusterId: options.ClusterId,
-                mode: mode,
-                remoteHost: mode == DkvClientMode.Remote ? options.RemoteHost : null,
-                remotePort: mode == DkvClientMode.Remote ? options.RemotePort : 0,
-                logFilePath: options.LogFilePath
-            );
+            IDkvClient client;
+            //  Initialize client (EXPLICIT API USAGE)
+            if (mode == DkvClientMode.Remote)
+            {
+                if (options.Seeds == null || options.Seeds.Count == 0)
+                    throw new InvalidOperationException("No seed servers configured.");
+
+                client = await DKVClient.InitializeRemote(
+                    options.ClusterId,
+                    options.Seeds,
+                    options.LogFilePath);
+            }
+            else
+            {
+                client = await DKVClient.InitializeInProc(
+                    options.ClusterId,
+                    options.LogFilePath);
+            }
 
             ConsoleHelper.Success("Connected to cluster.");
 
             var context = new SampleContext("counters");
-            var cleanup = new SampleCleanup();
-
+            
             ConsoleHelper.Info($"Session Prefix: {context.Prefix}");
 
             var counters = ((IDkv)client).Counters;
 
-            // 3️⃣ Basic Increment
+            // Basic Increment
             ConsoleHelper.Section("Atomic Increment");
 
             var counterKey = context.Key("orders");
-            cleanup.Track(counterKey);
 
             var add1 = await counters.AddAsync(counterKey, 5);
             Console.WriteLine($"Added 5 → Previous: {add1.Value.Previous}, Current: {add1.Value.Current}");
@@ -55,7 +63,7 @@ namespace Clustron.Dkv.Sample.Shared.Counters
             var add2 = await counters.AddAsync(counterKey, 3);
             Console.WriteLine($"Added 3 → Previous: {add2.Value.Previous}, Current: {add2.Value.Current}");
 
-            // 4️⃣ Get Current Value
+            //  Get Current Value
             ConsoleHelper.Section("Get Counter");
 
             var get = await counters.GetAsync(counterKey);
@@ -65,17 +73,16 @@ namespace Clustron.Dkv.Sample.Shared.Counters
             else
                 ConsoleHelper.Error($"GET failed: {get.Status}");
 
-            // 5️⃣ Set Counter
+            //  Set Counter
             ConsoleHelper.Section("Set Counter");
 
             var set = await counters.SetAsync(counterKey, 100);
             Console.WriteLine($"Set to: {set.Value}");
 
-            // 6️⃣ Min / Max Bounds
+            //  Min / Max Bounds
             ConsoleHelper.Section("Bounds (Min / Max)");
 
             var boundedKey = context.Key("bounded");
-            cleanup.Track(boundedKey);
 
             var first = await counters.AddAsync(
                 boundedKey,
@@ -91,11 +98,10 @@ namespace Clustron.Dkv.Sample.Shared.Counters
 
             Console.WriteLine($"Exceed Max → Status: {exceed.Status}");
 
-            // 7️⃣ TTL on Counter
+            //  TTL on Counter
             ConsoleHelper.Section("Counter TTL");
 
             var ttlKey = context.Key("ttl-counter");
-            cleanup.Track(ttlKey);
 
             var ttlAdd = await counters.AddAsync(
                 ttlKey,
@@ -113,9 +119,10 @@ namespace Clustron.Dkv.Sample.Shared.Counters
             var expired = await counters.GetAsync(ttlKey);
             Console.WriteLine($"After TTL → Status: {expired.Status}");
 
-            // 8️⃣ Cleanup
-            ConsoleHelper.Section("Cleanup");
-            await cleanup.CleanupAsync(client);
+            //  Cleanup
+            ConsoleHelper.Section("Cleanup"); 
+            await client.ClearAsync(new ClearRequest(context.Prefix));
+
             ConsoleHelper.Success("Cleanup completed.");
 
             Console.WriteLine("\nDone.");

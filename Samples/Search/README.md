@@ -1,10 +1,9 @@
-# 🚀 Clustron DKV --- Lease Sample (Expiry & Revoke Validation)
+# 🚀 Clustron DKV --- Search Sample
 
-This sample demonstrates how to use **Leases** in Clustron DKV to manage
-time-bound ownership of keys.
+This sample demonstrates how to use **Clustron DKV Search APIs** to
+query data using entities, labels, filtering, sorting, and projection.
 
-It validates both automatic lease expiry and explicit lease revocation
-behavior.
+It showcases structured search capabilities across distributed data.
 
 ------------------------------------------------------------------------
 
@@ -13,12 +12,13 @@ behavior.
 This sample performs the following operations:
 
 -   Connect to a DKV cluster (InProc or Remote)
--   Grant a time-bound lease
--   Attach multiple keys to a lease
--   Observe automatic deletion on lease expiry
--   Use Watch API to detect deletion events
--   Explicitly revoke a lease
--   Compare expiry vs revoke behavior
+-   Store entities with labels
+-   Execute equality queries
+-   Execute range queries
+-   Perform AND conditions
+-   Perform prefix searches
+-   Apply sorting and limits
+-   Use field projection
 -   Clean up created keys
 
 ------------------------------------------------------------------------
@@ -125,13 +125,6 @@ dotnet run
 }
 ```
 
-Use InProc mode for:
-
--   API exploration\
--   Unit testing\
--   Local development\
--   CI environments
-
 ------------------------------------------------------------------------
 
 # 🌐 Running in Remote Mode (Real Cluster)
@@ -157,64 +150,90 @@ Before running:
 
 ------------------------------------------------------------------------
 
-# 🧠 How Leases Work
+# 🧠 Search Capabilities Demonstrated
 
-A lease represents time-bound ownership of keys.
+##  Equality Search
 
-When a key is written with a lease:
-
--   It is automatically deleted when the lease expires\
--   Or immediately deleted if the lease is revoked
-
-------------------------------------------------------------------------
-
-# 🔄 Sample Flow
-
-##  Lease Expiry Test
-
--   Grant a lease (10 seconds)\
--   Insert multiple keys bound to the lease\
--   Attach Watch to observe deletion\
--   Wait for lease to expire\
--   Verify keys are automatically removed
+``` csharp
+SearchQuery.For(Entity).Eq("city", "London");
+```
 
 ------------------------------------------------------------------------
 
-##  Explicit Revoke Test
+##  Range Query
 
--   Grant a second lease (30 seconds)\
--   Insert multiple keys bound to lease\
--   Explicitly revoke the lease\
--   Verify immediate key deletion
+``` csharp
+SearchQuery.For(Entity).Range("age", 28, 32);
+```
+
+------------------------------------------------------------------------
+
+## AND Conditions
+
+``` csharp
+SearchQuery.For(Entity)
+    .And(new EqClause("city", "Berlin"),
+         new EqClause("age", "32"));
+```
+
+------------------------------------------------------------------------
+
+##  Prefix Search
+
+``` csharp
+SearchQuery.For(Entity)
+    .LikePrefix("email", "user1");
+```
+
+------------------------------------------------------------------------
+
+##  Sorting + Limit
+
+``` csharp
+SearchQuery.For(Entity)
+    .OrderBy("age", ascending: false)
+    .Limit(5);
+```
+
+------------------------------------------------------------------------
+
+##  Projection
+
+``` csharp
+SearchQuery.For(Entity)
+    .Select("email");
+```
 
 ------------------------------------------------------------------------
 
 # 📊 Key DKV Features Used
 
-  Feature            Purpose
-  ------------------ --------------------------
-  Leases             Time-bound key ownership
-  WithLease          Attach keys to lease
-  Watch API          Observe deletion events
-  Automatic expiry   Self-cleaning resources
-  Explicit revoke    Immediate cleanup
-  Prefix cleanup     Safe sample isolation
+  Feature           Purpose
+  ----------------- -----------------------------
+  Entities          Logical grouping of records
+  Labels            Queryable metadata
+  Scan/Search API   Distributed search
+  Sorting           Ordered results
+  Limit             Result size control
+  Projection        Partial field selection
+  Prefix cleanup    Safe sample isolation
 
 ------------------------------------------------------------------------
 
 # 📦 Summary
 
-This sample demonstrates that Clustron DKV leases:
+This sample demonstrates how Clustron DKV enables:
 
--   Automatically clean up resources
--   Support explicit revocation
--   Enable time-bound ownership models
--   Work seamlessly with Watch API
--   Are suitable for distributed locking and coordination patterns
+-   Structured search across distributed data
+-   Metadata-based querying
+-   Range filtering
+-   Compound query logic
+-   Efficient result projection
+-   Controlled pagination and sorting
 
-It models real-world patterns such as:
+It models real-world search patterns such as:
 
--   Distributed locks
--   Ephemeral keys
--   Session ownership
--   Time-bound resource allocation
+-   Filtering users by attributes
+-   Building dashboards
+-   Reporting queries
+-   Query-driven workflows
