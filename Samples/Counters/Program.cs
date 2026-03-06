@@ -24,9 +24,8 @@ namespace Clustron.Dkv.Sample.Shared.Counters
                 ?? throw new InvalidOperationException("Missing Dkv configuration.");
 
             var mode = options.GetMode();
-
             IDkvClient client;
-            //  Initialize client (EXPLICIT API USAGE)
+            // Initialize client (EXPLICIT API USAGE)
             if (mode == DkvClientMode.Remote)
             {
                 if (options.Seeds == null || options.Seeds.Count == 0)
@@ -45,6 +44,7 @@ namespace Clustron.Dkv.Sample.Shared.Counters
             }
 
             ConsoleHelper.Success("Connected to cluster.");
+            SampleEnvironmentPrinter.Print(options, mode);
 
             var context = new SampleContext("counters");
             

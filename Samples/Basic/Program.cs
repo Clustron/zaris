@@ -46,6 +46,7 @@ namespace Clustron.Dkv.Sample.Basic
             }
 
             ConsoleHelper.Success("Connected to cluster.");
+            SampleEnvironmentPrinter.Print(options, mode);
 
             var restult = await client.ClearAsync();
             // Create sample context (isolates keys)

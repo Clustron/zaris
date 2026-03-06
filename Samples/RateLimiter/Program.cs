@@ -26,11 +26,28 @@ namespace Clustron.Dkv.Sample.RateLimiter
                 .Get<DkvOptions>()
                 ?? throw new InvalidOperationException("Missing Dkv configuration.");
 
-            IDkvClient client = options.GetMode() == DkvClientMode.Remote
-                ? await DKVClient.InitializeRemote(options.ClusterId, options.Seeds!, options.LogFilePath)
-                : await DKVClient.InitializeInProc(options.ClusterId, options.LogFilePath);
+            var mode = options.GetMode();
+            IDkvClient client;
+            // Initialize client (EXPLICIT API USAGE)
+            if (mode == DkvClientMode.Remote)
+            {
+                if (options.Seeds == null || options.Seeds.Count == 0)
+                    throw new InvalidOperationException("No seed servers configured.");
+
+                client = await DKVClient.InitializeRemote(
+                    options.ClusterId,
+                    options.Seeds,
+                    options.LogFilePath);
+            }
+            else
+            {
+                client = await DKVClient.InitializeInProc(
+                    options.ClusterId,
+                    options.LogFilePath);
+            }
 
             ConsoleHelper.Success("Connected to cluster.");
+            SampleEnvironmentPrinter.Print(options, mode);
 
             var context = new SampleContext("rate-limit");
             var userId = "user-42";
@@ -42,9 +59,9 @@ namespace Clustron.Dkv.Sample.RateLimiter
                 bool allowed = await IsAllowedAsync(client, context, userId);
 
                 if (allowed)
-                    ConsoleHelper.Success($"Request {i} → ALLOWED");
+                    ConsoleHelper.Success($"Request {i}  ALLOWED");
                 else
-                    ConsoleHelper.Error($"Request {i} → BLOCKED");
+                    ConsoleHelper.Error($"Request {i}  BLOCKED");
 
                 await Task.Delay(800); // simulate traffic
             }

@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RateLimiter", "RateLimiter\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributedJobQueue", "DistributedJobQueue\DistributedJobQueue.csproj", "{1AE767A0-6057-4AD5-BF6F-44F6A9628C01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transactions", "Transactions\Transactions.csproj", "{39F44A45-8E34-497C-A378-DDC2D9667898}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{1AE767A0-6057-4AD5-BF6F-44F6A9628C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AE767A0-6057-4AD5-BF6F-44F6A9628C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AE767A0-6057-4AD5-BF6F-44F6A9628C01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39F44A45-8E34-497C-A378-DDC2D9667898}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39F44A45-8E34-497C-A378-DDC2D9667898}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39F44A45-8E34-497C-A378-DDC2D9667898}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39F44A45-8E34-497C-A378-DDC2D9667898}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
