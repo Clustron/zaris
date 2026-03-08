@@ -1,7 +1,7 @@
 # Clustron DKV
-![NuGet](https://img.shields.io/nuget/v/Clustron.DKV.Client)
-![License](https://img.shields.io/github/license/zeroheartbeat/clustron-dkv)
-![Stars](https://img.shields.io/github/stars/zeroheartbeat/clustron-dkv)
+[![NuGet](https://img.shields.io/nuget/v/Clustron.DKV.Client)](https://www.nuget.org/packages/Clustron.DKV.Client)
+[![License](https://img.shields.io/github/license/zeroheartbeat/clustron-dkv)](https://github.com/zeroheartbeat/clustron-dkv/blob/main/LICENSE)
+[![Stars](https://img.shields.io/github/stars/zeroheartbeat/clustron-dkv)](https://github.com/zeroheartbeat/clustron-dkv/stargazers)
 
 **Clustron DKV is a high-performance distributed key-value store for
 .NET designed for modern microservices and cloud-native applications.**
