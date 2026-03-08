@@ -240,6 +240,13 @@ Examples include:
 
 ------------------------------------------------------------------------
 
+# Redis Alternative for .NET
+
+Clustron DKV can serve as an alternative to Redis for .NET applications
+that require distributed transactions and coordination primitives.
+
+------------------------------------------------------------------------
+
 # 📊 Performance (Early Benchmarks)
 
 Initial internal benchmarking shows:
