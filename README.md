@@ -1,5 +1,6 @@
 # Clustron DKV
 [![NuGet](https://img.shields.io/nuget/v/Clustron.DKV.Client)](https://www.nuget.org/packages/Clustron.DKV.Client)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/Clustron.DKV.Client)](https://www.nuget.org/packages/Clustron.DKV.Client)
 [![License](https://img.shields.io/github/license/zeroheartbeat/clustron-dkv)](https://github.com/zeroheartbeat/clustron-dkv/blob/main/LICENSE)
 [![Stars](https://img.shields.io/github/stars/zeroheartbeat/clustron-dkv)](https://github.com/zeroheartbeat/clustron-dkv/stargazers)
 
@@ -53,6 +54,31 @@ introducing additional infrastructure components**.
 
 ------------------------------------------------------------------------
 <img width="1087" height="446" alt="Clustron DKV - Architectural Diagram - visual selection" src="https://github.com/user-attachments/assets/6b4d1032-f039-42e3-aa23-418055239ae5" />
+
+------------------------------------------------------------------------
+## Redis Alternative for .NET
+
+Clustron DKV can serve as an alternative to Redis for .NET applications that require **distributed coordination primitives and multi-key transactions**.
+
+While Redis is widely used as an in-memory data store, Clustron focuses on providing a **distributed systems foundation for .NET applications** with built-in primitives that simplify building reliable distributed systems.
+
+### Feature Comparison
+
+| Feature                            | Redis     | Clustron DKV   |
+| ---------------------------------- | --------- | -------------- |
+| .NET native design                 | ❌         | ✔              |
+| Distributed multi-key transactions | ❌         | ✔              |
+| Distributed locks / leases         | Limited   | ✔ Built-in     |
+| Watch subscriptions                | Partial   | ✔ Prefix-based |
+| Distributed counters               | ✔         | ✔              |
+| Queryable indexes                  | Limited   | ✔              |
+| Cluster coordination primitives    | ❌         | ✔              |
+| Designed for microservices         | ✔         | ✔              |
+| Native .NET client                 | Community | ✔ First-class  |
+
+Clustron is designed to help developers build **distributed coordination, state management, and transactional workflows** directly on top of a distributed key-value store.
+
+------------------------------------------------------------------------
 
 # Install Clustron Server
 
@@ -237,13 +263,6 @@ Examples include:
 -   Distributed rate limiter
 -   Transactional money transfer
 -   Cluster coordination examples
-
-------------------------------------------------------------------------
-
-# Redis Alternative for .NET
-
-Clustron DKV can serve as an alternative to Redis for .NET applications
-that require distributed transactions and coordination primitives.
 
 ------------------------------------------------------------------------
 
