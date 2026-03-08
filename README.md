@@ -52,6 +52,7 @@ This allows developers to build **reliable distributed systems without
 introducing additional infrastructure components**.
 
 ------------------------------------------------------------------------
+<img width="1087" height="446" alt="Clustron DKV - Architectural Diagram - visual selection" src="https://github.com/user-attachments/assets/6b4d1032-f039-42e3-aa23-418055239ae5" />
 
 # Install Clustron Server
 
