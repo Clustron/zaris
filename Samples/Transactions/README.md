@@ -1,293 +1,221 @@
-# 🚀 Clustron DKV --- Transaction Sample
+# 🚀 Clustron DKV — Transaction Sample
 
-This sample demonstrates how to use **Transactions in Clustron DKV** to
-perform **atomic multi-key operations** with support for:
+This sample demonstrates how to use **Transactions in Clustron DKV** to perform **atomic multi-key operations**.
 
--   Commit
--   Rollback
--   Conflict detection
--   Read-your-writes behavior
--   Transactional deletes
+It shows how applications can safely modify multiple keys while maintaining **data consistency**.
 
-It shows how applications can safely modify multiple keys while
-maintaining **data consistency across the cluster**.
-
-------------------------------------------------------------------------
+---
 
 # 📌 What This Sample Demonstrates
 
-This sample performs the following operations:
+This sample shows how to:
 
--   Connect to a DKV cluster (InProc or Remote)
--   Start a transaction
--   Read values inside a transaction
--   Modify multiple keys atomically
--   Commit a successful transaction
--   Roll back a transaction
--   Detect conflicts caused by external updates
--   Delete keys inside a transaction
--   Demonstrate read-your-writes semantics
--   Clean up created keys
+- Start a transaction
+- Read values inside a transaction
+- Modify multiple keys atomically
+- Commit a transaction
+- Roll back a transaction
+- Detect conflicts from concurrent updates
+- Delete keys inside a transaction
+- Observe read-your-writes behavior
+- Clean up created keys
 
-------------------------------------------------------------------------
+---
 
-# ⚙️ Configuration
+# 🚀 Quick Start (Recommended)
 
-All samples use a unified configuration structure via
-`appsettings.json`.
+The fastest way to run this sample is using **InProc mode**.
 
-## 🧠 Configuration Schema
-
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "string",
-    "Mode": "InProc | Remote",
-    "Seeds": [
-      {
-        "Host": "string",
-        "Port": number
+    "Stores": {
+      "teststore": {
+        "Mode": "InProc"
       }
-    ],
-    "LogFilePath": "string | null"
+    }
   }
 }
 ```
 
-------------------------------------------------------------------------
+Run:
 
-## 🔹 ClusterId
-
-The **Store ID** created in DKV.
-
-This must match the store name defined when creating your cluster store.
-
-Example:
-
-``` json
-"ClusterId": "teststore"
-```
-
-------------------------------------------------------------------------
-
-## 🔹 Mode
-
-  Value    Description
-  -------- -----------------------------------------------
-  InProc   Embedded in-memory store (no server required)
-  Remote   Connects to external DKV server nodes
-
-------------------------------------------------------------------------
-
-## 🔹 Seeds
-
-A list of one or more DKV server nodes.
-
-Only one seed is required. After connecting, the client automatically:
-
--   Discovers cluster topology
--   Connects to all nodes
--   Handles failover
--   Manages topology updates
-
-Example:
-
-``` json
-"Seeds": [
-  { "Host": "127.0.0.1", "Port": 7070 }
-]
-```
-
-------------------------------------------------------------------------
-
-## 🔹 LogFilePath (Optional)
-
-Specifies where client logs are written.
-
-``` json
-"LogFilePath": "logs/dkv.log"
-```
-
-Use `null` to disable file logging.
-
-------------------------------------------------------------------------
-
-# 🏃 Running the Sample
-
-``` bash
+```bash
 dotnet run
 ```
 
-------------------------------------------------------------------------
+✅ No setup required — runs instantly.
 
-# 🧪 Running in InProc Mode (No Server Required)
+---
 
-``` json
-{
-  "Dkv": {
-    "ClusterId": "sample-cluster",
-    "Mode": "InProc",
-    "Seeds": [],
-    "LogFilePath": null
-  }
-}
+# 🧠 How the Sample Works
+
+This sample uses Clustron’s **provider-based model**:
+
+```csharp
+var client = await _provider.GetAsync("teststore");
 ```
 
-------------------------------------------------------------------------
+- You request a client for a store  
+- Configuration is applied automatically  
+- Connections are handled internally  
 
-# 🌐 Running in Remote Mode (Real Cluster)
+---
 
-``` json
+# 🌐 Run with Real Cluster (Next Step)
+
+To run against a real distributed cluster, switch to **Remote mode**:
+
+```json
 {
   "Dkv": {
-    "ClusterId": "teststore",
-    "Mode": "Remote",
-    "Seeds": [
-      { "Host": "127.0.0.1", "Port": 7070 }
-    ],
-    "LogFilePath": null
+    "Stores": {
+      "teststore": {
+        "Mode": "Remote",
+        "Seeds": [
+          { "Host": "127.0.0.1", "Port": 7681 }
+        ]
+      }
+    }
   }
 }
 ```
 
 Before running:
 
--   Ensure DKV servers are running
--   Ensure the store exists
--   Ensure the port matches the configured `ClientPort`
+- Ensure DKV servers are running  
+- Ensure the store exists  
+- Ensure ports match  
 
-------------------------------------------------------------------------
+👉 Full setup guide:  
+https://clustron.io/docs/clustron/dkv/getting-started/overview/
 
-# 🧠 How Transactions Work in Clustron DKV
+---
 
-Clustron DKV provides **optimistic multi-key transactions**.
+# 💡 Learning Path
+
+- Start with **InProc** → understand transactions quickly  
+- Move to **Remote** → run distributed workloads  
+
+---
+
+# 🧠 How Transactions Work
+
+Clustron DKV uses **optimistic multi-key transactions**.
 
 A transaction:
 
-1.  Reads keys and tracks their **revision versions**
-2.  Applies modifications locally inside the transaction
-3.  Attempts to commit the changes
+1. Reads keys and tracks their versions  
+2. Applies changes locally  
+3. Attempts to commit  
 
 During commit:
 
--   If no keys were modified by another client → **commit succeeds**
--   If any key changed → **transaction fails due to conflict**
+- If no keys changed → ✅ success  
+- If any key changed → ❌ conflict  
 
-This ensures **consistent updates across distributed nodes**.
-
-------------------------------------------------------------------------
+---
 
 # 🔄 Sample Flow
 
 ## Initialize Data
 
-Two keys are created:
+```
+keyA = 10
+keyB = 20
+```
 
-    keyA = 10
-    keyB = 20
-
-------------------------------------------------------------------------
+---
 
 ## Successful Transaction
 
-A transaction updates both keys atomically.
-
-    TX START
-      GET A = 10
-      GET B = 20
-      PUT A = 15
-      PUT B = 25
-    COMMIT
+```
+TX START
+  GET A = 10
+  GET B = 20
+  PUT A = 15
+  PUT B = 25
+COMMIT
+```
 
 Result:
 
-    A = 15
-    B = 25
+```
+A = 15
+B = 25
+```
 
-------------------------------------------------------------------------
+---
 
 ## Rollback Example
 
-A transaction modifies a value but rolls back before committing.
-
-    TX START
-      PUT A = 999
-    ROLLBACK
+```
+TX START
+  PUT A = 999
+ROLLBACK
+```
 
 Result:
 
-    A remains unchanged
+```
+A unchanged
+```
 
-------------------------------------------------------------------------
+---
 
 ## Conflict Example
 
-Another client updates a key while the transaction is in progress.
+```
+TX START
+  GET A = 15
 
-    TX START
-      GET A = 15
+External update:
+  PUT A = 500
 
-External update occurs:
+TX COMMIT → fails
+```
 
-    PUT A = 500
-
-Transaction commit:
-
-    PUT A = 16
-    COMMIT
-
-Result:
-
-    Transaction fails due to version conflict
-
-------------------------------------------------------------------------
+---
 
 ## Delete Inside Transaction
 
-Keys can also be deleted inside transactions.
-
-    TX START
-      DELETE B
-    COMMIT
+```
+TX START
+  DELETE B
+COMMIT
+```
 
 Result:
 
-    B is removed from the store
+```
+B removed
+```
 
-------------------------------------------------------------------------
+---
 
-# 📊 Key DKV Features Used
+# 📊 Key Features
 
-  Feature                 Purpose
-  ----------------------- ----------------------------
-  BeginTransactionAsync   Start a transaction
-  GetAsync                Read key values
-  PutAsync                Update values
-  DeleteAsync             Remove keys
-  CommitAsync             Apply atomic changes
-  RollbackAsync           Discard changes
-  Conflict detection      Prevent stale updates
-  Read-your-writes        See your changes inside TX
+- Atomic multi-key updates  
+- Conflict detection  
+- Rollback support  
+- Read-your-writes  
+- Distributed consistency  
 
-------------------------------------------------------------------------
+---
 
 # 📦 Summary
 
-This sample demonstrates how Clustron DKV transactions enable:
+This sample demonstrates how Clustron DKV enables:
 
--   Atomic multi-key updates
--   Safe distributed modifications
--   Conflict detection using optimistic concurrency
--   Transaction rollback support
--   Consistent distributed state
+- Reliable multi-key operations  
+- Safe distributed updates  
+- Consistent application state  
 
-These capabilities are essential for building:
+Use transactions to build:
 
--   Financial transfers
--   Inventory systems
--   Order processing workflows
--   Distributed coordination services
--   Reliable microservices
+- Financial systems  
+- Order processing  
+- Inventory management  
+- Distributed coordination  
 
-Clustron DKV transactions provide **simple APIs with strong consistency
-guarantees for distributed applications**.
+Clustron DKV provides **simple APIs with strong consistency guarantees**.

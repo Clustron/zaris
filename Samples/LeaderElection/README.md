@@ -1,216 +1,155 @@
-# 🚀 Clustron DKV --- Leader Election via Lease Sample
+# 🚀 Clustron DKV — Leader Election via Lease Sample
 
-This sample demonstrates how to implement **distributed leader
-election** using Clustron DKV leases and watch APIs.
+This sample demonstrates how to implement **distributed leader election** using Clustron DKV leases and watch APIs.
 
-It simulates multiple nodes competing to become the leader while
-handling failures and automatic re-election.
+It simulates multiple nodes competing for leadership and automatically handling failures and re-election.
 
-------------------------------------------------------------------------
+---
 
 # 📌 What This Sample Demonstrates
 
-This sample performs the following operations:
+This sample shows how to:
 
--   Connect to a DKV cluster (InProc or Remote)
--   Simulate multiple competing nodes
--   Use leases to claim leadership
--   Use `Put.IfAbsent()` to ensure a single leader
--   Use KeepAlive to maintain leadership
--   Simulate node crashes
--   Use Watch API to detect leader loss
--   Automatically trigger re-election
--   Clean up created keys
+- Simulate multiple competing nodes  
+- Use leases to claim leadership  
+- Ensure a single leader using `Put.IfAbsent()`  
+- Maintain leadership with KeepAlive  
+- Simulate node failures  
+- Detect leader loss using Watch API  
+- Automatically trigger re-election  
+- Clean up created keys  
 
-------------------------------------------------------------------------
+---
 
-# ⚙️ Configuration
+# 🚀 Quick Start (Recommended)
 
-All samples use a unified configuration structure via
-`appsettings.json`.
+Run instantly using **InProc mode**:
 
-## 🧠 Configuration Schema
-
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "string",
-    "Mode": "InProc | Remote",
-    "Seeds": [
-      {
-        "Host": "string",
-        "Port": number
+    "Stores": {
+      "teststore": {
+        "Mode": "InProc"
       }
-    ],
-    "LogFilePath": "string | null"
+    }
   }
 }
 ```
 
-------------------------------------------------------------------------
+Run:
 
-## 🔹 ClusterId
-
-The **Store ID** created in DKV.
-
-This must match the store name defined when creating your cluster store.
-
-Example:
-
-``` json
-"ClusterId": "teststore"
-```
-
-------------------------------------------------------------------------
-
-## 🔹 Mode
-
-  Value    Description
-  -------- -----------------------------------------------
-  InProc   Embedded in-memory store (no server required)
-  Remote   Connects to external DKV server nodes
-
-------------------------------------------------------------------------
-
-## 🔹 Seeds
-
-A list of one or more DKV server nodes.
-
-Only one seed is required. After connecting, the client automatically:
-
--   Discovers cluster topology\
--   Connects to all nodes\
--   Handles failover\
--   Manages topology updates
-
-Example:
-
-``` json
-"Seeds": [
-  { "Host": "127.0.0.1", "Port": 7070 }
-]
-```
-
-------------------------------------------------------------------------
-
-## 🔹 LogFilePath (Optional)
-
-Specifies where client logs are written.
-
-``` json
-"LogFilePath": "logs/dkv.log"
-```
-
-Use `null` to disable file logging.
-
-------------------------------------------------------------------------
-
-# 🏃 Running the Sample
-
-``` bash
+```bash
 dotnet run
 ```
 
-------------------------------------------------------------------------
+✅ No setup required — runs immediately.
 
-# 🧪 Running in InProc Mode (No Server Required)
+---
 
-``` json
-{
-  "Dkv": {
-    "ClusterId": "sample-cluster",
-    "Mode": "InProc",
-    "Seeds": [],
-    "LogFilePath": null
-  }
-}
+# 🧠 How the Sample Works
+
+This sample uses Clustron’s **provider-based model**:
+
+```csharp
+var client = await _provider.GetAsync("teststore");
 ```
 
-Use InProc mode for:
+- Client is resolved automatically  
+- Configuration is applied internally  
+- No manual connection handling  
 
--   API exploration\
--   Unit testing\
--   Local development\
--   CI environments
+---
 
-------------------------------------------------------------------------
+# 🌐 Run with Real Cluster (Next Step)
 
-# 🌐 Running in Remote Mode (Real Cluster)
+Switch to **Remote mode** to run in a real distributed setup:
 
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "teststore",
-    "Mode": "Remote",
-    "Seeds": [
-      { "Host": "127.0.0.1", "Port": 7070 }
-    ],
-    "LogFilePath": null
+    "Stores": {
+      "teststore": {
+        "Mode": "Remote",
+        "Seeds": [
+          { "Host": "127.0.0.1", "Port": 7681 }
+        ]
+      }
+    }
   }
 }
 ```
 
 Before running:
 
--   Ensure DKV servers are running\
--   Ensure the store exists\
--   Ensure the port matches the configured `ClientPort`
+- Ensure DKV servers are running  
+- Ensure the store exists  
+- Ensure ports match  
 
-------------------------------------------------------------------------
+👉 Full setup guide:  
+https://clustron.io/docs/clustron/dkv/getting-started/overview/
+
+---
+
+# 💡 Learning Path
+
+- Start with **InProc** → understand leader election  
+- Move to **Remote** → coordinate across nodes  
+
+---
 
 # 🧠 How Leader Election Works
 
-This sample simulates 3 nodes competing for leadership.
+This sample simulates multiple nodes competing for leadership.
 
 Each node:
 
-1.  Requests a lease (`GrantAsync`)\
-2.  Attempts to write the leader key using `Put.IfAbsent().WithLease()`\
-3.  If successful → becomes leader\
-4.  Sends periodic `KeepAlive` calls to maintain leadership\
-5.  Simulates crash after a few seconds\
-6.  Other nodes detect deletion via Watch API\
-7.  Re-election automatically begins
+1. Requests a lease  
+2. Attempts to acquire leadership using `Put.IfAbsent().WithLease()`  
+3. If successful → becomes leader  
+4. Sends KeepAlive to maintain leadership  
+5. Simulates failure after a few seconds  
+6. Other nodes detect leader loss via Watch  
+7. Re-election begins automatically  
 
-------------------------------------------------------------------------
+---
 
 # 🔄 Failure & Recovery Flow
 
--   If leader crashes → lease expires\
--   Leader key is deleted\
--   Watchers detect deletion event\
--   Waiting nodes retry election\
--   New leader is elected
+- Leader crashes → lease expires  
+- Leader key is removed  
+- Watchers detect deletion  
+- Other nodes retry election  
+- New leader is elected  
 
 This ensures **automatic failover without central coordination**.
 
-------------------------------------------------------------------------
+---
 
-# 📊 Key DKV Features Used
+# 📊 Key Features
 
-  Feature          Purpose
-  ---------------- -------------------------
-  Leases           Time-bound leadership
-  IfAbsent         Single-writer guarantee
-  KeepAlive        Maintain leadership
-  Watch API        Detect leader loss
-  Prefix cleanup   Safe sample isolation
+- Lease-based leadership  
+- Single-writer guarantee  
+- Automatic failover  
+- Watch-driven reactivity  
+- Distributed coordination  
 
-------------------------------------------------------------------------
+---
 
 # 📦 Summary
 
 This sample demonstrates how Clustron DKV enables:
 
--   Distributed coordination
--   Automatic leader election
--   Crash recovery
--   Lease-based ownership
--   Watch-driven reactivity
+- Leader election  
+- Fault tolerance  
+- Distributed coordination  
+- Automatic recovery  
 
-It models real-world coordination patterns such as:
+Use this pattern for:
 
--   Master election
--   Distributed schedulers
--   Primary node selection
--   Cluster coordination services
+- Master election  
+- Distributed schedulers  
+- Primary node selection  
+- Coordination services  
+
+Clustron DKV provides a **simple and reliable foundation for distributed coordination**.

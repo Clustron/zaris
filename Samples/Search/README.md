@@ -1,239 +1,182 @@
-# 🚀 Clustron DKV --- Search Sample
+# 🚀 Clustron DKV — Search Sample
 
-This sample demonstrates how to use **Clustron DKV Search APIs** to
-query data using entities, labels, filtering, sorting, and projection.
+This sample demonstrates how to use **Clustron DKV Search APIs** to query data using entities, labels, filtering, sorting, and projection.
 
-It showcases structured search capabilities across distributed data.
+It showcases how you can perform **structured queries over distributed data**.
 
-------------------------------------------------------------------------
+---
 
 # 📌 What This Sample Demonstrates
 
-This sample performs the following operations:
+This sample shows how to:
 
--   Connect to a DKV cluster (InProc or Remote)
--   Store entities with labels
--   Execute equality queries
--   Execute range queries
--   Perform AND conditions
--   Perform prefix searches
--   Apply sorting and limits
--   Use field projection
--   Clean up created keys
+- Store entities with labels
+- Run equality queries
+- Run range queries
+- Combine conditions (AND)
+- Perform prefix searches
+- Apply sorting and limits
+- Use projection (select fields)
+- Clean up created data
 
-------------------------------------------------------------------------
+---
 
-# ⚙️ Configuration
+# 🚀 Quick Start (Recommended)
 
-All samples use a unified configuration structure via
-`appsettings.json`.
+The fastest way to run this sample is using **InProc mode**.
 
-## 🧠 Configuration Schema
-
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "string",
-    "Mode": "InProc | Remote",
-    "Seeds": [
-      {
-        "Host": "string",
-        "Port": number
+    "Stores": {
+      "teststore": {
+        "Mode": "InProc"
       }
-    ],
-    "LogFilePath": "string | null"
+    }
   }
 }
 ```
 
-------------------------------------------------------------------------
+Run:
 
-## 🔹 ClusterId
-
-The **Store ID** created in DKV.
-
-This must match the store name defined when creating your cluster store.
-
-Example:
-
-``` json
-"ClusterId": "teststore"
-```
-
-------------------------------------------------------------------------
-
-## 🔹 Mode
-
-  Value    Description
-  -------- -----------------------------------------------
-  InProc   Embedded in-memory store (no server required)
-  Remote   Connects to external DKV server nodes
-
-------------------------------------------------------------------------
-
-## 🔹 Seeds
-
-A list of one or more DKV server nodes.
-
-Only one seed is required. After connecting, the client automatically:
-
--   Discovers cluster topology\
--   Connects to all nodes\
--   Handles failover\
--   Manages topology updates
-
-Example:
-
-``` json
-"Seeds": [
-  { "Host": "127.0.0.1", "Port": 7070 }
-]
-```
-
-------------------------------------------------------------------------
-
-## 🔹 LogFilePath (Optional)
-
-Specifies where client logs are written.
-
-``` json
-"LogFilePath": "logs/dkv.log"
-```
-
-Use `null` to disable file logging.
-
-------------------------------------------------------------------------
-
-# 🏃 Running the Sample
-
-``` bash
+```bash
 dotnet run
 ```
 
-------------------------------------------------------------------------
+✅ No setup required — runs instantly.
 
-# 🧪 Running in InProc Mode (No Server Required)
+---
 
-``` json
-{
-  "Dkv": {
-    "ClusterId": "sample-cluster",
-    "Mode": "InProc",
-    "Seeds": [],
-    "LogFilePath": null
-  }
-}
+# 🧠 How the Sample Works
+
+This sample uses Clustron’s **provider-based model**:
+
+```csharp
+var client = await _provider.GetAsync("teststore");
 ```
 
-------------------------------------------------------------------------
+- You request a client for a store  
+- Configuration is applied automatically  
+- Connections are handled internally  
 
-# 🌐 Running in Remote Mode (Real Cluster)
+---
 
-``` json
+# 🌐 Run with Real Cluster (Next Step)
+
+To run against a real distributed cluster, switch to **Remote mode**:
+
+```json
 {
   "Dkv": {
-    "ClusterId": "teststore",
-    "Mode": "Remote",
-    "Seeds": [
-      { "Host": "127.0.0.1", "Port": 7070 }
-    ],
-    "LogFilePath": null
+    "Stores": {
+      "teststore": {
+        "Mode": "Remote",
+        "Seeds": [
+          { "Host": "127.0.0.1", "Port": 7681 }
+        ]
+      }
+    }
   }
 }
 ```
 
 Before running:
 
--   Ensure DKV servers are running\
--   Ensure the store exists\
--   Ensure the port matches the configured `ClientPort`
+- Ensure DKV servers are running  
+- Ensure the store exists  
+- Ensure ports match  
 
-------------------------------------------------------------------------
+👉 Full setup guide:  
+https://clustron.io/docs/clustron/dkv/getting-started/overview/
+
+---
+
+# 💡 Learning Path
+
+- Start with **InProc** → explore queries quickly  
+- Move to **Remote** → run distributed search  
+
+---
 
 # 🧠 Search Capabilities Demonstrated
 
-##  Equality Search
+## Equality Search
 
-``` csharp
+```csharp
 SearchQuery.For(Entity).Eq("city", "London");
 ```
 
-------------------------------------------------------------------------
+---
 
-##  Range Query
+## Range Query
 
-``` csharp
+```csharp
 SearchQuery.For(Entity).Range("age", 28, 32);
 ```
 
-------------------------------------------------------------------------
+---
 
 ## AND Conditions
 
-``` csharp
+```csharp
 SearchQuery.For(Entity)
     .And(new EqClause("city", "Berlin"),
          new EqClause("age", "32"));
 ```
 
-------------------------------------------------------------------------
+---
 
-##  Prefix Search
+## Prefix Search
 
-``` csharp
+```csharp
 SearchQuery.For(Entity)
     .LikePrefix("email", "user1");
 ```
 
-------------------------------------------------------------------------
+---
 
-##  Sorting + Limit
+## Sorting + Limit
 
-``` csharp
+```csharp
 SearchQuery.For(Entity)
     .OrderBy("age", ascending: false)
     .Limit(5);
 ```
 
-------------------------------------------------------------------------
+---
 
-##  Projection
+## Projection
 
-``` csharp
+```csharp
 SearchQuery.For(Entity)
     .Select("email");
 ```
 
-------------------------------------------------------------------------
+---
 
-# 📊 Key DKV Features Used
+# 📊 Key Features
 
-  Feature           Purpose
-  ----------------- -----------------------------
-  Entities          Logical grouping of records
-  Labels            Queryable metadata
-  Scan/Search API   Distributed search
-  Sorting           Ordered results
-  Limit             Result size control
-  Projection        Partial field selection
-  Prefix cleanup    Safe sample isolation
+- Entity-based organization  
+- Label-based querying  
+- Distributed search execution  
+- Sorting and pagination  
+- Field projection  
 
-------------------------------------------------------------------------
+---
 
 # 📦 Summary
 
 This sample demonstrates how Clustron DKV enables:
 
--   Structured search across distributed data
--   Metadata-based querying
--   Range filtering
--   Compound query logic
--   Efficient result projection
--   Controlled pagination and sorting
+- Structured querying across distributed data  
+- Metadata-driven filtering  
+- Efficient search workflows  
 
-It models real-world search patterns such as:
+Use these capabilities for:
 
--   Filtering users by attributes
--   Building dashboards
--   Reporting queries
--   Query-driven workflows
+- User filtering  
+- Dashboards  
+- Reporting  
+- Query-driven applications  
+
+Clustron DKV provides **powerful search capabilities built directly into your distributed data layer**.

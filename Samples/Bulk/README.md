@@ -1,181 +1,134 @@
-# 🚀 Clustron DKV --- Bulk Operations Sample
+# 🚀 Clustron DKV — Bulk Operations Sample
 
-This sample demonstrates how to use the **Clustron DKV Client SDK** for
-high-performance bulk operations.
+This sample demonstrates how to use **high-performance bulk operations** in Clustron DKV.
 
-It showcases batch-based PUT, GET, and DELETE operations using optimized
-client APIs.
+It showcases batch-based PUT, GET, and DELETE using optimized client APIs.
 
-------------------------------------------------------------------------
+---
 
 # 📌 What This Sample Demonstrates
 
-This sample performs the following operations:
+This sample shows how to:
 
--   Connect to a DKV cluster (InProc or Remote)
--   Insert multiple objects using `PutManyAsync`
--   Retrieve multiple objects using `GetManyAsync`
--   Delete multiple objects using `DeleteManyAsync`
--   Verify deletion results
--   Clean up created keys
+- Insert multiple objects using `PutManyAsync`  
+- Retrieve multiple objects using `GetManyAsync`  
+- Delete multiple objects using `DeleteManyAsync`  
+- Verify results  
+- Clean up created keys  
 
-------------------------------------------------------------------------
+---
 
-# ⚙️ Configuration
+# 🚀 Quick Start (Recommended)
 
-All samples use a unified configuration structure via
-`appsettings.json`.
+Run instantly using **InProc mode**:
 
-## 🧠 Configuration Schema
-
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "string",
-    "Mode": "InProc | Remote",
-    "Seeds": [
-      {
-        "Host": "string",
-        "Port": number
+    "Stores": {
+      "teststore": {
+        "Mode": "InProc"
       }
-    ],
-    "LogFilePath": "string | null"
+    }
   }
 }
 ```
 
-------------------------------------------------------------------------
+Run:
 
-## 🔹 ClusterId
-
-The **Store ID** created in DKV.
-
-This must match the store name defined when creating your cluster store.
-
-Example:
-
-``` json
-"ClusterId": "teststore"
-```
-
-------------------------------------------------------------------------
-
-## 🔹 Mode
-
-  Value    Description
-  -------- -----------------------------------------------
-  InProc   Embedded in-memory store (no server required)
-  Remote   Connects to external DKV server nodes
-
-------------------------------------------------------------------------
-
-## 🔹 Seeds
-
-A list of one or more DKV server nodes.
-
-Only one seed is required. After connecting, the client automatically:
-
--   Discovers cluster topology\
--   Connects to all nodes\
--   Handles failover\
--   Manages topology updates
-
-Example:
-
-``` json
-"Seeds": [
-  { "Host": "127.0.0.1", "Port": 7070 },
-  { "Host": "127.0.0.1", "Port": 7071 }
-]
-```
-
-------------------------------------------------------------------------
-
-## 🔹 LogFilePath (Optional)
-
-Specifies where client logs are written.
-
-``` json
-"LogFilePath": "logs/dkv.log"
-```
-
-Use `null` to disable file logging.
-
-------------------------------------------------------------------------
-
-# 🏃 Running the Sample
-
-``` bash
+```bash
 dotnet run
 ```
 
-------------------------------------------------------------------------
+✅ No setup required — runs immediately.
 
-# 🧪 Running in InProc Mode (No Server Required)
+---
 
-``` json
-{
-  "Dkv": {
-    "ClusterId": "sample-cluster",
-    "Mode": "InProc",
-    "Seeds": [],
-    "LogFilePath": null
-  }
-}
+# 🧠 How the Sample Works
+
+This sample uses Clustron’s **provider-based model**:
+
+```csharp
+var client = await _provider.GetAsync("teststore");
 ```
 
-Use InProc mode for:
+- Client is resolved automatically  
+- No manual connection required  
 
--   API exploration\
--   Unit testing\
--   Local development\
--   CI environments
+---
 
-------------------------------------------------------------------------
+# 🌐 Run with Real Cluster (Next Step)
 
-# 🌐 Running in Remote Mode (Real Cluster)
+Switch to **Remote mode**:
 
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "teststore",
-    "Mode": "Remote",
-    "Seeds": [
-      { "Host": "127.0.0.1", "Port": 7070 },
-      { "Host": "127.0.0.1", "Port": 7071 }
-    ],
-    "LogFilePath": null
+    "Stores": {
+      "teststore": {
+        "Mode": "Remote",
+        "Seeds": [
+          { "Host": "127.0.0.1", "Port": 7681 }
+        ]
+      }
+    }
   }
 }
 ```
 
 Before running:
 
--   Ensure DKV servers are running\
--   Ensure the store exists\
--   Ensure the port matches the configured `ClientPort`
+- Ensure DKV servers are running  
+- Ensure the store exists  
 
-------------------------------------------------------------------------
+👉 https://clustron.io/docs/clustron/dkv/getting-started/overview/
 
-# 🧪 What the Sample Actually Does
+---
 
-1.  Loads configuration\
-2.  Initializes the client\
-3.  Performs bulk insert of 5 `Customer` objects\
-4.  Retrieves all inserted customers in a single batch call\
-5.  Deletes all customers in a single batch call\
-6.  Verifies deletion results\
-7.  Performs cleanup using a key prefix
+# 💡 Learning Path
 
-------------------------------------------------------------------------
+- Start with **InProc** → understand bulk APIs  
+- Move to **Remote** → scale batch operations  
+
+---
+
+# 🧪 Sample Flow
+
+1. Insert multiple customers using `PutManyAsync`  
+2. Retrieve all using `GetManyAsync`  
+3. Delete all using `DeleteManyAsync`  
+4. Verify results  
+
+---
+
+# 📊 Key Features
+
+- Batch operations  
+- Reduced network overhead  
+- High throughput  
+- Efficient data access  
+
+---
 
 # 📦 Summary
 
-  Operation     API Used
-  ------------- -------------------
-  Bulk PUT      `PutManyAsync`
-  Bulk GET      `GetManyAsync`
-  Bulk DELETE   `DeleteManyAsync`
+| Operation   | API              |
+|------------|------------------|
+| Bulk PUT   | PutManyAsync     |
+| Bulk GET   | GetManyAsync     |
+| Bulk DELETE| DeleteManyAsync  |
 
-This sample demonstrates how to efficiently handle batch operations in
-**Clustron DKV**.
+This sample demonstrates how Clustron DKV enables:
+
+- Efficient batch processing  
+- High-performance data operations  
+- Scalable distributed workloads  
+
+Use bulk APIs for:
+
+- Data ingestion  
+- Batch processing  
+- ETL pipelines  
+- High-throughput services  
+
+Clustron DKV provides **fast and efficient bulk operations for modern distributed systems**.

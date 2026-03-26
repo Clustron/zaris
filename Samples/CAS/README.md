@@ -1,192 +1,141 @@
-# 🚀 Clustron DKV --- Compare-And-Swap (CAS) Sample
+# 🚀 Clustron DKV — Compare-And-Swap (CAS) Sample
 
-This sample demonstrates how to use **optimistic concurrency control**
-in Clustron DKV using Compare-And-Swap (CAS) semantics.
+This sample demonstrates how to use **optimistic concurrency control** in Clustron DKV using Compare-And-Swap (CAS).
 
-It shows how to safely update and delete items using version-based
-conditional operations.
+It shows how to safely update and delete items using version-based conditional operations.
 
-------------------------------------------------------------------------
+---
 
 # 📌 What This Sample Demonstrates
 
-This sample performs the following operations:
+This sample shows how to:
 
--   Connect to a DKV cluster (InProc or Remote)
--   Insert an item using `IfAbsent`
--   Retrieve item along with its version
--   Perform a successful CAS update using `IfMatch`
--   Attempt a failed CAS update using a stale version
--   Perform a CAS delete using version matching
--   Clean up created keys
+- Insert items using IfAbsent  
+- Retrieve values along with versions  
+- Perform conditional updates using IfMatch  
+- Handle conflicts safely  
+- Perform conditional deletes  
+- Clean up created keys  
 
-------------------------------------------------------------------------
+---
 
-# ⚙️ Configuration
+# 🚀 Quick Start (Recommended)
 
-All samples use a unified configuration structure via
-`appsettings.json`.
+Run instantly using **InProc mode**:
 
-## 🧠 Configuration Schema
-
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "string",
-    "Mode": "InProc | Remote",
-    "Seeds": [
-      {
-        "Host": "string",
-        "Port": number
+    "Stores": {
+      "teststore": {
+        "Mode": "InProc"
       }
-    ],
-    "LogFilePath": "string | null"
+    }
   }
 }
 ```
 
-------------------------------------------------------------------------
+Run:
 
-## 🔹 ClusterId
-
-The **Store ID** created in DKV.
-
-This must match the store name defined when creating your cluster store.
-
-Example:
-
-``` json
-"ClusterId": "teststore"
-```
-
-------------------------------------------------------------------------
-
-## 🔹 Mode
-
-  Value    Description
-  -------- -----------------------------------------------
-  InProc   Embedded in-memory store (no server required)
-  Remote   Connects to external DKV server nodes
-
-------------------------------------------------------------------------
-
-## 🔹 Seeds
-
-A list of one or more DKV server nodes.
-
-Only one seed is required. After connecting, the client automatically:
-
--   Discovers cluster topology\
--   Connects to all nodes\
--   Handles failover\
--   Manages topology updates
-
-Example:
-
-``` json
-"Seeds": [
-  { "Host": "127.0.0.1", "Port": 7070 },
-  { "Host": "127.0.0.1", "Port": 7071 }
-]
-```
-
-------------------------------------------------------------------------
-
-## 🔹 LogFilePath (Optional)
-
-Specifies where client logs are written.
-
-``` json
-"LogFilePath": "logs/dkv.log"
-```
-
-Use `null` to disable file logging.
-
-------------------------------------------------------------------------
-
-# 🏃 Running the Sample
-
-``` bash
+```bash
 dotnet run
 ```
 
-------------------------------------------------------------------------
+✅ No setup required — runs immediately.
 
-# 🧪 Running in InProc Mode (No Server Required)
+---
 
-``` json
-{
-  "Dkv": {
-    "ClusterId": "sample-cluster",
-    "Mode": "InProc",
-    "Seeds": [],
-    "LogFilePath": null
-  }
-}
+# 🧠 How the Sample Works
+
+This sample uses Clustron’s **provider-based model**:
+
+```csharp
+var client = await _provider.GetAsync("teststore");
 ```
 
-Use InProc mode for:
+- Client is resolved automatically  
+- Configuration is applied internally  
+- No manual connection handling  
 
--   API exploration\
--   Unit testing\
--   Local development\
--   CI environments
+---
 
-------------------------------------------------------------------------
+# 🌐 Run with Real Cluster (Next Step)
 
-# 🌐 Running in Remote Mode (Real Cluster)
+Switch to **Remote mode**:
 
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "teststore",
-    "Mode": "Remote",
-    "Seeds": [
-      { "Host": "127.0.0.1", "Port": 7070 }
-    ],
-    "LogFilePath": null
+    "Stores": {
+      "teststore": {
+        "Mode": "Remote",
+        "Seeds": [
+          { "Host": "127.0.0.1", "Port": 7681 }
+        ]
+      }
+    }
   }
 }
 ```
 
 Before running:
 
--   Ensure DKV servers are running\
--   Ensure the store exists\
--   Ensure the port matches the configured `ClientPort`
+- Ensure DKV servers are running  
+- Ensure the store exists  
 
-------------------------------------------------------------------------
+👉 Full setup guide:  
+https://clustron.io/docs/clustron/dkv/getting-started/overview/
 
-# 🧠 What is CAS (Compare-And-Swap)?
+---
 
-CAS is an **optimistic concurrency mechanism** that ensures an update or
-delete only succeeds if the item's version matches the expected version.
+# 💡 Learning Path
 
-It prevents lost updates in concurrent environments.
+- Start with **InProc** → understand CAS behavior  
+- Move to **Remote** → handle real concurrency  
 
-------------------------------------------------------------------------
+---
 
-# 🧪 What the Sample Actually Does
+# 🧠 What is CAS?
 
-1.  Inserts a customer using `Put.IfAbsent()`\
-2.  Retrieves the item and reads its `ItemVersion`\
-3.  Performs a successful update using `Put.WithIfMatch(version)`\
-4.  Attempts another update using a stale version (expected to fail with
-    `Conflict`)\
-5.  Performs a version-matched delete using `Delete.IfMatch(version)`\
-6.  Verifies deletion\
-7.  Cleans up using key prefix
+CAS (Compare-And-Swap) ensures that an operation succeeds **only if the version matches**.
 
-------------------------------------------------------------------------
+This prevents lost updates when multiple clients modify the same data.
+
+---
+
+# 🧪 Sample Flow
+
+1. Insert item using `Put.IfAbsent()`  
+2. Read value + version  
+3. Update using `Put.WithIfMatch(version)` → ✅ success  
+4. Update again using old version → ❌ conflict  
+5. Delete using `Delete.IfMatch(version)`  
+6. Verify deletion  
+
+---
+
+# 📊 Key Features
+
+- Optimistic concurrency  
+- Version-based safety  
+- Conflict detection  
+- Safe deletes  
+
+---
 
 # 📦 Summary
 
-  Operation            API Used
-  -------------------- ----------------------------------
-  Insert If Absent     `Put.IfAbsent()`
-  Conditional Update   `Put.WithIfMatch()`
-  Conditional Delete   `Delete.IfMatch()`
-  Version Retrieval    `GetAsync()` (returns `Version`)
+This sample demonstrates how Clustron DKV enables:
 
-This sample demonstrates safe concurrent updates using version-based
-optimistic concurrency in **Clustron DKV**.
+- Safe concurrent updates  
+- Conflict-aware operations  
+- Version-controlled data access  
+
+Use CAS for:
+
+- Financial updates  
+- Inventory systems  
+- Distributed coordination  
+- Any critical state changes  
+
+Clustron DKV provides **simple yet powerful concurrency control for distributed systems**.

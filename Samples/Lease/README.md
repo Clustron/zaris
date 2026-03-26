@@ -1,220 +1,157 @@
-# 🚀 Clustron DKV --- Lease Sample (Expiry & Revoke Validation)
+# 🚀 Clustron DKV — Lease Sample (Expiry & Revoke Validation)
 
-This sample demonstrates how to use **Leases** in Clustron DKV to manage
-time-bound ownership of keys.
+This sample demonstrates how to use **Leases** in Clustron DKV to manage **time-bound ownership of keys**.
 
-It validates both automatic lease expiry and explicit lease revocation
-behavior.
+It validates both automatic lease expiry and explicit lease revocation behavior.
 
-------------------------------------------------------------------------
+---
 
 # 📌 What This Sample Demonstrates
 
-This sample performs the following operations:
+This sample shows how to:
 
--   Connect to a DKV cluster (InProc or Remote)
--   Grant a time-bound lease
--   Attach multiple keys to a lease
--   Observe automatic deletion on lease expiry
--   Use Watch API to detect deletion events
--   Explicitly revoke a lease
--   Compare expiry vs revoke behavior
--   Clean up created keys
+- Grant a time-bound lease
+- Attach multiple keys to a lease
+- Observe automatic deletion on expiry
+- Use Watch API to detect deletions
+- Explicitly revoke a lease
+- Compare expiry vs revoke behavior
+- Clean up created keys
 
-------------------------------------------------------------------------
+---
 
-# ⚙️ Configuration
+# 🚀 Quick Start (Recommended)
 
-All samples use a unified configuration structure via
-`appsettings.json`.
+Run instantly using **InProc mode**:
 
-## 🧠 Configuration Schema
-
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "string",
-    "Mode": "InProc | Remote",
-    "Seeds": [
-      {
-        "Host": "string",
-        "Port": number
+    "Stores": {
+      "teststore": {
+        "Mode": "InProc"
       }
-    ],
-    "LogFilePath": "string | null"
+    }
   }
 }
 ```
 
-------------------------------------------------------------------------
+Run:
 
-## 🔹 ClusterId
-
-The **Store ID** created in DKV.
-
-This must match the store name defined when creating your cluster store.
-
-Example:
-
-``` json
-"ClusterId": "teststore"
-```
-
-------------------------------------------------------------------------
-
-## 🔹 Mode
-
-  Value    Description
-  -------- -----------------------------------------------
-  InProc   Embedded in-memory store (no server required)
-  Remote   Connects to external DKV server nodes
-
-------------------------------------------------------------------------
-
-## 🔹 Seeds
-
-A list of one or more DKV server nodes.
-
-Only one seed is required. After connecting, the client automatically:
-
--   Discovers cluster topology\
--   Connects to all nodes\
--   Handles failover\
--   Manages topology updates
-
-Example:
-
-``` json
-"Seeds": [
-  { "Host": "127.0.0.1", "Port": 7070 }
-]
-```
-
-------------------------------------------------------------------------
-
-## 🔹 LogFilePath (Optional)
-
-Specifies where client logs are written.
-
-``` json
-"LogFilePath": "logs/dkv.log"
-```
-
-Use `null` to disable file logging.
-
-------------------------------------------------------------------------
-
-# 🏃 Running the Sample
-
-``` bash
+```bash
 dotnet run
 ```
 
-------------------------------------------------------------------------
+✅ No setup required — runs immediately.
 
-# 🧪 Running in InProc Mode (No Server Required)
+---
 
-``` json
-{
-  "Dkv": {
-    "ClusterId": "sample-cluster",
-    "Mode": "InProc",
-    "Seeds": [],
-    "LogFilePath": null
-  }
-}
+# 🧠 How the Sample Works
+
+This sample uses Clustron’s **provider-based model**:
+
+```csharp
+var client = await _provider.GetAsync("teststore");
 ```
 
-Use InProc mode for:
+- Client is resolved automatically  
+- Configuration is applied internally  
+- No manual connection handling  
 
--   API exploration\
--   Unit testing\
--   Local development\
--   CI environments
+---
 
-------------------------------------------------------------------------
+# 🌐 Run with Real Cluster (Next Step)
 
-# 🌐 Running in Remote Mode (Real Cluster)
+Switch to **Remote mode** to run in a real distributed setup:
 
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "teststore",
-    "Mode": "Remote",
-    "Seeds": [
-      { "Host": "127.0.0.1", "Port": 7070 }
-    ],
-    "LogFilePath": null
+    "Stores": {
+      "teststore": {
+        "Mode": "Remote",
+        "Seeds": [
+          { "Host": "127.0.0.1", "Port": 7681 }
+        ]
+      }
+    }
   }
 }
 ```
 
 Before running:
 
--   Ensure DKV servers are running\
--   Ensure the store exists\
--   Ensure the port matches the configured `ClientPort`
+- Ensure DKV servers are running  
+- Ensure the store exists  
+- Ensure ports match  
 
-------------------------------------------------------------------------
+👉 Full setup guide:  
+https://clustron.io/docs/clustron/dkv/getting-started/overview/
+
+---
+
+# 💡 Learning Path
+
+- Start with **InProc** → understand leases quickly  
+- Move to **Remote** → use leases in distributed systems  
+
+---
 
 # 🧠 How Leases Work
 
-A lease represents time-bound ownership of keys.
+A lease represents **time-bound ownership** of keys.
 
 When a key is written with a lease:
 
--   It is automatically deleted when the lease expires\
--   Or immediately deleted if the lease is revoked
+- It is automatically deleted when the lease expires  
+- It is immediately deleted when the lease is revoked  
 
-------------------------------------------------------------------------
+---
 
 # 🔄 Sample Flow
 
-##  Lease Expiry Test
+## Lease Expiry Test
 
--   Grant a lease (10 seconds)\
--   Insert multiple keys bound to the lease\
--   Attach Watch to observe deletion\
--   Wait for lease to expire\
--   Verify keys are automatically removed
+- Grant a lease (10 seconds)  
+- Insert keys bound to the lease  
+- Attach Watch to observe deletion  
+- Wait for expiry  
+- Verify automatic cleanup  
 
-------------------------------------------------------------------------
+---
 
-##  Explicit Revoke Test
+## Explicit Revoke Test
 
--   Grant a second lease (30 seconds)\
--   Insert multiple keys bound to lease\
--   Explicitly revoke the lease\
--   Verify immediate key deletion
+- Grant another lease (30 seconds)  
+- Insert keys bound to lease  
+- Revoke lease manually  
+- Verify immediate deletion  
 
-------------------------------------------------------------------------
+---
 
-# 📊 Key DKV Features Used
+# 📊 Key Features
 
-  Feature            Purpose
-  ------------------ --------------------------
-  Leases             Time-bound key ownership
-  WithLease          Attach keys to lease
-  Watch API          Observe deletion events
-  Automatic expiry   Self-cleaning resources
-  Explicit revoke    Immediate cleanup
-  Prefix cleanup     Safe sample isolation
+- Time-bound ownership  
+- Automatic cleanup via TTL  
+- Explicit revoke support  
+- Watch integration  
+- Distributed coordination  
 
-------------------------------------------------------------------------
+---
 
 # 📦 Summary
 
-This sample demonstrates that Clustron DKV leases:
+This sample demonstrates how Clustron DKV enables:
 
--   Automatically clean up resources
--   Support explicit revocation
--   Enable time-bound ownership models
--   Work seamlessly with Watch API
--   Are suitable for distributed locking and coordination patterns
+- Automatic resource cleanup  
+- Lease-based coordination  
+- Ephemeral key management  
 
-It models real-world patterns such as:
+Use leases for:
 
--   Distributed locks
--   Ephemeral keys
--   Session ownership
--   Time-bound resource allocation
+- Distributed locks  
+- Session management  
+- Temporary ownership  
+- Coordination patterns  
+
+Clustron DKV provides a **simple and powerful lease model for distributed systems**.

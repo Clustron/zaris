@@ -1,230 +1,167 @@
-# 🚀 Clustron DKV --- Watch Sample
+# 🚀 Clustron DKV — Watch Sample
 
-This sample demonstrates how to use the **Watch API** in Clustron DKV to
-observe real-time changes on keys and key prefixes.
+This sample demonstrates how to use the **Watch API** in Clustron DKV to build **real-time, reactive distributed systems**.
 
-It simulates live updates and shows how clients can react to create,
-update, and delete events across a cluster.
+Instead of polling for changes, your application can subscribe to updates and react instantly when data changes.
 
-------------------------------------------------------------------------
+---
 
 # 📌 What This Sample Demonstrates
 
-This sample performs the following operations:
+This sample shows how to:
 
--   Connect to a DKV cluster (InProc or Remote)
--   Watch a single key
--   Watch a key prefix
--   Include initial snapshot on watch start
--   Receive real-time change events
--   Track revision numbers
--   Simulate background updates and deletes
--   Stop watchers gracefully
--   Clean up created keys
+- Subscribe to a single key
+- Subscribe to a key prefix (multiple keys)
+- Receive real-time updates (create/update/delete)
+- Use initial snapshot on subscription
+- Track event revisions
+- React to live updates
+- Gracefully stop watchers
+- Clean up data safely
 
-------------------------------------------------------------------------
+---
 
-# ⚙️ Configuration
+# 🚀 Quick Start (Recommended)
 
-All samples use a unified configuration structure via
-`appsettings.json`.
+The fastest way to run this sample is using **InProc mode**.
 
-## 🧠 Configuration Schema
+This runs Clustron DKV **inside your application** — no servers, no setup.
 
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "string",
-    "Mode": "InProc | Remote",
-    "Seeds": [
-      {
-        "Host": "string",
-        "Port": number
+    "Stores": {
+      "teststore": {
+        "Mode": "InProc"
       }
-    ],
-    "LogFilePath": "string | null"
+    }
   }
 }
 ```
 
-------------------------------------------------------------------------
+Now run:
 
-## 🔹 ClusterId
-
-The **Store ID** created in DKV.
-
-This must match the store name defined when creating your cluster store.
-
-Example:
-
-``` json
-"ClusterId": "teststore"
-```
-
-------------------------------------------------------------------------
-
-## 🔹 Mode
-
-  Value    Description
-  -------- -----------------------------------------------
-  InProc   Embedded in-memory store (no server required)
-  Remote   Connects to external DKV server nodes
-
-------------------------------------------------------------------------
-
-## 🔹 Seeds
-
-A list of one or more DKV server nodes.
-
-Only one seed is required. After connecting, the client automatically:
-
--   Discovers cluster topology\
--   Connects to all nodes\
--   Handles failover\
--   Manages topology updates
-
-Example:
-
-``` json
-"Seeds": [
-  { "Host": "127.0.0.1", "Port": 7070 }
-]
-```
-
-------------------------------------------------------------------------
-
-## 🔹 LogFilePath (Optional)
-
-Specifies where client logs are written.
-
-``` json
-"LogFilePath": "logs/dkv.log"
-```
-
-Use `null` to disable file logging.
-
-------------------------------------------------------------------------
-
-# 🏃 Running the Sample
-
-``` bash
+```bash
 dotnet run
 ```
 
-------------------------------------------------------------------------
+✅ That’s it — the sample will run instantly.
 
-# 🧪 Running in InProc Mode (No Server Required)
+---
 
-``` json
-{
-  "Dkv": {
-    "ClusterId": "sample-cluster",
-    "Mode": "InProc",
-    "Seeds": [],
-    "LogFilePath": null
-  }
-}
+# 🧠 How the Sample Works
+
+This sample uses Clustron’s **provider-based model**.
+
+```csharp
+var client = await _provider.GetAsync("teststore");
 ```
 
-------------------------------------------------------------------------
+- You request a client for a store  
+- Configuration is applied automatically  
+- Connections are handled internally  
 
-# 🌐 Running in Remote Mode (Real Cluster)
+You focus on logic — Clustron handles infrastructure.
 
-``` json
+---
+
+# 🌐 Run with Real Cluster (Next Step)
+
+Once you're comfortable, you can switch to a real distributed setup using **Remote mode**:
+
+```json
 {
   "Dkv": {
-    "ClusterId": "teststore",
-    "Mode": "Remote",
-    "Seeds": [
-      { "Host": "127.0.0.1", "Port": 7070 }
-    ],
-    "LogFilePath": null
+    "Stores": {
+      "teststore": {
+        "Mode": "Remote",
+        "Seeds": [
+          { "Host": "127.0.0.1", "Port": 7681 }
+        ]
+      }
+    }
   }
 }
 ```
 
 Before running:
 
--   Ensure DKV servers are running\
--   Ensure the store exists\
--   Ensure the port matches the configured `ClientPort`
+- Ensure DKV servers are running  
+- Ensure the store exists  
+- Ensure ports match  
 
-------------------------------------------------------------------------
+👉 Full setup guide:  
+https://clustron.io/docs/clustron/dkv/getting-started/overview/
 
-# 🧠 How the Watch API Works
+---
 
-The Watch API allows clients to subscribe to:
+# 💡 Learning Path
 
--   A specific key\
--   A key prefix
+- Start with **InProc** → understand APIs quickly  
+- Move to **Remote** → run distributed workloads  
 
-Watchers receive events when:
+---
 
--   A key is created\
--   A key is updated\
--   A key is deleted
+# 🧠 How Watch Works
+
+The Watch API lets you subscribe to:
+
+- A single key
+- A key prefix
+
+Events are triggered when:
+
+- Key is created
+- Key is updated
+- Key is deleted
 
 Each event includes:
 
--   Event type\
--   Key\
--   Revision number\
--   Value (if applicable)
+- Event type
+- Key
+- Revision
+- Value (if available)
 
-------------------------------------------------------------------------
+---
 
 # 🔄 Sample Flow
 
-##  Start Watchers
+## Start Watchers
 
--   Watch a single key with snapshot enabled\
--   Watch a prefix for multiple related keys
+- Watch a single key
+- Watch a prefix
 
-------------------------------------------------------------------------
+## Simulate Updates
 
-##  Simulate Live Updates
-
-A background task:
-
--   Updates keys periodically\
--   Deletes keys occasionally\
--   Generates real-time watch events
-
-------------------------------------------------------------------------
+- Background updates
+- Occasional deletes
+- Real-time event stream
 
 ## Stop Watchers
 
--   Stop subscriptions gracefully\
--   Print event summary
+- Stop subscriptions
+- Print summary
 
-------------------------------------------------------------------------
+---
 
-# 📊 Key DKV Features Used
+# 📊 Key Features
 
-  Feature             Purpose
-  ------------------- -------------------------
-  WatchKeyAsync       Subscribe to single key
-  WatchPrefixAsync    Subscribe to prefix
-  Snapshot            Initial state retrieval
-  Revision tracking   Event ordering
-  Real-time events    Reactive systems
-  Prefix cleanup      Safe sample isolation
+- Real-time notifications
+- Event-driven architecture
+- Revision tracking
+- Prefix subscriptions
+- Snapshot support
 
-------------------------------------------------------------------------
+---
 
 # 📦 Summary
 
 This sample demonstrates how Clustron DKV enables:
 
--   Reactive distributed systems\
--   Event-driven architectures\
--   Change notifications\
--   Cache invalidation workflows\
--   Real-time coordination
+- Reactive systems
+- Event-driven microservices
+- Live dashboards
+- Cache invalidation
+- Distributed coordination
 
-It models real-world use cases such as:
-
--   Live configuration updates\
--   Distributed cache synchronization\
--   Event streaming\
--   Reactive microservices
+Clustron is a **reactive distributed platform**, not just a key-value store.

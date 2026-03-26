@@ -1,226 +1,176 @@
-# 🚀 Clustron DKV --- Counters Sample
+# 🚀 Clustron DKV — Counters Sample
 
-This sample demonstrates how to use **Distributed Counters** in Clustron
-DKV.
+This sample demonstrates how to use **Distributed Counters** in Clustron DKV.
 
-It showcases atomic numeric operations that are safe, consistent, and
-cluster-aware.
+It showcases atomic numeric operations that are safe, consistent, and cluster-aware.
 
-------------------------------------------------------------------------
+---
 
 # 📌 What This Sample Demonstrates
 
-This sample performs the following operations:
+This sample shows how to:
 
--   Connect to a DKV cluster (InProc or Remote)
--   Perform atomic increments (`AddAsync`)
--   Retrieve current counter values
--   Set counter values explicitly
--   Enforce Min / Max bounds
--   Apply TTL (time-to-live) to counters
--   Clean up created keys
+- Perform atomic increments  
+- Retrieve current counter values  
+- Set counter values explicitly  
+- Enforce Min / Max bounds  
+- Apply TTL (time-to-live) to counters  
+- Clean up created keys  
 
-------------------------------------------------------------------------
+---
 
-# ⚙️ Configuration
+# 🚀 Quick Start (Recommended)
 
-All samples use a unified configuration structure via
-`appsettings.json`.
+Run instantly using **InProc mode**:
 
-## 🧠 Configuration Schema
-
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "string",
-    "Mode": "InProc | Remote",
-    "Seeds": [
-      {
-        "Host": "string",
-        "Port": number
+    "Stores": {
+      "teststore": {
+        "Mode": "InProc"
       }
-    ],
-    "LogFilePath": "string | null"
+    }
   }
 }
 ```
 
-------------------------------------------------------------------------
+Run:
 
-## 🔹 ClusterId
-
-The **Store ID** created in DKV.
-
-This must match the store name defined when creating your cluster store.
-
-Example:
-
-``` json
-"ClusterId": "teststore"
-```
-
-------------------------------------------------------------------------
-
-## 🔹 Mode
-
-  Value    Description
-  -------- -----------------------------------------------
-  InProc   Embedded in-memory store (no server required)
-  Remote   Connects to external DKV server nodes
-
-------------------------------------------------------------------------
-
-## 🔹 Seeds
-
-A list of one or more DKV server nodes.
-
-Only one seed is required. After connecting, the client automatically:
-
--   Discovers cluster topology\
--   Connects to all nodes\
--   Handles failover\
--   Manages topology updates
-
-Example:
-
-``` json
-"Seeds": [
-  { "Host": "127.0.0.1", "Port": 7070 },
-  { "Host": "127.0.0.1", "Port": 7071 }
-]
-```
-
-------------------------------------------------------------------------
-
-## 🔹 LogFilePath (Optional)
-
-Specifies where client logs are written.
-
-``` json
-"LogFilePath": "logs/dkv.log"
-```
-
-Use `null` to disable file logging.
-
-------------------------------------------------------------------------
-
-# 🏃 Running the Sample
-
-``` bash
+```bash
 dotnet run
 ```
 
-------------------------------------------------------------------------
+✅ No setup required — runs immediately.
 
-# 🧪 Running in InProc Mode (No Server Required)
+---
 
-``` json
-{
-  "Dkv": {
-    "ClusterId": "sample-cluster",
-    "Mode": "InProc",
-    "Seeds": [],
-    "LogFilePath": null
-  }
-}
+# 🧠 How the Sample Works
+
+This sample uses Clustron’s **provider-based model**:
+
+```csharp
+var client = await _provider.GetAsync("teststore");
 ```
 
-Use InProc mode for:
+- Client is resolved automatically  
+- Configuration is applied internally  
+- No manual connection handling  
 
--   API exploration\
--   Unit testing\
--   Local development\
--   CI environments
+---
 
-------------------------------------------------------------------------
+# 🌐 Run with Real Cluster (Next Step)
 
-# 🌐 Running in Remote Mode (Real Cluster)
+Switch to **Remote mode** to run in a real distributed setup:
 
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "teststore",
-    "Mode": "Remote",
-    "Seeds": [
-      { "Host": "127.0.0.1", "Port": 7070 }
-    ],
-    "LogFilePath": null
+    "Stores": {
+      "teststore": {
+        "Mode": "Remote",
+        "Seeds": [
+          { "Host": "127.0.0.1", "Port": 7681 }
+        ]
+      }
+    }
   }
 }
 ```
 
 Before running:
 
--   Ensure DKV servers are running\
--   Ensure the store exists\
--   Ensure the port matches the configured `ClientPort`
+- Ensure DKV servers are running  
+- Ensure the store exists  
+- Ensure ports match  
 
-------------------------------------------------------------------------
+👉 Full setup guide:  
+https://clustron.io/docs/clustron/dkv/getting-started/overview/
+
+---
+
+# 💡 Learning Path
+
+- Start with **InProc** → understand counters quickly  
+- Move to **Remote** → use counters across nodes  
+
+---
 
 # 🧠 Counter Features Demonstrated
 
 ## Atomic Increment
 
-`AddAsync(key, delta)`
+```csharp
+await counters.AddAsync(key, delta);
+```
 
 Ensures atomic updates across the cluster.
 
-------------------------------------------------------------------------
+---
 
 ## Get Counter Value
 
-Returns the current numeric value safely across nodes.
+```csharp
+await counters.GetAsync(key);
+```
 
-------------------------------------------------------------------------
+Returns the current value safely across nodes.
+
+---
 
 ## Set Counter Value
 
-`SetAsync(key, value)`
+```csharp
+await counters.SetAsync(key, value);
+```
 
 Overrides the counter value atomically.
 
-------------------------------------------------------------------------
+---
 
-## Min / Max Bounds Enforcement
+## Min / Max Bounds
 
-Counters can enforce limits:
-
-``` csharp
+```csharp
 new CounterOptions { MaxValue = 10 }
 ```
 
-If an operation exceeds the bound, it fails safely.
+Prevents exceeding defined limits.
 
-------------------------------------------------------------------------
+---
 
 ## Counter TTL
 
-Counters support expiration:
-
-``` csharp
+```csharp
 new CounterOptions { Ttl = TimeSpan.FromSeconds(20) }
 ```
 
-After TTL expires, the counter is automatically removed.
+Automatically removes the counter after expiry.
 
-------------------------------------------------------------------------
+---
+
+# 📊 Key Features
+
+- Atomic operations  
+- Cluster-wide consistency  
+- Bound enforcement  
+- TTL-based expiration  
+
+---
 
 # 📦 Summary
 
-  Feature        Supported
-  -------------- -----------
-  Atomic Add     Yes
-  Get            Yes
-  Set            Yes
-  Min / Max      Yes
-  TTL            Yes
-  Cluster-wide   Yes
+This sample demonstrates how Clustron DKV counters are:
 
-------------------------------------------------------------------------
+- Atomic  
+- Distributed  
+- Safe under concurrency  
+- TTL-enabled  
 
-This sample demonstrates that DKV counters are:
+Use counters for:
 
--   Atomic\
--   Cluster-aware\
--   Bound-safe\
--   TTL-enabled
+- Rate limiting  
+- Metrics tracking  
+- Distributed counting  
+- Usage tracking  
+
+Clustron DKV provides **simple and reliable distributed counters for real-world systems**.

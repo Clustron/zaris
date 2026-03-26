@@ -1,200 +1,137 @@
-# 🚀 Clustron DKV --- Distributed Rate Limiter Sample
+# 🚀 Clustron DKV — Distributed Rate Limiter Sample
 
-This sample demonstrates how to implement a **distributed fixed-window
-rate limiter** using Clustron DKV counters.
+This sample demonstrates how to implement a **distributed fixed-window rate limiter** using Clustron DKV counters.
 
-It simulates multiple requests and enforces a maximum request limit
-within a time window.
+It simulates requests and enforces a maximum limit within a time window.
 
-------------------------------------------------------------------------
+---
 
 # 📌 What This Sample Demonstrates
 
-This sample performs the following operations:
+This sample shows how to:
 
--   Connect to a DKV cluster (InProc or Remote)
--   Use distributed counters to track request counts
--   Apply TTL to automatically reset time windows
--   Enforce a fixed request limit
--   Simulate request traffic
--   Demonstrate distributed-safe rate limiting
+- Use distributed counters to track requests
+- Apply TTL to reset time windows automatically
+- Enforce request limits
+- Simulate request traffic
+- Build distributed-safe rate limiting
 
-------------------------------------------------------------------------
+---
 
-# ⚙️ Configuration
+# 🚀 Quick Start (Recommended)
 
-All samples use a unified configuration structure via
-`appsettings.json`.
+Run instantly using **InProc mode** (no setup required):
 
-## 🧠 Configuration Schema
-
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "string",
-    "Mode": "InProc | Remote",
-    "Seeds": [
-      {
-        "Host": "string",
-        "Port": number
+    "Stores": {
+      "teststore": {
+        "Mode": "InProc"
       }
-    ],
-    "LogFilePath": "string | null"
+    }
   }
 }
 ```
 
-------------------------------------------------------------------------
+Run:
 
-## 🔹 ClusterId
-
-The **Store ID** created in DKV.
-
-This must match the store name defined when creating your cluster store.
-
-Example:
-
-``` json
-"ClusterId": "teststore"
-```
-
-------------------------------------------------------------------------
-
-## 🔹 Mode
-
-  Value    Description
-  -------- -----------------------------------------------
-  InProc   Embedded in-memory store (no server required)
-  Remote   Connects to external DKV server nodes
-
-------------------------------------------------------------------------
-
-## 🔹 Seeds
-
-A list of one or more DKV server nodes.
-
-Only one seed is required. After connecting, the client automatically:
-
--   Discovers cluster topology\
--   Connects to all nodes\
--   Handles failover\
--   Manages topology updates
-
-Example:
-
-``` json
-"Seeds": [
-  { "Host": "127.0.0.1", "Port": 7070 }
-]
-```
-
-------------------------------------------------------------------------
-
-## 🔹 LogFilePath (Optional)
-
-Specifies where client logs are written.
-
-``` json
-"LogFilePath": "logs/dkv.log"
-```
-
-Use `null` to disable file logging.
-
-------------------------------------------------------------------------
-
-# 🏃 Running the Sample
-
-``` bash
+```bash
 dotnet run
 ```
 
-------------------------------------------------------------------------
+✅ No servers required — works out of the box.
 
-# 🧪 Running in InProc Mode (No Server Required)
+---
 
-``` json
-{
-  "Dkv": {
-    "ClusterId": "sample-cluster",
-    "Mode": "InProc",
-    "Seeds": [],
-    "LogFilePath": null
-  }
-}
+# 🧠 How the Sample Works
+
+This sample uses Clustron’s **provider-based model**:
+
+```csharp
+var client = await _provider.GetAsync("teststore");
 ```
 
-Use InProc mode for:
+- Client is resolved automatically  
+- Configuration is applied internally  
+- No manual connection handling  
 
--   API exploration\
--   Unit testing\
--   Local development\
--   CI environments
+---
 
-------------------------------------------------------------------------
+# 🌐 Run with Real Cluster (Next Step)
 
-# 🌐 Running in Remote Mode (Real Cluster)
+Switch to **Remote mode** to run in a real distributed setup:
 
-``` json
+```json
 {
   "Dkv": {
-    "ClusterId": "teststore",
-    "Mode": "Remote",
-    "Seeds": [
-      { "Host": "127.0.0.1", "Port": 7070 }
-    ],
-    "LogFilePath": null
+    "Stores": {
+      "teststore": {
+        "Mode": "Remote",
+        "Seeds": [
+          { "Host": "127.0.0.1", "Port": 7681 }
+        ]
+      }
+    }
   }
 }
 ```
 
 Before running:
 
--   Ensure DKV servers are running\
--   Ensure the store exists\
--   Ensure the port matches the configured `ClientPort`
+- Ensure DKV servers are running  
+- Ensure the store exists  
+- Ensure ports match  
 
-------------------------------------------------------------------------
+👉 Full setup guide:  
+https://clustron.io/docs/clustron/dkv/getting-started/overview/
+
+---
+
+# 💡 Learning Path
+
+- Start with **InProc** → understand rate limiting  
+- Move to **Remote** → enforce limits across nodes  
+
+---
 
 # 🧠 How the Rate Limiter Works
 
 This sample implements a **fixed time window rate limiter**.
 
-Configuration in code:
+Configuration:
 
--   Max Requests: 5\
--   Window Duration: 10 seconds
+- Max Requests: 5  
+- Window Duration: 10 seconds  
 
-------------------------------------------------------------------------
+---
 
 ## 🔄 Flow
 
-1.  Compute the current time window key\
-2.  Increment a distributed counter for that window\
-3.  Attach TTL equal to the window duration\
-4.  If counter value exceeds limit → request is blocked\
-5.  When TTL expires → window automatically resets
+1. Generate a key for the current time window  
+2. Increment a distributed counter  
+3. Attach TTL equal to window duration  
+4. If count exceeds limit → block request  
+5. TTL expiry resets the window  
 
-------------------------------------------------------------------------
+---
 
-# 📊 Key DKV Features Used
+# 📊 Key Features
 
-  Feature                    Purpose
-  -------------------------- -------------------------
-  Counters                   Atomic request tracking
-  TTL                        Automatic window reset
-  Cluster-wide consistency   Distributed enforcement
-  Prefix isolation           Safe sample runs
+- Atomic counters  
+- TTL-based expiration  
+- Cluster-wide consistency  
+- Simple distributed enforcement  
 
-------------------------------------------------------------------------
+---
 
 # 📦 Summary
 
-This sample demonstrates that Clustron DKV can be used to build:
+This sample demonstrates how Clustron DKV enables:
 
--   Distributed rate limiters\
--   API throttling systems\
--   Abuse protection mechanisms\
--   Request quota enforcement
+- Distributed rate limiting  
+- API throttling  
+- Abuse protection  
+- Request quota enforcement  
 
-It shows how counters + TTL together provide a simple yet powerful
-distributed rate limiting pattern.
+Counters + TTL provide a **simple and powerful pattern** for distributed control.
