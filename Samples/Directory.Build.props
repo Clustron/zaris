@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <!-- Version of the Clustron DKV packages the samples consume from the shared local
+         repo. The sanity harness overrides this (-p:ClustronDkvVersion=...) so the samples
+         always build against the freshly packed build; the default keeps them buildable
+         standalone. -->
+    <ClustronDkvVersion Condition="'$(ClustronDkvVersion)' == ''">0.3.0</ClustronDkvVersion>
+  </PropertyGroup>
+</Project>

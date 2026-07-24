@@ -12,7 +12,7 @@ namespace Clustron.Dkv.Samples.Shared
     {
         public string ClusterId { get; set; } = default!;
         public string Mode { get; set; } = default!;
-        public List<DkvServerInfo>? Seeds { get; set; }
+        public List<DkvNodeInfo>? Seeds { get; set; }
         public string? LogFilePath { get; set; }
 
         public DkvClientMode GetMode() =>

@@ -23,6 +23,4 @@ var host = Host.CreateDefaultBuilder(args)
 // Run App
 // -----------------------------------------------------
 var app = host.Services.GetRequiredService<CasSampleApp>();
-await app.RunAsync();
-
-Console.WriteLine("\nDone.");
+return await SampleRunner.RunAsync("CAS", () => app.RunAsync());

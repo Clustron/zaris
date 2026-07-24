@@ -34,6 +34,4 @@ var host = Host.CreateDefaultBuilder(args)
 // Run
 // -----------------------------------------------------
 var app = host.Services.GetRequiredService<HybridCacheSampleApp>();
-await app.RunAsync();
-
-Console.WriteLine("\nDone.");
+return await SampleRunner.RunAsync("HybridCache", () => app.RunAsync());

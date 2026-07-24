@@ -22,7 +22,7 @@ public static class SampleEnvironmentPrinter
         {
             var seeds = options.Seeds == null
                 ? ""
-                : string.Join(",", options.Seeds.Select(s => $"{s.Host}:{s.Port}"));
+                : string.Join(",", options.Seeds.Select(s => $"{s.Host}:{s.ClientPort}"));
 
             Console.WriteLine($"Mode    : Remote ({seeds})");
             Console.WriteLine("Hint    : Set \"Mode\": \"InProc\" in appsettings.json to run without servers");

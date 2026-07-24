@@ -37,6 +37,4 @@ var host = Host.CreateDefaultBuilder(args)
 // Run
 // -----------------------------------------------------
 var app = host.Services.GetRequiredService<DistributedCacheSampleApp>();
-await app.RunAsync();
-
-Console.WriteLine("\nDone.");
+return await SampleRunner.RunAsync("IDistributedCache", () => app.RunAsync());

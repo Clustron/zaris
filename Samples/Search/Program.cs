@@ -23,6 +23,4 @@ var host = Host.CreateDefaultBuilder(args)
 // Run
 // -----------------------------------------------------
 var app = host.Services.GetRequiredService<SearchSampleApp>();
-await app.RunAsync();
-
-Console.WriteLine("\nDone.");
+return await SampleRunner.RunAsync("Search", () => app.RunAsync());

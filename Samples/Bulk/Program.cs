@@ -29,6 +29,4 @@ var host = Host.CreateDefaultBuilder(args)
 // Run App
 // -----------------------------------------------------
 var app = host.Services.GetRequiredService<BulkSampleApp>();
-await app.RunAsync();
-
-Console.WriteLine("\nDone.");
+return await SampleRunner.RunAsync("Bulk", () => app.RunAsync());
