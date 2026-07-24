@@ -1,6 +1,6 @@
-# 🚀 Clustron DKV --- Samples Shared Project
+# 🚀 Clustron Dictus --- Samples Shared Project
 
-This project contains shared infrastructure used by **all Clustron DKV
+This project contains shared infrastructure used by **all Clustron Dictus
 samples**.
 
 ⚠️ This is **not a standalone sample** and does not contain its own
@@ -39,7 +39,7 @@ This project ensures:
 The Shared project provides:
 
 -   `ConsoleHelper` → Structured console output helpers
--   `DkvOptions` → Configuration binding model (used by all samples)
+-   `DictusOptions` → Configuration binding model (used by all samples)
 -   `SampleContext` → Automatic key prefix isolation
 -   Shared models (e.g., `Customer`, `JobItem`, etc.)
 
@@ -67,7 +67,7 @@ This ensures all samples produce consistent and readable output.
 
 ------------------------------------------------------------------------
 
-## 🔹 DkvOptions
+## 🔹 DictusOptions
 
 Binds configuration from each sample's `appsettings.json`.
 
@@ -75,7 +75,7 @@ All samples follow the unified configuration schema:
 
 ``` json
 {
-  "Dkv": {
+  "Dictus": {
     "ClusterId": "string",
     "Mode": "InProc | Remote",
     "Seeds": [
@@ -114,7 +114,7 @@ All keys created by a sample are prefixed to avoid collisions across:
 
 The architecture flow looks like this:
 
-    Samples → Shared → DKV Client → DKV Server
+    Samples → Shared → Dictus Client → Dictus Server
 
 The Shared project sits between samples and the client SDK, providing:
 
@@ -137,7 +137,7 @@ The Shared project sits between samples and the client SDK, providing:
 
 ------------------------------------------------------------------------
 
-This project ensures that all Clustron DKV samples remain:
+This project ensures that all Clustron Dictus samples remain:
 
 -   Clean\
 -   Isolated\

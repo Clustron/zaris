@@ -1,8 +1,8 @@
-# Clustron DKV Architecture
+# Clustron Dictus Architecture
 
 ## Overview
 
-Clustron DKV is a distributed, .NET-native key-value data engine designed for high-throughput, low-latency workloads in modern microservice environments.
+Clustron Dictus is a distributed, .NET-native key-value data engine designed for high-throughput, low-latency workloads in modern microservice environments.
 
 The system is built around:
 
@@ -12,7 +12,7 @@ The system is built around:
 * Predictable performance under load
 * Instance-level isolation
 
-Clustron DKV is evolving into a distributed data foundation rather than a simple cache.
+Clustron Dictus is evolving into a distributed data foundation rather than a simple cache.
 
 ---
 
@@ -26,7 +26,7 @@ Clustron DKV is evolving into a distributed data foundation rather than a simple
                             |
                             v
                 +-----------------------+
-                |   Clustron DKV Node   |
+                |   Clustron Dictus Node   |
                 +-----------------------+
                 |  Request Pipeline     |
                 |  Segment Store        |
@@ -38,7 +38,7 @@ Clustron DKV is evolving into a distributed data foundation rather than a simple
                             |
                             v
                 +-----------------------+
-                |   Peer DKV Nodes      |
+                |   Peer Dictus Nodes      |
                 +-----------------------+
 ```
 
@@ -48,7 +48,7 @@ Each node operates as an independent process and participates in cluster coordin
 
 ## Control Plane vs Data Plane
 
-Clustron DKV separates responsibilities into:
+Clustron Dictus separates responsibilities into:
 
 ### Data Plane
 
@@ -84,7 +84,7 @@ Responsible for:
 * Node startup and shutdown
 * Configuration templates
 
-Each DKV instance:
+Each Dictus instance:
 
 * Runs independently
 * Has its own configuration
@@ -97,7 +97,7 @@ This separation ensures operational clarity and horizontal scalability.
 
 ## Node Architecture
 
-Each Clustron DKV node contains the following core components:
+Each Clustron Dictus node contains the following core components:
 
 ### 1. Request Pipeline
 
@@ -142,7 +142,7 @@ Indexes are maintained alongside primary storage to avoid full scans for query o
 
 ### 4. Expiration Engine (TimeWheel-Based)
 
-Clustron DKV uses a TimeWheel-inspired expiration model for TTL handling.
+Clustron Dictus uses a TimeWheel-inspired expiration model for TTL handling.
 
 Benefits:
 
@@ -198,7 +198,7 @@ Designed for metrics, throttling, and coordination scenarios.
 
 ## Cluster Model
 
-Clustron DKV nodes form a logical cluster.
+Clustron Dictus nodes form a logical cluster.
 
 Key characteristics:
 
@@ -220,7 +220,7 @@ Cluster design emphasizes consistency of operations within node ownership bounda
 
 ## Multi-Instance Deployment
 
-Clustron DKV supports multiple instances per machine.
+Clustron Dictus supports multiple instances per machine.
 
 Each instance:
 
@@ -252,7 +252,7 @@ The architecture avoids unnecessary abstraction layers to reduce overhead.
 
 ## Scalability Philosophy
 
-Clustron DKV is built around:
+Clustron Dictus is built around:
 
 * Horizontal scale-out
 * Stateless client design
@@ -284,7 +284,7 @@ Future improvements include:
 
 ## Design Principles
 
-Clustron DKV follows these principles:
+Clustron Dictus follows these principles:
 
 * Performance-first
 * Predictability over abstraction
@@ -297,7 +297,7 @@ Clustron DKV follows these principles:
 
 ## Current Status
 
-Clustron DKV is in active development.
+Clustron Dictus is in active development.
 
 Core engine stabilization and documentation publication are ongoing.
 

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Clustron.Extensions.Caching.Distributed" Version="$(ClustronDkvVersion)" />
+    <PackageReference Include="Clustron.Extensions.Caching.Distributed" Version="$(ClustronDictusVersion)" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
   </ItemGroup>
 

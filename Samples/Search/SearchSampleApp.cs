@@ -1,21 +1,21 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
-using Clustron.DKV.Abstractions;
-using Clustron.DKV.Client;
-using Clustron.DKV.Client.Helpers;
-using Clustron.Dkv.Samples.Shared;
-using Clustron.Dkv.Samples.Shared.Models;
+using Clustron.Dictus.Abstractions;
+using Clustron.Dictus.Client;
+using Clustron.Dictus.Client.Helpers;
+using Clustron.Dictus.Samples.Shared;
+using Clustron.Dictus.Samples.Shared.Models;
 
-namespace Clustron.Dkv.Sample.Search;
+namespace Clustron.Dictus.Sample.Search;
 
 internal class SearchSampleApp
 {
-    private readonly IDkvClientProvider _provider;
+    private readonly IDictusClientProvider _provider;
 
     private const string StoreName = "teststore";
     private const string EntityName = "search-sample-customer";
 
-    public SearchSampleApp(IDkvClientProvider provider)
+    public SearchSampleApp(IDictusClientProvider provider)
     {
         _provider = provider;
     }
@@ -28,8 +28,8 @@ internal class SearchSampleApp
 
         var context = new SampleContext("search-sample");
 
-        var dkv = (IDkv)client;
-        var scan = dkv.Scan;
+        var dictus = (IDictus)client;
+        var scan = dictus.Scan;
 
         // -------------------------------------------------
         // Seed Data

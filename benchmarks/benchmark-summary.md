@@ -1,8 +1,8 @@
-# Clustron DKV – Benchmark Summary
+# Clustron Dictus – Benchmark Summary
 
 ## Overview
 
-This document summarizes early internal benchmarking results for Clustron DKV.
+This document summarizes early internal benchmarking results for Clustron Dictus.
 
 The goal of these benchmarks is to:
 
@@ -37,7 +37,7 @@ These results are preliminary and subject to change as the engine evolves.
 
 ### Cluster Setup
 
-* 1 DKV server node
+* 1 Dictus server node
 * Clients running on same machine
 * Local loopback networking
 

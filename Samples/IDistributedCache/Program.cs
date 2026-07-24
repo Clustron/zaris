@@ -1,11 +1,11 @@
-﻿using Clustron.DKV.Client.DependencyInjection;
-using Clustron.Dkv.Samples.Shared;
+using Clustron.Dictus.Client.DependencyInjection;
+using Clustron.Dictus.Samples.Shared;
 using Clustron.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Clustron.Dkv.Sample.DistributedCache;
+using Clustron.Dictus.Sample.DistributedCache;
 
-ConsoleHelper.Header("Clustron DKV – DistributedCache Sample");
+ConsoleHelper.Header("Clustron Dictus – DistributedCache Sample");
 
 // -----------------------------------------------------
 // Build Host
@@ -13,12 +13,12 @@ ConsoleHelper.Header("Clustron DKV – DistributedCache Sample");
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        var stores = context.Configuration.GetSection("Dkv:Stores");
+        var stores = context.Configuration.GetSection("Dictus:Stores");
 
         // -----------------------------------------------------
-        // Register DKV (from config)
+        // Register Dictus (from config)
         // -----------------------------------------------------
-        services.AddClustronDkvStores(stores);
+        services.AddClustronDictusStores(stores);
 
         // -----------------------------------------------------
         // Register Distributed Cache

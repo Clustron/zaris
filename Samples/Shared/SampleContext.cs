@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Clustron.Dkv.Samples.Shared
+namespace Clustron.Dictus.Samples.Shared
 {
     /// <summary>
     /// Provides unique key scoping for each sample execution.

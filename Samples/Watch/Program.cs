@@ -1,10 +1,10 @@
-﻿using Clustron.DKV.Client.DependencyInjection;
-using Clustron.Dkv.Samples.Shared;
+using Clustron.Dictus.Client.DependencyInjection;
+using Clustron.Dictus.Samples.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Clustron.Dkv.Sample.Watch;
+using Clustron.Dictus.Sample.Watch;
 
-ConsoleHelper.Header("Clustron DKV – Watch Sample");
+ConsoleHelper.Header("Clustron Dictus – Watch Sample");
 
 // -----------------------------------------------------
 // Build Host
@@ -12,8 +12,8 @@ ConsoleHelper.Header("Clustron DKV – Watch Sample");
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        services.AddClustronDkvStores(
-            context.Configuration.GetSection("Dkv:Stores"));
+        services.AddClustronDictusStores(
+            context.Configuration.GetSection("Dictus:Stores"));
 
         services.AddSingleton<WatchSampleApp>();
     })

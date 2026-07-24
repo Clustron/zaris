@@ -1,18 +1,18 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
-using Clustron.DKV.Abstractions;
-using Clustron.DKV.Client;
-using Clustron.Dkv.Samples.Shared;
+using Clustron.Dictus.Abstractions;
+using Clustron.Dictus.Client;
+using Clustron.Dictus.Samples.Shared;
 
-namespace Clustron.Dkv.Sample.Counters;
+namespace Clustron.Dictus.Sample.Counters;
 
 internal class CountersSampleApp
 {
-    private readonly IDkvClientProvider _provider;
+    private readonly IDictusClientProvider _provider;
 
     private const string StoreName = "teststore";
 
-    public CountersSampleApp(IDkvClientProvider provider)
+    public CountersSampleApp(IDictusClientProvider provider)
     {
         _provider = provider;
     }
@@ -32,7 +32,7 @@ internal class CountersSampleApp
 
         ConsoleHelper.Info($"Session Prefix: {context.Prefix}");
 
-        var counters = ((IDkv)client).Counters;
+        var counters = ((IDictus)client).Counters;
 
         // ============================================================
         // Atomic Increment

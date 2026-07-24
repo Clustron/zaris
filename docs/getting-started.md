@@ -1,6 +1,6 @@
-# Getting Started with Clustron DKV (Windows)
+# Getting Started with Clustron Dictus (Windows)
 
-Follow the steps below to install and run Clustron DKV on a Windows machine.
+Follow the steps below to install and run Clustron Dictus on a Windows machine.
 
 ---
 
@@ -13,7 +13,7 @@ Follow the steps below to install and run Clustron DKV on a Windows machine.
 
 ## 2. Install PowerShell 7
 
-Clustron DKV requires **PowerShell 7.5.4 or later**.
+Clustron Dictus requires **PowerShell 7.5.4 or later**.
 
 If you don’t already have it installed, download it from:
 
@@ -27,7 +27,7 @@ Open **PowerShell 7** with administrative privileges.
 
 ---
 
-## 4. Install Clustron DKV
+## 4. Install Clustron Dictus
 
 Navigate to the extracted folder:
 
@@ -41,7 +41,7 @@ Run the installation script:
 ./install.ps1
 ```
 
-This installs Clustron DKV to:
+This installs Clustron Dictus to:
 
 ```
 C:\Program Files\Clustron
@@ -65,13 +65,13 @@ Replace it with your actual IP address if different.
 ## 5. Connect to the Management Service
 
 ```powershell
-Connect-DkvManager 10.0.0.4:7801
+Connect-DictusManager 10.0.0.4:7801
 ```
 
 If running locally, you may also use:
 
 ```powershell
-Connect-DkvManager localhost:7801
+Connect-DictusManager localhost:7801
 ```
 
 ---
@@ -81,7 +81,7 @@ Connect-DkvManager localhost:7801
 The following command creates a store named **TestStore** with two nodes running on the same machine (for demo purposes).
 
 ```powershell
-New-DkvStore `
+New-DictusStore `
   -Name TestStore `
   -Instances @(
       @{ InstanceName="node1"; ClustronPort=7805; ClientPort=7070 },
@@ -100,7 +100,7 @@ This creates:
 ## 7. Start the Store
 
 ```powershell
-Start-DkvStore TestStore
+Start-DictusStore TestStore
 ```
 
 This starts all instances of the store.
@@ -112,7 +112,7 @@ This starts all instances of the store.
 Open live per-second metrics for all instances:
 
 ```powershell
-Watch-DkvStoreMetrics -StoreName TestStore
+Watch-DictusStoreMetrics -StoreName TestStore
 ```
 
 You’ll see live counters for operations per second.
@@ -132,7 +132,7 @@ Open a new PowerShell 7 window.
 Connect to any one node. The client will automatically discover the rest of the cluster.
 
 ```powershell
-Connect-DkvStore `
+Connect-DictusStore `
   -StoreName TestStore `
   -Endpoints 10.0.0.4:7070
 ```
@@ -146,7 +146,7 @@ Connect-DkvStore `
 Simulate concurrent load and watch metrics update in real time:
 
 ```powershell
-Stress-DkvStore `
+Stress-DictusStore `
   -StoreName TestStore `
   -Concurrency 32 `
   -DurationSec 500
@@ -163,7 +163,7 @@ This runs a stress test with:
 
 You now have:
 
-- Installed Clustron DKV  
+- Installed Clustron Dictus  
 - Created a multi-node store  
 - Started the cluster  
 - Connected a client  

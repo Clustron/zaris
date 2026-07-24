@@ -1,18 +1,18 @@
-﻿using Clustron.DKV.Abstractions;
-using Clustron.DKV.Client;
-using Clustron.Dkv.Samples.Shared;
-using Clustron.Dkv.Samples.Shared.Models;
+using Clustron.Dictus.Abstractions;
+using Clustron.Dictus.Client;
+using Clustron.Dictus.Samples.Shared;
+using Clustron.Dictus.Samples.Shared.Models;
 
-namespace Clustron.Dkv.Sample.Basic;
+namespace Clustron.Dictus.Sample.Basic;
 
 internal class BasicSampleApp
 {
-    private readonly IDkvClientProvider _provider;
+    private readonly IDictusClientProvider _provider;
 
     // 👉 store name should match config key
     private const string StoreName = "teststore";
 
-    public BasicSampleApp(IDkvClientProvider provider)
+    public BasicSampleApp(IDictusClientProvider provider)
     {
         _provider = provider;
     }
@@ -100,7 +100,7 @@ internal class BasicSampleApp
         // ============================================================
         ConsoleHelper.Section("COUNTER");
 
-        var counters = ((IDkv)client).Counters;
+        var counters = ((IDictus)client).Counters;
         var counterKey = context.Key("orders");
 
         var increment = await counters.AddAsync(counterKey, 1);

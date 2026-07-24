@@ -1,6 +1,6 @@
-# 🚀 Clustron DKV — Lease Sample (Expiry & Revoke Validation)
+# 🚀 Clustron Dictus — Lease Sample (Expiry & Revoke Validation)
 
-This sample demonstrates how to use **Leases** in Clustron DKV to manage **time-bound ownership of keys**.
+This sample demonstrates how to use **Leases** in Clustron Dictus to manage **time-bound ownership of keys**.
 
 It validates both automatic lease expiry and explicit lease revocation behavior.
 
@@ -26,7 +26,7 @@ Run instantly using **InProc mode**:
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -66,7 +66,7 @@ Switch to **Remote mode** to run in a real distributed setup:
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -81,12 +81,12 @@ Switch to **Remote mode** to run in a real distributed setup:
 
 Before running:
 
-- Ensure DKV servers are running  
+- Ensure Dictus servers are running  
 - Ensure the store exists  
 - Ensure ports match  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dkv/getting-started/overview/
+https://clustron.io/docs/clustron/dictus/getting-started/overview/
 
 ---
 
@@ -141,7 +141,7 @@ When a key is written with a lease:
 
 # 📦 Summary
 
-This sample demonstrates how Clustron DKV enables:
+This sample demonstrates how Clustron Dictus enables:
 
 - Automatic resource cleanup  
 - Lease-based coordination  
@@ -154,4 +154,4 @@ Use leases for:
 - Temporary ownership  
 - Coordination patterns  
 
-Clustron DKV provides a **simple and powerful lease model for distributed systems**.
+Clustron Dictus provides a **simple and powerful lease model for distributed systems**.

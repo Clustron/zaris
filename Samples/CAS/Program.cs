@@ -1,10 +1,10 @@
-﻿using Clustron.DKV.Client.DependencyInjection;
-using Clustron.Dkv.Samples.Shared;
+using Clustron.Dictus.Client.DependencyInjection;
+using Clustron.Dictus.Samples.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Clustron.Dkv.Sample.CAS;
+using Clustron.Dictus.Sample.CAS;
 
-ConsoleHelper.Header("Clustron DKV – Compare-And-Swap (CAS) Sample");
+ConsoleHelper.Header("Clustron Dictus – Compare-And-Swap (CAS) Sample");
 
 // -----------------------------------------------------
 // Build Host
@@ -12,8 +12,8 @@ ConsoleHelper.Header("Clustron DKV – Compare-And-Swap (CAS) Sample");
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        services.AddClustronDkvStores(
-            context.Configuration.GetSection("Dkv:Stores"));
+        services.AddClustronDictusStores(
+            context.Configuration.GetSection("Dictus:Stores"));
 
         services.AddSingleton<CasSampleApp>();
     })

@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Clustron.Dkv.Samples.Shared
+namespace Clustron.Dictus.Samples.Shared
 {
     public static class ConsoleHelper
     {

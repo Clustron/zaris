@@ -1,10 +1,10 @@
-﻿using Clustron.DKV.Client.DependencyInjection;
-using Clustron.Dkv.Samples.Shared;
+using Clustron.Dictus.Client.DependencyInjection;
+using Clustron.Dictus.Samples.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Clustron.Dkv.Sample.TransactionsBasic;
+using Clustron.Dictus.Sample.TransactionsBasic;
 
-ConsoleHelper.Header("Clustron DKV – Basic Transaction Sample");
+ConsoleHelper.Header("Clustron Dictus – Basic Transaction Sample");
 
 // -----------------------------------------------------
 // Build Host
@@ -12,8 +12,8 @@ ConsoleHelper.Header("Clustron DKV – Basic Transaction Sample");
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        services.AddClustronDkvStores(
-            context.Configuration.GetSection("Dkv:Stores"));
+        services.AddClustronDictusStores(
+            context.Configuration.GetSection("Dictus:Stores"));
 
         services.AddSingleton<TransactionsBasicSampleApp>();
     })

@@ -1,6 +1,6 @@
-# 🚀 Clustron DKV — Simplified Enterprise Job Queue Sample
+# 🚀 Clustron Dictus — Simplified Enterprise Job Queue Sample
 
-This sample demonstrates how to build a **distributed, fault-tolerant job queue** using Clustron DKV primitives.
+This sample demonstrates how to build a **distributed, fault-tolerant job queue** using Clustron Dictus primitives.
 
 It simulates a small enterprise-style processing system with producers, multiple workers, optimistic concurrency, leases, and recovery logic.
 
@@ -27,7 +27,7 @@ Run instantly using **InProc mode**:
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -67,7 +67,7 @@ Switch to **Remote mode** to run in a real distributed setup:
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -82,12 +82,12 @@ Switch to **Remote mode** to run in a real distributed setup:
 
 Before running:
 
-- Ensure DKV servers are running  
+- Ensure Dictus servers are running  
 - Ensure the store exists  
 - Ensure ports match  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dkv/getting-started/overview/
+https://clustron.io/docs/clustron/dictus/getting-started/overview/
 
 ---
 
@@ -181,7 +181,7 @@ This demonstrates **self-healing distributed queue behavior**.
 
 # 📦 Summary
 
-This sample demonstrates how Clustron DKV enables:
+This sample demonstrates how Clustron Dictus enables:
 
 - Distributed job queues  
 - Fault-tolerant workers  
@@ -195,4 +195,4 @@ Use this pattern for:
 - Workflow engines  
 - Distributed job orchestration  
 
-Clustron DKV provides **powerful primitives to build reliable distributed systems with minimal complexity**.
+Clustron Dictus provides **powerful primitives to build reliable distributed systems with minimal complexity**.

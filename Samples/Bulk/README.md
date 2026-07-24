@@ -1,6 +1,6 @@
-# 🚀 Clustron DKV — Bulk Operations Sample
+# 🚀 Clustron Dictus — Bulk Operations Sample
 
-This sample demonstrates how to use **high-performance bulk operations** in Clustron DKV.
+This sample demonstrates how to use **high-performance bulk operations** in Clustron Dictus.
 
 It showcases batch-based PUT, GET, and DELETE using optimized client APIs.
 
@@ -24,7 +24,7 @@ Run instantly using **InProc mode**:
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -63,7 +63,7 @@ Switch to **Remote mode**:
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -78,10 +78,10 @@ Switch to **Remote mode**:
 
 Before running:
 
-- Ensure DKV servers are running  
+- Ensure Dictus servers are running  
 - Ensure the store exists  
 
-👉 https://clustron.io/docs/clustron/dkv/getting-started/overview/
+👉 https://clustron.io/docs/clustron/dictus/getting-started/overview/
 
 ---
 
@@ -118,7 +118,7 @@ Before running:
 | Bulk GET   | GetManyAsync     |
 | Bulk DELETE| DeleteManyAsync  |
 
-This sample demonstrates how Clustron DKV enables:
+This sample demonstrates how Clustron Dictus enables:
 
 - Efficient batch processing  
 - High-performance data operations  
@@ -131,4 +131,4 @@ Use bulk APIs for:
 - ETL pipelines  
 - High-throughput services  
 
-Clustron DKV provides **fast and efficient bulk operations for modern distributed systems**.
+Clustron Dictus provides **fast and efficient bulk operations for modern distributed systems**.

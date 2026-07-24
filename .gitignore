@@ -415,3 +415,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Sample sanity run outputs
+**/.sanity/

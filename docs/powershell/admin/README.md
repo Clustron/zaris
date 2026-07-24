@@ -1,8 +1,8 @@
 # Clustron Admin PowerShell Cmdlets
 
-The **Clustron.DKV.AdminShell** PowerShell module provides
+The **Clustron.Dictus.AdminShell** PowerShell module provides
 administrative commands for managing **Clustron Distributed Key-Value
-(DKV) stores and instances**.
+(Dictus) stores and instances**.
 
 These cmdlets allow administrators and DevOps engineers to:
 
@@ -20,18 +20,18 @@ operational diagnostics**.
 
 # Module
 
-Clustron.DKV.AdminShell
+Clustron.Dictus.AdminShell
 
 Load the module:
 
 ``` powershell
-Import-Module Clustron.DKV.AdminShell
+Import-Module Clustron.Dictus.AdminShell
 ```
 
 List available commands:
 
 ``` powershell
-Get-Command -Module Clustron.DKV.AdminShell
+Get-Command -Module Clustron.Dictus.AdminShell
 ```
 
 ------------------------------------------------------------------------
@@ -51,7 +51,7 @@ Once connected, subsequent commands automatically use this context.
   -----------------------------------------------------------------------
   Cmdlet                 Description
   ---------------------- ------------------------------------------------
-  `Connect-DkvManager`   Connects the PowerShell session to one or more
+  `Connect-DictusManager`   Connects the PowerShell session to one or more
                          Clustron managers
 
   -----------------------------------------------------------------------
@@ -59,7 +59,7 @@ Once connected, subsequent commands automatically use this context.
 Example:
 
 ``` powershell
-Connect-DkvManager -Servers 10.0.0.11,10.0.0.12
+Connect-DictusManager -Servers 10.0.0.11,10.0.0.12
 ```
 
 ------------------------------------------------------------------------
@@ -70,23 +70,23 @@ Commands used to create, start, stop, and inspect distributed stores.
 
   Cmdlet             Description
   ------------------ --------------------------------------------------
-  `New-DkvStore`     Creates a new distributed store
-  `Get-DkvStore`     Retrieves store configuration and runtime status
-  `Start-DkvStore`   Starts store instances
-  `Stop-DkvStore`    Stops store instances
+  `New-DictusStore`     Creates a new distributed store
+  `Get-DictusStore`     Retrieves store configuration and runtime status
+  `Start-DictusStore`   Starts store instances
+  `Stop-DictusStore`    Stops store instances
 
 Example:
 
 ``` powershell
-New-DkvStore `
+New-DictusStore `
     -Name OrdersStore `
     -InstanceName orders-node-1 `
     -ClustronPort 7001 `
     -ClientPort 7101
 
-Start-DkvStore -Name OrdersStore
+Start-DictusStore -Name OrdersStore
 
-Get-DkvStore -Name OrdersStore
+Get-DictusStore -Name OrdersStore
 ```
 
 ------------------------------------------------------------------------
@@ -98,12 +98,12 @@ cluster nodes.
 
   Cmdlet              Description
   ------------------- -------------------------------------------------
-  `Add-DkvInstance`   Adds one or more instances to an existing store
+  `Add-DictusInstance`   Adds one or more instances to an existing store
 
 Example:
 
 ``` powershell
-Add-DkvInstance `
+Add-DictusInstance `
     -StoreName OrdersStore `
     -InstanceName orders-node-2 `
     -ClustronPort 7002 `
@@ -119,7 +119,7 @@ Commands used to observe live runtime metrics from cluster nodes.
   --------------------------------------------------------------------------
   Cmdlet                    Description
   ------------------------- ------------------------------------------------
-  `Watch-DkvStoreMetrics`   Displays continuously updating runtime metrics
+  `Watch-DictusStoreMetrics`   Displays continuously updating runtime metrics
                             for a store
 
   --------------------------------------------------------------------------
@@ -127,7 +127,7 @@ Commands used to observe live runtime metrics from cluster nodes.
 Example:
 
 ``` powershell
-Watch-DkvStoreMetrics -StoreName OrdersStore
+Watch-DictusStoreMetrics -StoreName OrdersStore
 ```
 
 The display updates continuously and can be stopped using **Ctrl+C**.
@@ -142,7 +142,7 @@ following.
 ## 1 Connect to the management servers
 
 ``` powershell
-Connect-DkvManager -Servers 10.0.0.11,10.0.0.12
+Connect-DictusManager -Servers 10.0.0.11,10.0.0.12
 ```
 
 ------------------------------------------------------------------------
@@ -150,7 +150,7 @@ Connect-DkvManager -Servers 10.0.0.11,10.0.0.12
 ## 2 Create a store
 
 ``` powershell
-New-DkvStore `
+New-DictusStore `
     -Name OrdersStore `
     -InstanceName orders-node-1 `
     -ClustronPort 7001 `
@@ -162,13 +162,13 @@ New-DkvStore `
 ## 3 Add additional instances
 
 ``` powershell
-Add-DkvInstance `
+Add-DictusInstance `
     -StoreName OrdersStore `
     -InstanceName orders-node-2 `
     -ClustronPort 7002 `
     -ClientPort 7102
 
-Add-DkvInstance `
+Add-DictusInstance `
     -StoreName OrdersStore `
     -InstanceName orders-node-3 `
     -ClustronPort 7003 `
@@ -180,7 +180,7 @@ Add-DkvInstance `
 ## 4 Start the store
 
 ``` powershell
-Start-DkvStore -Name OrdersStore
+Start-DictusStore -Name OrdersStore
 ```
 
 ------------------------------------------------------------------------
@@ -188,7 +188,7 @@ Start-DkvStore -Name OrdersStore
 ## 5 Verify store status
 
 ``` powershell
-Get-DkvStore
+Get-DictusStore
 ```
 
 Example output:
@@ -206,7 +206,7 @@ Example output:
 ## 6 Monitor runtime metrics
 
 ``` powershell
-Watch-DkvStoreMetrics -StoreName OrdersStore
+Watch-DictusStoreMetrics -StoreName OrdersStore
 ```
 
 This displays a live metrics table showing operations per second and
@@ -232,21 +232,21 @@ following:
 Detailed documentation for each cmdlet is available in the following
 files.
 
--   Connect-DkvManager.md
--   New-DkvStore.md
--   Add-DkvInstance.md
--   Start-DkvStore.md
--   Stop-DkvStore.md
--   Get-DkvStore.md
--   Watch-DkvStoreMetrics.md
+-   Connect-DictusManager.md
+-   New-DictusStore.md
+-   Add-DictusInstance.md
+-   Start-DictusStore.md
+-   Stop-DictusStore.md
+-   Get-DictusStore.md
+-   Watch-DictusStoreMetrics.md
 
 ------------------------------------------------------------------------
 
 # Documentation Structure
 
-docs/ └─ powershell/ └─ admin/ ├─ README.md ├─ Connect-DkvManager.md ├─
-New-DkvStore.md ├─ Add-DkvInstance.md ├─ Start-DkvStore.md ├─
-Stop-DkvStore.md ├─ Get-DkvStore.md └─ Watch-DkvStoreMetrics.md
+docs/ └─ powershell/ └─ admin/ ├─ README.md ├─ Connect-DictusManager.md ├─
+New-DictusStore.md ├─ Add-DictusInstance.md ├─ Start-DictusStore.md ├─
+Stop-DictusStore.md ├─ Get-DictusStore.md └─ Watch-DictusStoreMetrics.md
 
 Each file documents a single cmdlet and includes:
 

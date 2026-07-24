@@ -1,11 +1,11 @@
-﻿using Clustron.DKV.Client.DependencyInjection;
-using Clustron.DKV.HybridCache;
-using Clustron.Dkv.Samples.Shared;
+using Clustron.Dictus.Client.DependencyInjection;
+using Clustron.Dictus.HybridCache;
+using Clustron.Dictus.Samples.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Clustron.Dkv.Sample.HybridCache;
+using Clustron.Dictus.Sample.HybridCache;
 
-ConsoleHelper.Header("Clustron DKV – HybridCache Sample");
+ConsoleHelper.Header("Clustron Dictus – HybridCache Sample");
 
 // -----------------------------------------------------
 // Build Host
@@ -13,12 +13,12 @@ ConsoleHelper.Header("Clustron DKV – HybridCache Sample");
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        var stores = context.Configuration.GetSection("Dkv:Stores");
+        var stores = context.Configuration.GetSection("Dictus:Stores");
 
         // -----------------------------------------------------
         // L2 (Remote store from config)
         // -----------------------------------------------------
-        services.AddClustronDkvStores(stores);
+        services.AddClustronDictusStores(stores);
 
         // -----------------------------------------------------
         // Hybrid Cache (L1 + L2)

@@ -1,20 +1,20 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Clustron.DKV.Abstractions;
-using Clustron.DKV.Client;
-using Clustron.DKV.Client.Helpers;
-using Clustron.Dkv.Samples.Shared;
+using Clustron.Dictus.Abstractions;
+using Clustron.Dictus.Client;
+using Clustron.Dictus.Client.Helpers;
+using Clustron.Dictus.Samples.Shared;
 
-namespace Clustron.Dkv.Sample.Lease;
+namespace Clustron.Dictus.Sample.Lease;
 
 internal class LeaseSampleApp
 {
-    private readonly IDkvClientProvider _provider;
+    private readonly IDictusClientProvider _provider;
 
     private const string StoreName = "teststore";
 
-    public LeaseSampleApp(IDkvClientProvider provider)
+    public LeaseSampleApp(IDictusClientProvider provider)
     {
         _provider = provider;
     }
@@ -30,9 +30,9 @@ internal class LeaseSampleApp
         // Start clean
         await client.ClearAsync(new ClearRequest(context.Prefix));
 
-        var dkv = (IDkv)client;
-        var leases = dkv.Leases;
-        var watch = dkv.Watch;
+        var dictus = (IDictus)client;
+        var leases = dictus.Leases;
+        var watch = dictus.Watch;
 
         // ============================================================
         // Grant Lease & Attach Keys

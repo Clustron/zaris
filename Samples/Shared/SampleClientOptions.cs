@@ -1,7 +1,7 @@
-﻿using Clustron.DKV.Abstractions;
-using Clustron.DKV.Client;
+using Clustron.Dictus.Abstractions;
+using Clustron.Dictus.Client;
 
-namespace Clustron.Dkv.Samples.Shared
+namespace Clustron.Dictus.Samples.Shared
 {
     /// <summary>
     /// Strongly-typed configuration for sample client initialization.
@@ -11,7 +11,7 @@ namespace Clustron.Dkv.Samples.Shared
     {
         public string ClusterId { get; set; } = "demo-cluster";
 
-        public DkvClientMode Mode { get; set; } = DkvClientMode.Remote;
+        public DictusClientMode Mode { get; set; } = DictusClientMode.Remote;
 
         public string? RemoteHost { get; set; } = "";
 

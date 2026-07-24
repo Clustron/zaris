@@ -1,21 +1,21 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
-using Clustron.DKV.Abstractions;
-using Clustron.DKV.Client;
-using Clustron.Dkv.Samples.Shared;
+using Clustron.Dictus.Abstractions;
+using Clustron.Dictus.Client;
+using Clustron.Dictus.Samples.Shared;
 
-namespace Clustron.Dkv.Sample.RateLimiter;
+namespace Clustron.Dictus.Sample.RateLimiter;
 
 internal class RateLimiterSampleApp
 {
-    private readonly IDkvClientProvider _provider;
+    private readonly IDictusClientProvider _provider;
 
     private const string StoreName = "teststore";
     private const int MaxRequests = 5;
 
     private static readonly TimeSpan Window = TimeSpan.FromSeconds(10);
 
-    public RateLimiterSampleApp(IDkvClientProvider provider)
+    public RateLimiterSampleApp(IDictusClientProvider provider)
     {
         _provider = provider;
     }
@@ -52,13 +52,13 @@ internal class RateLimiterSampleApp
     // ============================================================
 
     private async Task<bool> IsAllowedAsync(
-        IDkvClient client,
+        IDictusClient client,
         SampleContext context,
         string userId)
     {
         var windowKey = GetWindowKey(context, userId);
 
-        var counters = ((IDkv)client).Counters;
+        var counters = ((IDictus)client).Counters;
 
         var result = await counters.AddAsync(
             windowKey,

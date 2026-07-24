@@ -1,10 +1,10 @@
-# 🚀 Clustron DKV — HybridCache Sample
+# 🚀 Clustron Dictus — HybridCache Sample
 
 This sample demonstrates how to use **Clustron HybridCache (L1 + L2 caching)** to achieve high performance with consistency.
 
 It combines:
 - **L1 (InProc cache)** → ultra-fast local reads  
-- **L2 (Clustron DKV)** → distributed, consistent storage  
+- **L2 (Clustron Dictus)** → distributed, consistent storage  
 
 ---
 
@@ -12,7 +12,7 @@ It combines:
 
 This sample shows how to:
 
-- Use HybridCache with Clustron DKV
+- Use HybridCache with Clustron Dictus
 - Configure L1 (local) and L2 (distributed) cache
 - Use GetOrCreate pattern
 - Observe L1 cache hits
@@ -30,7 +30,7 @@ Run instantly using **InProc mode**:
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -55,7 +55,7 @@ dotnet run
 HybridCache uses two layers:
 
 - **L1 (Local Cache)** → fast, in-memory, per-instance  
-- **L2 (Clustron DKV)** → shared, distributed cache  
+- **L2 (Clustron Dictus)** → shared, distributed cache  
 
 The client is resolved using Clustron’s provider model:
 
@@ -76,7 +76,7 @@ Switch to **Remote mode** for real distributed caching:
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -91,12 +91,12 @@ Switch to **Remote mode** for real distributed caching:
 
 Before running:
 
-- Ensure DKV servers are running  
+- Ensure Dictus servers are running  
 - Ensure the store exists  
 - Ensure ports match  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dkv/getting-started/overview/
+https://clustron.io/docs/clustron/dictus/getting-started/overview/
 
 ---
 
@@ -177,7 +177,7 @@ await cache.RemoveByTagAsync("products");
 
 # 📦 Summary
 
-This sample demonstrates how Clustron DKV enables:
+This sample demonstrates how Clustron Dictus enables:
 
 - High-performance caching  
 - Reduced latency  

@@ -1,6 +1,6 @@
-# 🚀 Clustron DKV — Compare-And-Swap (CAS) Sample
+# 🚀 Clustron Dictus — Compare-And-Swap (CAS) Sample
 
-This sample demonstrates how to use **optimistic concurrency control** in Clustron DKV using Compare-And-Swap (CAS).
+This sample demonstrates how to use **optimistic concurrency control** in Clustron Dictus using Compare-And-Swap (CAS).
 
 It shows how to safely update and delete items using version-based conditional operations.
 
@@ -25,7 +25,7 @@ Run instantly using **InProc mode**:
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -65,7 +65,7 @@ Switch to **Remote mode**:
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -80,11 +80,11 @@ Switch to **Remote mode**:
 
 Before running:
 
-- Ensure DKV servers are running  
+- Ensure Dictus servers are running  
 - Ensure the store exists  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dkv/getting-started/overview/
+https://clustron.io/docs/clustron/dictus/getting-started/overview/
 
 ---
 
@@ -125,7 +125,7 @@ This prevents lost updates when multiple clients modify the same data.
 
 # 📦 Summary
 
-This sample demonstrates how Clustron DKV enables:
+This sample demonstrates how Clustron Dictus enables:
 
 - Safe concurrent updates  
 - Conflict-aware operations  
@@ -138,4 +138,4 @@ Use CAS for:
 - Distributed coordination  
 - Any critical state changes  
 
-Clustron DKV provides **simple yet powerful concurrency control for distributed systems**.
+Clustron Dictus provides **simple yet powerful concurrency control for distributed systems**.

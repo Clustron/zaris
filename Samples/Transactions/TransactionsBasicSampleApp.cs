@@ -1,20 +1,20 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
-using Clustron.DKV.Abstractions;
-using Clustron.DKV.Abstractions.Transactions;
-using Clustron.DKV.Client;
-using Clustron.DKV.Client.Helpers;
-using Clustron.Dkv.Samples.Shared;
+using Clustron.Dictus.Abstractions;
+using Clustron.Dictus.Abstractions.Transactions;
+using Clustron.Dictus.Client;
+using Clustron.Dictus.Client.Helpers;
+using Clustron.Dictus.Samples.Shared;
 
-namespace Clustron.Dkv.Sample.TransactionsBasic;
+namespace Clustron.Dictus.Sample.TransactionsBasic;
 
 internal class TransactionsBasicSampleApp
 {
-    private readonly IDkvClientProvider _provider;
+    private readonly IDictusClientProvider _provider;
 
     private const string StoreName = "teststore";
 
-    public TransactionsBasicSampleApp(IDkvClientProvider provider)
+    public TransactionsBasicSampleApp(IDictusClientProvider provider)
     {
         _provider = provider;
     }

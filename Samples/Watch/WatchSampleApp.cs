@@ -1,20 +1,20 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Clustron.DKV.Abstractions;
-using Clustron.DKV.Client;
-using Clustron.DKV.Client.Helpers;
-using Clustron.Dkv.Samples.Shared;
+using Clustron.Dictus.Abstractions;
+using Clustron.Dictus.Client;
+using Clustron.Dictus.Client.Helpers;
+using Clustron.Dictus.Samples.Shared;
 
-namespace Clustron.Dkv.Sample.Watch;
+namespace Clustron.Dictus.Sample.Watch;
 
 internal class WatchSampleApp
 {
-    private readonly IDkvClientProvider _provider;
+    private readonly IDictusClientProvider _provider;
 
     private const string StoreName = "teststore";
 
-    public WatchSampleApp(IDkvClientProvider provider)
+    public WatchSampleApp(IDictusClientProvider provider)
     {
         _provider = provider;
     }
@@ -27,8 +27,8 @@ internal class WatchSampleApp
 
         var context = new SampleContext("watch");
 
-        var dkv = (IDkv)client;
-        var watch = dkv.Watch;
+        var dictus = (IDictus)client;
+        var watch = dictus.Watch;
 
         ConsoleHelper.Info($"Session Prefix: {context.Prefix}");
 

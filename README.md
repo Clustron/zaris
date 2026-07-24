@@ -1,10 +1,10 @@
-# Clustron DKV
-[![NuGet](https://img.shields.io/nuget/v/Clustron.DKV.Client)](https://www.nuget.org/packages/Clustron.DKV.Client)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/Clustron.DKV.Client)](https://www.nuget.org/packages/Clustron.DKV.Client)
+# Clustron Dictus
+[![NuGet](https://img.shields.io/nuget/v/Clustron.Dictus.Client)](https://www.nuget.org/packages/Clustron.Dictus.Client)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/Clustron.Dictus.Client)](https://www.nuget.org/packages/Clustron.Dictus.Client)
 [![License](https://img.shields.io/github/license/zeroheartbeat/clustron-dkv)](https://github.com/zeroheartbeat/clustron-dkv/blob/main/LICENSE)
 [![Stars](https://img.shields.io/github/stars/zeroheartbeat/clustron-dkv)](https://github.com/zeroheartbeat/clustron-dkv/stargazers)
 
-**Clustron DKV is a high-performance distributed key-value store for
+**Clustron Dictus is a high-performance distributed key-value store for
 .NET designed for modern microservices and cloud-native applications.**
 
 It provides a scalable data platform that combines **distributed
@@ -20,7 +20,7 @@ services** that require:
 -   strong consistency
 -   operational simplicity
 
-Clustron DKV can serve as a **distributed key-value store for .NET
+Clustron Dictus can serve as a **distributed key-value store for .NET
 applications and as an alternative to Redis for many workloads**,
 especially when **transactions and distributed primitives** are
 required.
@@ -31,9 +31,9 @@ supporting application state, coordination, and real-time data systems.
 
 ------------------------------------------------------------------------
 
-# What is Clustron DKV?
+# What is Clustron Dictus?
 
-Clustron DKV is a **distributed key-value database built specifically
+Clustron Dictus is a **distributed key-value database built specifically
 for the .NET ecosystem**.
 
 It enables applications to store and manage data across multiple nodes
@@ -53,18 +53,18 @@ This allows developers to build **reliable distributed systems without
 introducing additional infrastructure components**.
 
 ------------------------------------------------------------------------
-<img width="1087" height="446" alt="Clustron DKV - Architectural Diagram - visual selection" src="https://github.com/user-attachments/assets/6b4d1032-f039-42e3-aa23-418055239ae5" />
+<img width="1087" height="446" alt="Clustron Dictus - Architectural Diagram - visual selection" src="https://github.com/user-attachments/assets/6b4d1032-f039-42e3-aa23-418055239ae5" />
 
 ------------------------------------------------------------------------
 ## Redis Alternative for .NET
 
-Clustron DKV can serve as an alternative to Redis for .NET applications that require **distributed coordination primitives and multi-key transactions**.
+Clustron Dictus can serve as an alternative to Redis for .NET applications that require **distributed coordination primitives and multi-key transactions**.
 
 While Redis is widely used as an in-memory data store, Clustron focuses on providing a **distributed systems foundation for .NET applications** with built-in primitives that simplify building reliable distributed systems.
 
 ### Feature Comparison
 
-| Feature                            | Redis     | Clustron DKV   |
+| Feature                            | Redis     | Clustron Dictus   |
 | ---------------------------------- | --------- | -------------- |
 | .NET native design                 | ❌         | ✔              |
 | Distributed multi-key transactions | ❌         | ✔              |
@@ -103,7 +103,7 @@ The guide walks you through:
 Install the Clustron client from NuGet:
 
 ``` bash
-dotnet add package Clustron.DKV.Client
+dotnet add package Clustron.Dictus.Client
 ```
 
 Using Clustron from a .NET application is simple.
@@ -111,9 +111,9 @@ Using Clustron from a .NET application is simple.
 ### Connect to a cluster
 
 ``` csharp
-using Clustron.DKV.Client;
+using Clustron.Dictus.Client;
 
-var client = await DKVClient.InitializeRemote(
+var client = await DictusClient.InitializeRemote(
     clusterId: "teststore",
     remoteHost: "127.0.0.1",
     remotePort: 7070);
@@ -183,7 +183,7 @@ await client.WatchPrefixAsync("config:", change =>
 
 # ⭐ Key Feature: Distributed Transactions
 
-One of the strongest capabilities of Clustron DKV is **transaction
+One of the strongest capabilities of Clustron Dictus is **transaction
 support in a distributed key-value store**.
 
 Many distributed KV systems either:
@@ -211,7 +211,7 @@ This makes Clustron suitable for workloads such as:
 
 # Distributed Primitives Built In
 
-Clustron DKV provides a distributed systems foundation with support for:
+Clustron Dictus provides a distributed systems foundation with support for:
 
 -   Distributed key-value storage
 -   Native clustering
@@ -231,7 +231,7 @@ additional infrastructure.
 
 # Typical Use Cases
 
-Clustron DKV can be used in many distributed system scenarios:
+Clustron Dictus can be used in many distributed system scenarios:
 
 -   Distributed caching for .NET applications
 -   Redis alternative for .NET workloads
@@ -287,7 +287,7 @@ Detailed benchmark methodology will be published under `/benchmarks`.
 
 # 🏗 Architecture Philosophy
 
-Clustron DKV is designed around:
+Clustron Dictus is designed around:
 
 -   Clear separation of Control Plane and Data Plane
 -   Instance-level isolation
@@ -329,16 +329,22 @@ Full architecture documentation is available under:
 
 # 📂 Repository Structure
 
-/docs\
-/benchmarks\
-/roadmap\
-/samples
+```
+Samples/      runnable sample apps — one per feature (Basic, Counters, Lease,
+              LeaderElection, Watch, Transactions, Search, HybridCache, ...)
+docs/         getting-started guide, architecture notes, roadmap, and the
+              PowerShell cmdlet reference (docs/powershell/)
+benchmarks/   published performance results
+```
+
+Each sample runs in **inproc** mode (embedded engine, no server) or **remote**
+mode (connects to a running store) — see `Samples/README.md`.
 
 ------------------------------------------------------------------------
 
 # 📣 Early Access & Partnerships
 
-Clustron DKV is currently in active development.
+Clustron Dictus is currently in active development.
 
 If you are interested in:
 
@@ -353,7 +359,7 @@ Contact: support@clustron.io
 
 # 🔒 Licensing
 
-The Clustron DKV core engine will be released under the **Business
+The Clustron Dictus core engine will be released under the **Business
 Source License (BSL)**.
 
 A public open-source release of the core engine is planned for **2026**.
@@ -364,7 +370,7 @@ See the `LICENSE` file for details.
 
 # 🌍 Vision
 
-Clustron DKV aims to become a **modern distributed data foundation for
+Clustron Dictus aims to become a **modern distributed data foundation for
 .NET applications**, combining:
 
 -   performance

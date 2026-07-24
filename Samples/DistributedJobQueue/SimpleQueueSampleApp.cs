@@ -1,21 +1,21 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
-using Clustron.DKV.Abstractions;
-using Clustron.DKV.Client;
-using Clustron.DKV.Client.Helpers;
-using Clustron.Dkv.Samples.Shared;
+using Clustron.Dictus.Abstractions;
+using Clustron.Dictus.Client;
+using Clustron.Dictus.Client.Helpers;
+using Clustron.Dictus.Samples.Shared;
 
-namespace Clustron.Dkv.Sample.SimpleEnterpriseQueue;
+namespace Clustron.Dictus.Sample.SimpleEnterpriseQueue;
 
 internal class SimpleQueueSampleApp
 {
-    private readonly IDkvClientProvider _provider;
+    private readonly IDictusClientProvider _provider;
 
     private const string StoreName = "teststore";
     private const string Entity = "job";
     private const int TotalJobs = 10;
 
-    public SimpleQueueSampleApp(IDkvClientProvider provider)
+    public SimpleQueueSampleApp(IDictusClientProvider provider)
     {
         _provider = provider;
     }
@@ -43,7 +43,7 @@ internal class SimpleQueueSampleApp
         ConsoleHelper.Success("\nQueue processing completed.");
 
         // Authoritative result
-        var completedCount = await CountByStatusAsync((IDkv)client, "completed");
+        var completedCount = await CountByStatusAsync((IDictus)client, "completed");
 
         Console.WriteLine();
         Console.WriteLine($"Total Completed Jobs: {completedCount}");
@@ -58,7 +58,7 @@ internal class SimpleQueueSampleApp
     // PRODUCER
     // ============================================================
 
-    private async Task ProduceJobs(IDkvClient client, SampleContext context)
+    private async Task ProduceJobs(IDictusClient client, SampleContext context)
     {
         ConsoleHelper.Section("Producing Jobs");
 
@@ -87,13 +87,13 @@ internal class SimpleQueueSampleApp
     // ============================================================
 
     private async Task RunWorkerAsync(
-        IDkvClient client,
+        IDictusClient client,
         SampleContext context,
         string workerName)
     {
-        var dkv = (IDkv)client;
+        var dictus = (IDictus)client;
 
-        var leaseResult = await dkv.Leases.GrantAsync(TimeSpan.FromSeconds(5));
+        var leaseResult = await dictus.Leases.GrantAsync(TimeSpan.FromSeconds(5));
 
         if (!leaseResult.IsSuccess)
             return;
@@ -102,7 +102,7 @@ internal class SimpleQueueSampleApp
 
         while (true)
         {
-            var completedCount = await CountByStatusAsync(dkv, "completed");
+            var completedCount = await CountByStatusAsync(dictus, "completed");
 
             if (completedCount >= TotalJobs)
             {
@@ -119,7 +119,7 @@ internal class SimpleQueueSampleApp
                 .Limit(1);
 
             await using var reader =
-                await (await dkv.Scan.SearchAsync(query)).AsEntries();
+                await (await dictus.Scan.SearchAsync(query)).AsEntries();
 
             if (await reader.ReadAsync())
             {
@@ -221,7 +221,7 @@ internal class SimpleQueueSampleApp
                     .Limit(1);
 
                 await using var recoveryReader =
-                    await (await dkv.Scan.SearchAsync(recoveryQuery)).AsEntries();
+                    await (await dictus.Scan.SearchAsync(recoveryQuery)).AsEntries();
 
                 if (await recoveryReader.ReadAsync())
                 {
@@ -257,7 +257,7 @@ internal class SimpleQueueSampleApp
     // STATUS COUNT
     // ============================================================
 
-    private async Task<int> CountByStatusAsync(IDkv dkv, string status)
+    private async Task<int> CountByStatusAsync(IDictus dictus, string status)
     {
         var query = SearchQuery
             .For("job")
@@ -266,7 +266,7 @@ internal class SimpleQueueSampleApp
         int count = 0;
 
         await using var reader =
-            await (await dkv.Scan.SearchAsync(query)).AsEntries();
+            await (await dictus.Scan.SearchAsync(query)).AsEntries();
 
         while (await reader.ReadAsync())
             count++;

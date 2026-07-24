@@ -1,6 +1,6 @@
-# 🚀 Clustron DKV — Distributed Rate Limiter Sample
+# 🚀 Clustron Dictus — Distributed Rate Limiter Sample
 
-This sample demonstrates how to implement a **distributed fixed-window rate limiter** using Clustron DKV counters.
+This sample demonstrates how to implement a **distributed fixed-window rate limiter** using Clustron Dictus counters.
 
 It simulates requests and enforces a maximum limit within a time window.
 
@@ -24,7 +24,7 @@ Run instantly using **InProc mode** (no setup required):
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -64,7 +64,7 @@ Switch to **Remote mode** to run in a real distributed setup:
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -79,12 +79,12 @@ Switch to **Remote mode** to run in a real distributed setup:
 
 Before running:
 
-- Ensure DKV servers are running  
+- Ensure Dictus servers are running  
 - Ensure the store exists  
 - Ensure ports match  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dkv/getting-started/overview/
+https://clustron.io/docs/clustron/dictus/getting-started/overview/
 
 ---
 
@@ -127,7 +127,7 @@ Configuration:
 
 # 📦 Summary
 
-This sample demonstrates how Clustron DKV enables:
+This sample demonstrates how Clustron Dictus enables:
 
 - Distributed rate limiting  
 - API throttling  

@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Clustron.Dkv.Samples.Shared
+namespace Clustron.Dictus.Samples.Shared
 {
     /// <summary>
     /// Wraps a sample's body so the process reports an unambiguous, machine-parseable
@@ -11,20 +11,20 @@ namespace Clustron.Dkv.Samples.Shared
     /// unhandled exception (e.g. a remote connection that never establishes, or an
     /// engine error) it prints <c>##SAMPLE:FAIL &lt;name&gt; (&lt;mode&gt;): ...##</c> and
     /// returns exit code 1. A watchdog also fails the run if the body exceeds
-    /// <c>DKV_SAMPLE_TIMEOUT_SECONDS</c> (default 180) so a hung sample can never wedge
+    /// <c>DICTUS_SAMPLE_TIMEOUT_SECONDS</c> (default 180) so a hung sample can never wedge
     /// the harness.
     ///
-    /// The mode string is read from the <c>DKV_SAMPLE_MODE</c> environment variable
+    /// The mode string is read from the <c>DICTUS_SAMPLE_MODE</c> environment variable
     /// (Inproc/Remote) purely for reporting; it does not change behaviour.
     /// </summary>
     public static class SampleRunner
     {
         public static async Task<int> RunAsync(string name, Func<Task> body)
         {
-            var mode = Environment.GetEnvironmentVariable("DKV_SAMPLE_MODE") ?? "default";
+            var mode = Environment.GetEnvironmentVariable("DICTUS_SAMPLE_MODE") ?? "default";
 
             var timeoutSeconds = 180;
-            if (int.TryParse(Environment.GetEnvironmentVariable("DKV_SAMPLE_TIMEOUT_SECONDS"), out var t) && t > 0)
+            if (int.TryParse(Environment.GetEnvironmentVariable("DICTUS_SAMPLE_TIMEOUT_SECONDS"), out var t) && t > 0)
                 timeoutSeconds = t;
 
             try

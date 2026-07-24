@@ -1,19 +1,19 @@
-﻿using System;
+using System;
 using System.Linq;
-using Clustron.DKV.Client;
-using Clustron.DKV.Client.Helpers;
+using Clustron.Dictus.Client;
+using Clustron.Dictus.Client.Helpers;
 
-namespace Clustron.Dkv.Samples.Shared;
+namespace Clustron.Dictus.Samples.Shared;
 
 public static class SampleEnvironmentPrinter
 {
-    public static void Print(DkvOptions options, DkvClientMode mode)
+    public static void Print(DictusOptions options, DictusClientMode mode)
     {
         Console.WriteLine();
 
         Console.WriteLine($"Cluster : {options.ClusterId}");
 
-        if (mode == DkvClientMode.InProc)
+        if (mode == DictusClientMode.InProc)
         {
             Console.WriteLine("Mode    : InProc (embedded store)");
             Console.WriteLine("Hint    : Set \"Mode\": \"Remote\" and configure Seeds to connect to a cluster");

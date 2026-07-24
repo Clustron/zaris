@@ -1,6 +1,6 @@
-# 🚀 Clustron DKV — Counters Sample
+# 🚀 Clustron Dictus — Counters Sample
 
-This sample demonstrates how to use **Distributed Counters** in Clustron DKV.
+This sample demonstrates how to use **Distributed Counters** in Clustron Dictus.
 
 It showcases atomic numeric operations that are safe, consistent, and cluster-aware.
 
@@ -25,7 +25,7 @@ Run instantly using **InProc mode**:
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -65,7 +65,7 @@ Switch to **Remote mode** to run in a real distributed setup:
 
 ```json
 {
-  "Dkv": {
+  "Dictus": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -80,12 +80,12 @@ Switch to **Remote mode** to run in a real distributed setup:
 
 Before running:
 
-- Ensure DKV servers are running  
+- Ensure Dictus servers are running  
 - Ensure the store exists  
 - Ensure ports match  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dkv/getting-started/overview/
+https://clustron.io/docs/clustron/dictus/getting-started/overview/
 
 ---
 
@@ -159,7 +159,7 @@ Automatically removes the counter after expiry.
 
 # 📦 Summary
 
-This sample demonstrates how Clustron DKV counters are:
+This sample demonstrates how Clustron Dictus counters are:
 
 - Atomic  
 - Distributed  
@@ -173,4 +173,4 @@ Use counters for:
 - Distributed counting  
 - Usage tracking  
 
-Clustron DKV provides **simple and reliable distributed counters for real-world systems**.
+Clustron Dictus provides **simple and reliable distributed counters for real-world systems**.

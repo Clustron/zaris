@@ -1,9 +1,9 @@
-# Clustron DKV -- Samples
+# Clustron Dictus -- Samples
 
-This folder contains official usage samples for the Clustron DKV .NET
+This folder contains official usage samples for the Clustron Dictus .NET
 Client.
 
-Each sample demonstrates a specific feature of DKV and follows a
+Each sample demonstrates a specific feature of Dictus and follows a
 consistent structure:
 
 -   Supports both InProc and Remote modes
@@ -20,7 +20,7 @@ consistent structure:
 Demonstrates: - PUT / GET - Metadata (TTL, labels, content type) -
 Counters - TTL expiration - Cleanup
 
-Project: Clustron.Dkv.Sample.Basic
+Project: Clustron.Dictus.Sample.Basic
 
 ------------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ Project: Clustron.Dkv.Sample.Basic
 Demonstrates: - Atomic increment - Get counter value - Set counter
 value - Min / Max bounds - TTL on counters
 
-Project: Clustron.Dkv.Sample.Counters
+Project: Clustron.Dictus.Sample.Counters
 
 ------------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ Project: Clustron.Dkv.Sample.Counters
 Demonstrates: - Grant lease - Attach keys to lease - Automatic expiry -
 KeepAlive - Revoke
 
-Project: Clustron.Dkv.Sample.Lease
+Project: Clustron.Dictus.Sample.Lease
 
 ------------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ Project: Clustron.Dkv.Sample.Lease
 
 Reserved for demonstrating advanced TTL scenarios. Not implemented yet.
 
-Project: Clustron.Dkv.Sample.Ttl
+Project: Clustron.Dictus.Sample.Ttl
 
 ------------------------------------------------------------------------
 
@@ -54,7 +54,7 @@ Project: Clustron.Dkv.Sample.Ttl
 
 Reserved for demonstrating watch / streaming APIs. Not implemented yet.
 
-Project: Clustron.Dkv.Sample.Watch
+Project: Clustron.Dictus.Sample.Watch
 
 ------------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ Project: Clustron.Dkv.Sample.Watch
 
 All samples depend on:
 
-Clustron.Dkv.Samples.Shared
+Clustron.Dictus.Samples.Shared
 
 This project provides:
 
@@ -92,20 +92,20 @@ Runs an embedded in-memory store. No server setup required.
 
 Example:
 
-{ "Dkv": { "ClusterId": "sample-cluster", "Mode": "InProc",
-"LogFilePath": "logs/dkv.log" } }
+{ "Dictus": { "ClusterId": "sample-cluster", "Mode": "InProc",
+"LogFilePath": "logs/dictus.log" } }
 
 ------------------------------------------------------------------------
 
 ### Remote Mode
 
-Connects to a running DKV cluster.
+Connects to a running Dictus cluster.
 
-{ "Dkv": { "ClusterId": "my-store", "Mode": "Remote", "RemoteHost":
-"127.0.0.1", "RemotePort": 4100, "LogFilePath": "logs/dkv.log" } }
+{ "Dictus": { "ClusterId": "my-store", "Mode": "Remote", "RemoteHost":
+"127.0.0.1", "RemotePort": 4100, "LogFilePath": "logs/dictus.log" } }
 
 -   ClusterId → Store ID you created
--   RemoteHost → IP of DKV server (seed node)
+-   RemoteHost → IP of Dictus server (seed node)
 -   RemotePort → ClientPort selected during store creation
 
 ------------------------------------------------------------------------
@@ -121,4 +121,4 @@ Connects to a running DKV cluster.
 ------------------------------------------------------------------------
 
 These samples establish the baseline developer experience for Clustron
-DKV usage and demonstrate production-style client interaction patterns.
+Dictus usage and demonstrate production-style client interaction patterns.

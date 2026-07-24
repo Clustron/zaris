@@ -1,10 +1,10 @@
-﻿using Clustron.DKV.Client.DependencyInjection;
-using Clustron.Dkv.Samples.Shared;
+using Clustron.Dictus.Client.DependencyInjection;
+using Clustron.Dictus.Samples.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Clustron.Dkv.Sample.SimpleEnterpriseQueue;
+using Clustron.Dictus.Sample.SimpleEnterpriseQueue;
 
-ConsoleHelper.Header("Clustron DKV - Simplified Enterprise Job Queue");
+ConsoleHelper.Header("Clustron Dictus - Simplified Enterprise Job Queue");
 
 // -----------------------------------------------------
 // Build Host
@@ -12,8 +12,8 @@ ConsoleHelper.Header("Clustron DKV - Simplified Enterprise Job Queue");
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        services.AddClustronDkvStores(
-            context.Configuration.GetSection("Dkv:Stores"));
+        services.AddClustronDictusStores(
+            context.Configuration.GetSection("Dictus:Stores"));
 
         services.AddSingleton<SimpleQueueSampleApp>();
     })

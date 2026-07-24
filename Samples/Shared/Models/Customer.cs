@@ -1,4 +1,4 @@
-﻿namespace Clustron.Dkv.Samples.Shared.Models
+namespace Clustron.Dictus.Samples.Shared.Models
 {
     public sealed class Customer
     {
