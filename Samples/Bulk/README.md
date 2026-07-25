@@ -1,6 +1,6 @@
-# 🚀 Clustron Dictus — Bulk Operations Sample
+# 🚀 Clustron Zaris — Bulk Operations Sample
 
-This sample demonstrates how to use **high-performance bulk operations** in Clustron Dictus.
+This sample demonstrates how to use **high-performance bulk operations** in Clustron Zaris.
 
 It showcases batch-based PUT, GET, and DELETE using optimized client APIs.
 
@@ -24,7 +24,7 @@ Run instantly using **InProc mode**:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -63,7 +63,7 @@ Switch to **Remote mode**:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -78,10 +78,10 @@ Switch to **Remote mode**:
 
 Before running:
 
-- Ensure Dictus servers are running  
+- Ensure Zaris servers are running  
 - Ensure the store exists  
 
-👉 https://clustron.io/docs/clustron/dictus/getting-started/overview/
+👉 https://clustron.io/docs/clustron/zaris/getting-started/overview/
 
 ---
 
@@ -118,7 +118,7 @@ Before running:
 | Bulk GET   | GetManyAsync     |
 | Bulk DELETE| DeleteManyAsync  |
 
-This sample demonstrates how Clustron Dictus enables:
+This sample demonstrates how Clustron Zaris enables:
 
 - Efficient batch processing  
 - High-performance data operations  
@@ -131,4 +131,4 @@ Use bulk APIs for:
 - ETL pipelines  
 - High-throughput services  
 
-Clustron Dictus provides **fast and efficient bulk operations for modern distributed systems**.
+Clustron Zaris provides **fast and efficient bulk operations for modern distributed systems**.

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Clustron.Dictus.SDK" Version="$(ClustronDictusVersion)" />
+    <PackageReference Include="Clustron.Zaris.SDK" Version="$(ClustronZarisVersion)" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.3" />
   </ItemGroup>

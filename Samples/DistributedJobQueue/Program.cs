@@ -1,10 +1,10 @@
-using Clustron.Dictus.Client.DependencyInjection;
-using Clustron.Dictus.Samples.Shared;
+using Clustron.Zaris.Client.DependencyInjection;
+using Clustron.Zaris.Samples.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Clustron.Dictus.Sample.SimpleEnterpriseQueue;
+using Clustron.Zaris.Sample.SimpleEnterpriseQueue;
 
-ConsoleHelper.Header("Clustron Dictus - Simplified Enterprise Job Queue");
+ConsoleHelper.Header("Clustron Zaris - Simplified Enterprise Job Queue");
 
 // -----------------------------------------------------
 // Build Host
@@ -12,8 +12,8 @@ ConsoleHelper.Header("Clustron Dictus - Simplified Enterprise Job Queue");
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        services.AddClustronDictusStores(
-            context.Configuration.GetSection("Dictus:Stores"));
+        services.AddClustronZarisStores(
+            context.Configuration.GetSection("Zaris:Stores"));
 
         services.AddSingleton<SimpleQueueSampleApp>();
     })

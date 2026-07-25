@@ -1,9 +1,9 @@
 <Project>
   <PropertyGroup>
-    <!-- Version of the Clustron Dictus packages the samples consume from the shared local
-         repo. The sanity harness overrides this (-p:ClustronDictusVersion=...) so the samples
+    <!-- Version of the Clustron Zaris packages the samples consume from the shared local
+         repo. The sanity harness overrides this (-p:ClustronZarisVersion=...) so the samples
          always build against the freshly packed build; the default keeps them buildable
          standalone. -->
-    <ClustronDictusVersion Condition="'$(ClustronDictusVersion)' == ''">0.3.0</ClustronDictusVersion>
+    <ClustronZarisVersion Condition="'$(ClustronZarisVersion)' == ''">0.3.0</ClustronZarisVersion>
   </PropertyGroup>
 </Project>

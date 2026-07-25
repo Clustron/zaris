@@ -1,20 +1,20 @@
 using System;
 using System.Threading.Tasks;
-using Clustron.Dictus.Abstractions;
-using Clustron.Dictus.Abstractions.Transactions;
-using Clustron.Dictus.Client;
-using Clustron.Dictus.Client.Helpers;
-using Clustron.Dictus.Samples.Shared;
+using Clustron.Zaris.Abstractions;
+using Clustron.Zaris.Abstractions.Transactions;
+using Clustron.Zaris.Client;
+using Clustron.Zaris.Client.Helpers;
+using Clustron.Zaris.Samples.Shared;
 
-namespace Clustron.Dictus.Sample.TransactionsBasic;
+namespace Clustron.Zaris.Sample.TransactionsBasic;
 
 internal class TransactionsBasicSampleApp
 {
-    private readonly IDictusClientProvider _provider;
+    private readonly IZarisClientProvider _provider;
 
     private const string StoreName = "teststore";
 
-    public TransactionsBasicSampleApp(IDictusClientProvider provider)
+    public TransactionsBasicSampleApp(IZarisClientProvider provider)
     {
         _provider = provider;
     }

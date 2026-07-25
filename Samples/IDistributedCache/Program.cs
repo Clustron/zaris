@@ -1,11 +1,11 @@
-using Clustron.Dictus.Client.DependencyInjection;
-using Clustron.Dictus.Samples.Shared;
+using Clustron.Zaris.Client.DependencyInjection;
+using Clustron.Zaris.Samples.Shared;
 using Clustron.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Clustron.Dictus.Sample.DistributedCache;
+using Clustron.Zaris.Sample.DistributedCache;
 
-ConsoleHelper.Header("Clustron Dictus – DistributedCache Sample");
+ConsoleHelper.Header("Clustron Zaris – DistributedCache Sample");
 
 // -----------------------------------------------------
 // Build Host
@@ -13,12 +13,12 @@ ConsoleHelper.Header("Clustron Dictus – DistributedCache Sample");
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        var stores = context.Configuration.GetSection("Dictus:Stores");
+        var stores = context.Configuration.GetSection("Zaris:Stores");
 
         // -----------------------------------------------------
-        // Register Dictus (from config)
+        // Register Zaris (from config)
         // -----------------------------------------------------
-        services.AddClustronDictusStores(stores);
+        services.AddClustronZarisStores(stores);
 
         // -----------------------------------------------------
         // Register Distributed Cache

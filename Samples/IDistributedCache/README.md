@@ -1,6 +1,6 @@
-# 🚀 Clustron Dictus — IDistributedCache Sample
+# 🚀 Clustron Zaris — IDistributedCache Sample
 
-This sample demonstrates how to use **Clustron Dictus as an IDistributedCache provider**.
+This sample demonstrates how to use **Clustron Zaris as an IDistributedCache provider**.
 
 It shows how you can plug Clustron into existing .NET applications using the familiar
 `IDistributedCache` interface.
@@ -11,7 +11,7 @@ It shows how you can plug Clustron into existing .NET applications using the fam
 
 This sample shows how to:
 
-- Use `IDistributedCache` with Clustron Dictus
+- Use `IDistributedCache` with Clustron Zaris
 - Store and retrieve string values
 - Overwrite existing values
 - Remove cached entries
@@ -27,7 +27,7 @@ Run instantly using **InProc mode**:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -72,7 +72,7 @@ Switch to **Remote mode** for a real distributed setup:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -87,12 +87,12 @@ Switch to **Remote mode** for a real distributed setup:
 
 Before running:
 
-- Ensure Dictus servers are running  
+- Ensure Zaris servers are running  
 - Ensure the store exists  
 - Ensure ports match  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dictus/getting-started/overview/
+https://clustron.io/docs/clustron/zaris/getting-started/overview/
 
 ---
 
@@ -169,7 +169,7 @@ await cache.RemoveAsync(key);
 
 # 📦 Summary
 
-This sample demonstrates how Clustron Dictus enables:
+This sample demonstrates how Clustron Zaris enables:
 
 - Drop-in distributed caching  
 - Easy migration from other providers  
@@ -183,4 +183,4 @@ Use this for:
 - Application-level caching  
 - Performance optimization  
 
-Clustron Dictus lets you use **distributed caching with zero friction using familiar .NET APIs**.
+Clustron Zaris lets you use **distributed caching with zero friction using familiar .NET APIs**.

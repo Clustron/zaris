@@ -1,8 +1,8 @@
-# 🚀 Clustron Dictus — Basic Sample
+# 🚀 Clustron Zaris — Basic Sample
 
-This sample demonstrates the core **Clustron Dictus Client SDK programming model**.
+This sample demonstrates the core **Clustron Zaris Client SDK programming model**.
 
-It is the **recommended starting point** for learning how to work with Dictus.
+It is the **recommended starting point** for learning how to work with Zaris.
 
 ---
 
@@ -25,7 +25,7 @@ Run instantly using **InProc mode**:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -65,7 +65,7 @@ Switch to **Remote mode**:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -80,11 +80,11 @@ Switch to **Remote mode**:
 
 Before running:
 
-- Ensure Dictus servers are running  
+- Ensure Zaris servers are running  
 - Ensure the store exists  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dictus/getting-started/overview/
+https://clustron.io/docs/clustron/zaris/getting-started/overview/
 
 ---
 
@@ -132,7 +132,7 @@ https://clustron.io/docs/clustron/dictus/getting-started/overview/
 
 ---
 
-This sample provides the **foundation for building distributed systems using Clustron Dictus**.
+This sample provides the **foundation for building distributed systems using Clustron Zaris**.
 
 Start here before moving to advanced samples like:
 

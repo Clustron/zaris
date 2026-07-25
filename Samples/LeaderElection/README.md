@@ -1,6 +1,6 @@
-# 🚀 Clustron Dictus — Leader Election via Lease Sample
+# 🚀 Clustron Zaris — Leader Election via Lease Sample
 
-This sample demonstrates how to implement **distributed leader election** using Clustron Dictus leases and watch APIs.
+This sample demonstrates how to implement **distributed leader election** using Clustron Zaris leases and watch APIs.
 
 It simulates multiple nodes competing for leadership and automatically handling failures and re-election.
 
@@ -27,7 +27,7 @@ Run instantly using **InProc mode**:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -67,7 +67,7 @@ Switch to **Remote mode** to run in a real distributed setup:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -82,12 +82,12 @@ Switch to **Remote mode** to run in a real distributed setup:
 
 Before running:
 
-- Ensure Dictus servers are running  
+- Ensure Zaris servers are running  
 - Ensure the store exists  
 - Ensure ports match  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dictus/getting-started/overview/
+https://clustron.io/docs/clustron/zaris/getting-started/overview/
 
 ---
 
@@ -138,7 +138,7 @@ This ensures **automatic failover without central coordination**.
 
 # 📦 Summary
 
-This sample demonstrates how Clustron Dictus enables:
+This sample demonstrates how Clustron Zaris enables:
 
 - Leader election  
 - Fault tolerance  
@@ -152,4 +152,4 @@ Use this pattern for:
 - Primary node selection  
 - Coordination services  
 
-Clustron Dictus provides a **simple and reliable foundation for distributed coordination**.
+Clustron Zaris provides a **simple and reliable foundation for distributed coordination**.

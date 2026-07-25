@@ -1,7 +1,7 @@
-using Clustron.Dictus.Abstractions;
-using Clustron.Dictus.Client;
+using Clustron.Zaris.Abstractions;
+using Clustron.Zaris.Client;
 
-namespace Clustron.Dictus.Samples.Shared
+namespace Clustron.Zaris.Samples.Shared
 {
     /// <summary>
     /// Strongly-typed configuration for sample client initialization.
@@ -11,7 +11,7 @@ namespace Clustron.Dictus.Samples.Shared
     {
         public string ClusterId { get; set; } = "demo-cluster";
 
-        public DictusClientMode Mode { get; set; } = DictusClientMode.Remote;
+        public ZarisClientMode Mode { get; set; } = ZarisClientMode.Remote;
 
         public string? RemoteHost { get; set; } = "";
 

@@ -1,8 +1,8 @@
-# Clustron Dictus – Benchmark Summary
+# Clustron Zaris – Benchmark Summary
 
 ## Overview
 
-This document summarizes early internal benchmarking results for Clustron Dictus.
+This document summarizes early internal benchmarking results for Clustron Zaris.
 
 The goal of these benchmarks is to:
 
@@ -37,7 +37,7 @@ These results are preliminary and subject to change as the engine evolves.
 
 ### Cluster Setup
 
-* 1 Dictus server node
+* 1 Zaris server node
 * Clients running on same machine
 * Local loopback networking
 

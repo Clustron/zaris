@@ -1,20 +1,20 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Clustron.Dictus.Abstractions;
-using Clustron.Dictus.Client;
-using Clustron.Dictus.Client.Helpers;
-using Clustron.Dictus.Samples.Shared;
+using Clustron.Zaris.Abstractions;
+using Clustron.Zaris.Client;
+using Clustron.Zaris.Client.Helpers;
+using Clustron.Zaris.Samples.Shared;
 
-namespace Clustron.Dictus.Sample.Watch;
+namespace Clustron.Zaris.Sample.Watch;
 
 internal class WatchSampleApp
 {
-    private readonly IDictusClientProvider _provider;
+    private readonly IZarisClientProvider _provider;
 
     private const string StoreName = "teststore";
 
-    public WatchSampleApp(IDictusClientProvider provider)
+    public WatchSampleApp(IZarisClientProvider provider)
     {
         _provider = provider;
     }
@@ -27,8 +27,8 @@ internal class WatchSampleApp
 
         var context = new SampleContext("watch");
 
-        var dictus = (IDictus)client;
-        var watch = dictus.Watch;
+        var zaris = (IZaris)client;
+        var watch = zaris.Watch;
 
         ConsoleHelper.Info($"Session Prefix: {context.Prefix}");
 

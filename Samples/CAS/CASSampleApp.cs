@@ -1,19 +1,19 @@
 using System;
 using System.Threading.Tasks;
-using Clustron.Dictus.Abstractions;
-using Clustron.Dictus.Client;
-using Clustron.Dictus.Samples.Shared;
-using Clustron.Dictus.Samples.Shared.Models;
+using Clustron.Zaris.Abstractions;
+using Clustron.Zaris.Client;
+using Clustron.Zaris.Samples.Shared;
+using Clustron.Zaris.Samples.Shared.Models;
 
-namespace Clustron.Dictus.Sample.CAS;
+namespace Clustron.Zaris.Sample.CAS;
 
 internal class CasSampleApp
 {
-    private readonly IDictusClientProvider _provider;
+    private readonly IZarisClientProvider _provider;
 
     private const string StoreName = "teststore";
 
-    public CasSampleApp(IDictusClientProvider provider)
+    public CasSampleApp(IZarisClientProvider provider)
     {
         _provider = provider;
     }

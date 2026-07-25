@@ -1,21 +1,21 @@
 using System;
 using System.Threading.Tasks;
-using Clustron.Dictus.Abstractions;
-using Clustron.Dictus.Client;
-using Clustron.Dictus.Client.Helpers;
-using Clustron.Dictus.Samples.Shared;
-using Clustron.Dictus.Samples.Shared.Models;
+using Clustron.Zaris.Abstractions;
+using Clustron.Zaris.Client;
+using Clustron.Zaris.Client.Helpers;
+using Clustron.Zaris.Samples.Shared;
+using Clustron.Zaris.Samples.Shared.Models;
 
-namespace Clustron.Dictus.Sample.Search;
+namespace Clustron.Zaris.Sample.Search;
 
 internal class SearchSampleApp
 {
-    private readonly IDictusClientProvider _provider;
+    private readonly IZarisClientProvider _provider;
 
     private const string StoreName = "teststore";
     private const string EntityName = "search-sample-customer";
 
-    public SearchSampleApp(IDictusClientProvider provider)
+    public SearchSampleApp(IZarisClientProvider provider)
     {
         _provider = provider;
     }
@@ -28,8 +28,8 @@ internal class SearchSampleApp
 
         var context = new SampleContext("search-sample");
 
-        var dictus = (IDictus)client;
-        var scan = dictus.Scan;
+        var zaris = (IZaris)client;
+        var scan = zaris.Scan;
 
         // -------------------------------------------------
         // Seed Data

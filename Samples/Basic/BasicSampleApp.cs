@@ -1,18 +1,18 @@
-using Clustron.Dictus.Abstractions;
-using Clustron.Dictus.Client;
-using Clustron.Dictus.Samples.Shared;
-using Clustron.Dictus.Samples.Shared.Models;
+using Clustron.Zaris.Abstractions;
+using Clustron.Zaris.Client;
+using Clustron.Zaris.Samples.Shared;
+using Clustron.Zaris.Samples.Shared.Models;
 
-namespace Clustron.Dictus.Sample.Basic;
+namespace Clustron.Zaris.Sample.Basic;
 
 internal class BasicSampleApp
 {
-    private readonly IDictusClientProvider _provider;
+    private readonly IZarisClientProvider _provider;
 
     // 👉 store name should match config key
     private const string StoreName = "teststore";
 
-    public BasicSampleApp(IDictusClientProvider provider)
+    public BasicSampleApp(IZarisClientProvider provider)
     {
         _provider = provider;
     }
@@ -100,7 +100,7 @@ internal class BasicSampleApp
         // ============================================================
         ConsoleHelper.Section("COUNTER");
 
-        var counters = ((IDictus)client).Counters;
+        var counters = ((IZaris)client).Counters;
         var counterKey = context.Key("orders");
 
         var increment = await counters.AddAsync(counterKey, 1);

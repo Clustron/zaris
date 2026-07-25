@@ -1,11 +1,11 @@
-using Clustron.Dictus.Client.DependencyInjection;
-using Clustron.Dictus.HybridCache;
-using Clustron.Dictus.Samples.Shared;
+using Clustron.Zaris.Client.DependencyInjection;
+using Clustron.Zaris.HybridCache;
+using Clustron.Zaris.Samples.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Clustron.Dictus.Sample.HybridCache;
+using Clustron.Zaris.Sample.HybridCache;
 
-ConsoleHelper.Header("Clustron Dictus – HybridCache Sample");
+ConsoleHelper.Header("Clustron Zaris – HybridCache Sample");
 
 // -----------------------------------------------------
 // Build Host
@@ -13,12 +13,12 @@ ConsoleHelper.Header("Clustron Dictus – HybridCache Sample");
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        var stores = context.Configuration.GetSection("Dictus:Stores");
+        var stores = context.Configuration.GetSection("Zaris:Stores");
 
         // -----------------------------------------------------
         // L2 (Remote store from config)
         // -----------------------------------------------------
-        services.AddClustronDictusStores(stores);
+        services.AddClustronZarisStores(stores);
 
         // -----------------------------------------------------
         // Hybrid Cache (L1 + L2)

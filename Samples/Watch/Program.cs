@@ -1,10 +1,10 @@
-using Clustron.Dictus.Client.DependencyInjection;
-using Clustron.Dictus.Samples.Shared;
+using Clustron.Zaris.Client.DependencyInjection;
+using Clustron.Zaris.Samples.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Clustron.Dictus.Sample.Watch;
+using Clustron.Zaris.Sample.Watch;
 
-ConsoleHelper.Header("Clustron Dictus – Watch Sample");
+ConsoleHelper.Header("Clustron Zaris – Watch Sample");
 
 // -----------------------------------------------------
 // Build Host
@@ -12,8 +12,8 @@ ConsoleHelper.Header("Clustron Dictus – Watch Sample");
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        services.AddClustronDictusStores(
-            context.Configuration.GetSection("Dictus:Stores"));
+        services.AddClustronZarisStores(
+            context.Configuration.GetSection("Zaris:Stores"));
 
         services.AddSingleton<WatchSampleApp>();
     })

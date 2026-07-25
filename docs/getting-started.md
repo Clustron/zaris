@@ -1,6 +1,6 @@
-# Getting Started with Clustron Dictus (Windows)
+# Getting Started with Clustron Zaris (Windows)
 
-Follow the steps below to install and run Clustron Dictus on a Windows machine.
+Follow the steps below to install and run Clustron Zaris on a Windows machine.
 
 ---
 
@@ -13,7 +13,7 @@ Follow the steps below to install and run Clustron Dictus on a Windows machine.
 
 ## 2. Install PowerShell 7
 
-Clustron Dictus requires **PowerShell 7.5.4 or later**.
+Clustron Zaris requires **PowerShell 7.5.4 or later**.
 
 If you don’t already have it installed, download it from:
 
@@ -27,7 +27,7 @@ Open **PowerShell 7** with administrative privileges.
 
 ---
 
-## 4. Install Clustron Dictus
+## 4. Install Clustron Zaris
 
 Navigate to the extracted folder:
 
@@ -41,7 +41,7 @@ Run the installation script:
 ./install.ps1
 ```
 
-This installs Clustron Dictus to:
+This installs Clustron Zaris to:
 
 ```
 C:\Program Files\Clustron
@@ -65,13 +65,13 @@ Replace it with your actual IP address if different.
 ## 5. Connect to the Management Service
 
 ```powershell
-Connect-DictusManager 10.0.0.4:7801
+Connect-ZrManager 10.0.0.4:7801
 ```
 
 If running locally, you may also use:
 
 ```powershell
-Connect-DictusManager localhost:7801
+Connect-ZrManager localhost:7801
 ```
 
 ---
@@ -81,7 +81,7 @@ Connect-DictusManager localhost:7801
 The following command creates a store named **TestStore** with two nodes running on the same machine (for demo purposes).
 
 ```powershell
-New-DictusStore `
+New-ZrStore `
   -Name TestStore `
   -Instances @(
       @{ InstanceName="node1"; ClustronPort=7805; ClientPort=7070 },
@@ -100,7 +100,7 @@ This creates:
 ## 7. Start the Store
 
 ```powershell
-Start-DictusStore TestStore
+Start-ZrStore TestStore
 ```
 
 This starts all instances of the store.
@@ -112,7 +112,7 @@ This starts all instances of the store.
 Open live per-second metrics for all instances:
 
 ```powershell
-Watch-DictusStoreMetrics -StoreName TestStore
+Watch-ZrStoreMetrics -StoreName TestStore
 ```
 
 You’ll see live counters for operations per second.
@@ -132,7 +132,7 @@ Open a new PowerShell 7 window.
 Connect to any one node. The client will automatically discover the rest of the cluster.
 
 ```powershell
-Connect-DictusStore `
+Connect-ZrStore `
   -StoreName TestStore `
   -Endpoints 10.0.0.4:7070
 ```
@@ -146,7 +146,7 @@ Connect-DictusStore `
 Simulate concurrent load and watch metrics update in real time:
 
 ```powershell
-Stress-DictusStore `
+Stress-ZrStore `
   -StoreName TestStore `
   -Concurrency 32 `
   -DurationSec 500
@@ -163,7 +163,7 @@ This runs a stress test with:
 
 You now have:
 
-- Installed Clustron Dictus  
+- Installed Clustron Zaris  
 - Created a multi-node store  
 - Started the cluster  
 - Connected a client  

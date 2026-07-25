@@ -1,8 +1,8 @@
-# Clustron Dictus Architecture
+# Clustron Zaris Architecture
 
 ## Overview
 
-Clustron Dictus is a distributed, .NET-native key-value data engine designed for high-throughput, low-latency workloads in modern microservice environments.
+Clustron Zaris is a distributed, .NET-native key-value data engine designed for high-throughput, low-latency workloads in modern microservice environments.
 
 The system is built around:
 
@@ -12,7 +12,7 @@ The system is built around:
 * Predictable performance under load
 * Instance-level isolation
 
-Clustron Dictus is evolving into a distributed data foundation rather than a simple cache.
+Clustron Zaris is evolving into a distributed data foundation rather than a simple cache.
 
 ---
 
@@ -26,7 +26,7 @@ Clustron Dictus is evolving into a distributed data foundation rather than a sim
                             |
                             v
                 +-----------------------+
-                |   Clustron Dictus Node   |
+                |   Clustron Zaris Node   |
                 +-----------------------+
                 |  Request Pipeline     |
                 |  Segment Store        |
@@ -38,7 +38,7 @@ Clustron Dictus is evolving into a distributed data foundation rather than a sim
                             |
                             v
                 +-----------------------+
-                |   Peer Dictus Nodes      |
+                |   Peer Zaris Nodes      |
                 +-----------------------+
 ```
 
@@ -48,7 +48,7 @@ Each node operates as an independent process and participates in cluster coordin
 
 ## Control Plane vs Data Plane
 
-Clustron Dictus separates responsibilities into:
+Clustron Zaris separates responsibilities into:
 
 ### Data Plane
 
@@ -84,7 +84,7 @@ Responsible for:
 * Node startup and shutdown
 * Configuration templates
 
-Each Dictus instance:
+Each Zaris instance:
 
 * Runs independently
 * Has its own configuration
@@ -97,7 +97,7 @@ This separation ensures operational clarity and horizontal scalability.
 
 ## Node Architecture
 
-Each Clustron Dictus node contains the following core components:
+Each Clustron Zaris node contains the following core components:
 
 ### 1. Request Pipeline
 
@@ -142,7 +142,7 @@ Indexes are maintained alongside primary storage to avoid full scans for query o
 
 ### 4. Expiration Engine (TimeWheel-Based)
 
-Clustron Dictus uses a TimeWheel-inspired expiration model for TTL handling.
+Clustron Zaris uses a TimeWheel-inspired expiration model for TTL handling.
 
 Benefits:
 
@@ -198,7 +198,7 @@ Designed for metrics, throttling, and coordination scenarios.
 
 ## Cluster Model
 
-Clustron Dictus nodes form a logical cluster.
+Clustron Zaris nodes form a logical cluster.
 
 Key characteristics:
 
@@ -220,7 +220,7 @@ Cluster design emphasizes consistency of operations within node ownership bounda
 
 ## Multi-Instance Deployment
 
-Clustron Dictus supports multiple instances per machine.
+Clustron Zaris supports multiple instances per machine.
 
 Each instance:
 
@@ -252,7 +252,7 @@ The architecture avoids unnecessary abstraction layers to reduce overhead.
 
 ## Scalability Philosophy
 
-Clustron Dictus is built around:
+Clustron Zaris is built around:
 
 * Horizontal scale-out
 * Stateless client design
@@ -284,7 +284,7 @@ Future improvements include:
 
 ## Design Principles
 
-Clustron Dictus follows these principles:
+Clustron Zaris follows these principles:
 
 * Performance-first
 * Predictability over abstraction
@@ -297,7 +297,7 @@ Clustron Dictus follows these principles:
 
 ## Current Status
 
-Clustron Dictus is in active development.
+Clustron Zaris is in active development.
 
 Core engine stabilization and documentation publication are ongoing.
 

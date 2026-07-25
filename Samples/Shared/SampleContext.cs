@@ -1,6 +1,6 @@
 using System;
 
-namespace Clustron.Dictus.Samples.Shared
+namespace Clustron.Zaris.Samples.Shared
 {
     /// <summary>
     /// Provides unique key scoping for each sample execution.

@@ -1,18 +1,18 @@
 using System;
 using System.Threading.Tasks;
-using Clustron.Dictus.Abstractions;
-using Clustron.Dictus.Client;
-using Clustron.Dictus.Samples.Shared;
+using Clustron.Zaris.Abstractions;
+using Clustron.Zaris.Client;
+using Clustron.Zaris.Samples.Shared;
 
-namespace Clustron.Dictus.Sample.Counters;
+namespace Clustron.Zaris.Sample.Counters;
 
 internal class CountersSampleApp
 {
-    private readonly IDictusClientProvider _provider;
+    private readonly IZarisClientProvider _provider;
 
     private const string StoreName = "teststore";
 
-    public CountersSampleApp(IDictusClientProvider provider)
+    public CountersSampleApp(IZarisClientProvider provider)
     {
         _provider = provider;
     }
@@ -32,7 +32,7 @@ internal class CountersSampleApp
 
         ConsoleHelper.Info($"Session Prefix: {context.Prefix}");
 
-        var counters = ((IDictus)client).Counters;
+        var counters = ((IZaris)client).Counters;
 
         // ============================================================
         // Atomic Increment

@@ -1,6 +1,6 @@
-# 🚀 Clustron Dictus — Simplified Enterprise Job Queue Sample
+# 🚀 Clustron Zaris — Simplified Enterprise Job Queue Sample
 
-This sample demonstrates how to build a **distributed, fault-tolerant job queue** using Clustron Dictus primitives.
+This sample demonstrates how to build a **distributed, fault-tolerant job queue** using Clustron Zaris primitives.
 
 It simulates a small enterprise-style processing system with producers, multiple workers, optimistic concurrency, leases, and recovery logic.
 
@@ -27,7 +27,7 @@ Run instantly using **InProc mode**:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -67,7 +67,7 @@ Switch to **Remote mode** to run in a real distributed setup:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -82,12 +82,12 @@ Switch to **Remote mode** to run in a real distributed setup:
 
 Before running:
 
-- Ensure Dictus servers are running  
+- Ensure Zaris servers are running  
 - Ensure the store exists  
 - Ensure ports match  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dictus/getting-started/overview/
+https://clustron.io/docs/clustron/zaris/getting-started/overview/
 
 ---
 
@@ -181,7 +181,7 @@ This demonstrates **self-healing distributed queue behavior**.
 
 # 📦 Summary
 
-This sample demonstrates how Clustron Dictus enables:
+This sample demonstrates how Clustron Zaris enables:
 
 - Distributed job queues  
 - Fault-tolerant workers  
@@ -195,4 +195,4 @@ Use this pattern for:
 - Workflow engines  
 - Distributed job orchestration  
 
-Clustron Dictus provides **powerful primitives to build reliable distributed systems with minimal complexity**.
+Clustron Zaris provides **powerful primitives to build reliable distributed systems with minimal complexity**.

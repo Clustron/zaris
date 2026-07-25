@@ -1,8 +1,8 @@
 # Clustron Admin PowerShell Cmdlets
 
-The **Clustron.Dictus.AdminShell** PowerShell module provides
+The **Clustron.Zaris.AdminShell** PowerShell module provides
 administrative commands for managing **Clustron Distributed Key-Value
-(Dictus) stores and instances**.
+(Zaris) stores and instances**.
 
 These cmdlets allow administrators and DevOps engineers to:
 
@@ -20,18 +20,18 @@ operational diagnostics**.
 
 # Module
 
-Clustron.Dictus.AdminShell
+Clustron.Zaris.AdminShell
 
 Load the module:
 
 ``` powershell
-Import-Module Clustron.Dictus.AdminShell
+Import-Module Clustron.Zaris.AdminShell
 ```
 
 List available commands:
 
 ``` powershell
-Get-Command -Module Clustron.Dictus.AdminShell
+Get-Command -Module Clustron.Zaris.AdminShell
 ```
 
 ------------------------------------------------------------------------
@@ -51,7 +51,7 @@ Once connected, subsequent commands automatically use this context.
   -----------------------------------------------------------------------
   Cmdlet                 Description
   ---------------------- ------------------------------------------------
-  `Connect-DictusManager`   Connects the PowerShell session to one or more
+  `Connect-ZrManager`   Connects the PowerShell session to one or more
                          Clustron managers
 
   -----------------------------------------------------------------------
@@ -59,7 +59,7 @@ Once connected, subsequent commands automatically use this context.
 Example:
 
 ``` powershell
-Connect-DictusManager -Servers 10.0.0.11,10.0.0.12
+Connect-ZrManager -Servers 10.0.0.11,10.0.0.12
 ```
 
 ------------------------------------------------------------------------
@@ -70,23 +70,23 @@ Commands used to create, start, stop, and inspect distributed stores.
 
   Cmdlet             Description
   ------------------ --------------------------------------------------
-  `New-DictusStore`     Creates a new distributed store
-  `Get-DictusStore`     Retrieves store configuration and runtime status
-  `Start-DictusStore`   Starts store instances
-  `Stop-DictusStore`    Stops store instances
+  `New-ZrStore`     Creates a new distributed store
+  `Get-ZrStore`     Retrieves store configuration and runtime status
+  `Start-ZrStore`   Starts store instances
+  `Stop-ZrStore`    Stops store instances
 
 Example:
 
 ``` powershell
-New-DictusStore `
+New-ZrStore `
     -Name OrdersStore `
     -InstanceName orders-node-1 `
     -ClustronPort 7001 `
     -ClientPort 7101
 
-Start-DictusStore -Name OrdersStore
+Start-ZrStore -Name OrdersStore
 
-Get-DictusStore -Name OrdersStore
+Get-ZrStore -Name OrdersStore
 ```
 
 ------------------------------------------------------------------------
@@ -98,12 +98,12 @@ cluster nodes.
 
   Cmdlet              Description
   ------------------- -------------------------------------------------
-  `Add-DictusInstance`   Adds one or more instances to an existing store
+  `Add-ZrInstance`   Adds one or more instances to an existing store
 
 Example:
 
 ``` powershell
-Add-DictusInstance `
+Add-ZrInstance `
     -StoreName OrdersStore `
     -InstanceName orders-node-2 `
     -ClustronPort 7002 `
@@ -119,7 +119,7 @@ Commands used to observe live runtime metrics from cluster nodes.
   --------------------------------------------------------------------------
   Cmdlet                    Description
   ------------------------- ------------------------------------------------
-  `Watch-DictusStoreMetrics`   Displays continuously updating runtime metrics
+  `Watch-ZrStoreMetrics`   Displays continuously updating runtime metrics
                             for a store
 
   --------------------------------------------------------------------------
@@ -127,7 +127,7 @@ Commands used to observe live runtime metrics from cluster nodes.
 Example:
 
 ``` powershell
-Watch-DictusStoreMetrics -StoreName OrdersStore
+Watch-ZrStoreMetrics -StoreName OrdersStore
 ```
 
 The display updates continuously and can be stopped using **Ctrl+C**.
@@ -142,7 +142,7 @@ following.
 ## 1 Connect to the management servers
 
 ``` powershell
-Connect-DictusManager -Servers 10.0.0.11,10.0.0.12
+Connect-ZrManager -Servers 10.0.0.11,10.0.0.12
 ```
 
 ------------------------------------------------------------------------
@@ -150,7 +150,7 @@ Connect-DictusManager -Servers 10.0.0.11,10.0.0.12
 ## 2 Create a store
 
 ``` powershell
-New-DictusStore `
+New-ZrStore `
     -Name OrdersStore `
     -InstanceName orders-node-1 `
     -ClustronPort 7001 `
@@ -162,13 +162,13 @@ New-DictusStore `
 ## 3 Add additional instances
 
 ``` powershell
-Add-DictusInstance `
+Add-ZrInstance `
     -StoreName OrdersStore `
     -InstanceName orders-node-2 `
     -ClustronPort 7002 `
     -ClientPort 7102
 
-Add-DictusInstance `
+Add-ZrInstance `
     -StoreName OrdersStore `
     -InstanceName orders-node-3 `
     -ClustronPort 7003 `
@@ -180,7 +180,7 @@ Add-DictusInstance `
 ## 4 Start the store
 
 ``` powershell
-Start-DictusStore -Name OrdersStore
+Start-ZrStore -Name OrdersStore
 ```
 
 ------------------------------------------------------------------------
@@ -188,7 +188,7 @@ Start-DictusStore -Name OrdersStore
 ## 5 Verify store status
 
 ``` powershell
-Get-DictusStore
+Get-ZrStore
 ```
 
 Example output:
@@ -206,7 +206,7 @@ Example output:
 ## 6 Monitor runtime metrics
 
 ``` powershell
-Watch-DictusStoreMetrics -StoreName OrdersStore
+Watch-ZrStoreMetrics -StoreName OrdersStore
 ```
 
 This displays a live metrics table showing operations per second and
@@ -232,21 +232,21 @@ following:
 Detailed documentation for each cmdlet is available in the following
 files.
 
--   Connect-DictusManager.md
--   New-DictusStore.md
--   Add-DictusInstance.md
--   Start-DictusStore.md
--   Stop-DictusStore.md
--   Get-DictusStore.md
--   Watch-DictusStoreMetrics.md
+-   Connect-ZrManager.md
+-   New-ZrStore.md
+-   Add-ZrInstance.md
+-   Start-ZrStore.md
+-   Stop-ZrStore.md
+-   Get-ZrStore.md
+-   Watch-ZrStoreMetrics.md
 
 ------------------------------------------------------------------------
 
 # Documentation Structure
 
-docs/ └─ powershell/ └─ admin/ ├─ README.md ├─ Connect-DictusManager.md ├─
-New-DictusStore.md ├─ Add-DictusInstance.md ├─ Start-DictusStore.md ├─
-Stop-DictusStore.md ├─ Get-DictusStore.md └─ Watch-DictusStoreMetrics.md
+docs/ └─ powershell/ └─ admin/ ├─ README.md ├─ Connect-ZrManager.md ├─
+New-ZrStore.md ├─ Add-ZrInstance.md ├─ Start-ZrStore.md ├─
+Stop-ZrStore.md ├─ Get-ZrStore.md └─ Watch-ZrStoreMetrics.md
 
 Each file documents a single cmdlet and includes:
 

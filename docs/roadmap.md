@@ -1,8 +1,8 @@
-# Clustron Dictus Roadmap
+# Clustron Zaris Roadmap
 
 ## Vision
 
-Clustron Dictus is being developed as a high-performance, .NET-native distributed data foundation.
+Clustron Zaris is being developed as a high-performance, .NET-native distributed data foundation.
 
 The roadmap is structured around progressive stabilization, public preview, and controlled expansion into advanced distributed primitives.
 
@@ -144,7 +144,7 @@ Focus: Long-term distributed data platform.
 
 # Licensing Plan
 
-Clustron Dictus core engine public release is planned under a Business Source License (BSL).
+Clustron Zaris core engine public release is planned under a Business Source License (BSL).
 
 The BSL model will:
 
@@ -158,7 +158,7 @@ Detailed licensing terms will be published prior to public release.
 
 # Non-Goals (For Now)
 
-To maintain focus, Clustron Dictus will not initially target:
+To maintain focus, Clustron Zaris will not initially target:
 
 * Multi-datacenter replication
 * Cross-region geo-distribution
@@ -181,7 +181,7 @@ These areas may be explored in the future but are not short-term priorities.
 
 # Status
 
-Clustron Dictus is currently in active development and internal validation.
+Clustron Zaris is currently in active development and internal validation.
 
 Public preview milestones will be announced as stabilization targets are achieved.
 

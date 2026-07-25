@@ -1,33 +1,33 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Clustron.Dictus.Abstractions;
-using Clustron.Dictus.Client;
+using Clustron.Zaris.Abstractions;
+using Clustron.Zaris.Client;
 
-namespace Clustron.Dictus.Samples.Shared
+namespace Clustron.Zaris.Samples.Shared
 {
     public static class SampleClientFactory
     {
-        public static async Task<IDictusClient> ConnectAsync(DictusOptions options)
+        public static async Task<IZarisClient> ConnectAsync(ZarisOptions options)
         {
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
 
             var mode = options.GetMode();
 
-            if (mode == DictusClientMode.Remote)
+            if (mode == ZarisClientMode.Remote)
             {
                 if (options.Seeds == null || !options.Seeds.Any())
                     throw new InvalidOperationException(
                         "Remote mode requires at least one seed server in configuration.");
 
-                return await DictusClient.InitializeRemote(
+                return await ZarisClient.InitializeRemote(
                     options.ClusterId,
                     options.Seeds,
                     options.LogFilePath);
             }
 
-            return await DictusClient.InitializeInProc(
+            return await ZarisClient.InitializeInProc(
                 options.ClusterId,
                 options.LogFilePath);
         }

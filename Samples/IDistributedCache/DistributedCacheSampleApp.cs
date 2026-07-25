@@ -1,7 +1,7 @@
-using Clustron.Dictus.Samples.Shared;
+using Clustron.Zaris.Samples.Shared;
 using Microsoft.Extensions.Caching.Distributed;
 
-namespace Clustron.Dictus.Sample.DistributedCache;
+namespace Clustron.Zaris.Sample.DistributedCache;
 
 internal class DistributedCacheSampleApp
 {

@@ -1,6 +1,6 @@
-# 🚀 Clustron Dictus — Search Sample
+# 🚀 Clustron Zaris — Search Sample
 
-This sample demonstrates how to use **Clustron Dictus Search APIs** to query data using entities, labels, filtering, sorting, and projection.
+This sample demonstrates how to use **Clustron Zaris Search APIs** to query data using entities, labels, filtering, sorting, and projection.
 
 It showcases how you can perform **structured queries over distributed data**.
 
@@ -27,7 +27,7 @@ The fastest way to run this sample is using **InProc mode**.
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -67,7 +67,7 @@ To run against a real distributed cluster, switch to **Remote mode**:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -82,12 +82,12 @@ To run against a real distributed cluster, switch to **Remote mode**:
 
 Before running:
 
-- Ensure Dictus servers are running  
+- Ensure Zaris servers are running  
 - Ensure the store exists  
 - Ensure ports match  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dictus/getting-started/overview/
+https://clustron.io/docs/clustron/zaris/getting-started/overview/
 
 ---
 
@@ -166,7 +166,7 @@ SearchQuery.For(Entity)
 
 # 📦 Summary
 
-This sample demonstrates how Clustron Dictus enables:
+This sample demonstrates how Clustron Zaris enables:
 
 - Structured querying across distributed data  
 - Metadata-driven filtering  
@@ -179,4 +179,4 @@ Use these capabilities for:
 - Reporting  
 - Query-driven applications  
 
-Clustron Dictus provides **powerful search capabilities built directly into your distributed data layer**.
+Clustron Zaris provides **powerful search capabilities built directly into your distributed data layer**.

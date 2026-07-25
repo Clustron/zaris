@@ -1,6 +1,6 @@
-# 🚀 Clustron Dictus --- Samples Shared Project
+# 🚀 Clustron Zaris --- Samples Shared Project
 
-This project contains shared infrastructure used by **all Clustron Dictus
+This project contains shared infrastructure used by **all Clustron Zaris
 samples**.
 
 ⚠️ This is **not a standalone sample** and does not contain its own
@@ -39,7 +39,7 @@ This project ensures:
 The Shared project provides:
 
 -   `ConsoleHelper` → Structured console output helpers
--   `DictusOptions` → Configuration binding model (used by all samples)
+-   `ZarisOptions` → Configuration binding model (used by all samples)
 -   `SampleContext` → Automatic key prefix isolation
 -   Shared models (e.g., `Customer`, `JobItem`, etc.)
 
@@ -67,7 +67,7 @@ This ensures all samples produce consistent and readable output.
 
 ------------------------------------------------------------------------
 
-## 🔹 DictusOptions
+## 🔹 ZarisOptions
 
 Binds configuration from each sample's `appsettings.json`.
 
@@ -75,7 +75,7 @@ All samples follow the unified configuration schema:
 
 ``` json
 {
-  "Dictus": {
+  "Zaris": {
     "ClusterId": "string",
     "Mode": "InProc | Remote",
     "Seeds": [
@@ -114,7 +114,7 @@ All keys created by a sample are prefixed to avoid collisions across:
 
 The architecture flow looks like this:
 
-    Samples → Shared → Dictus Client → Dictus Server
+    Samples → Shared → Zaris Client → Zaris Server
 
 The Shared project sits between samples and the client SDK, providing:
 
@@ -137,7 +137,7 @@ The Shared project sits between samples and the client SDK, providing:
 
 ------------------------------------------------------------------------
 
-This project ensures that all Clustron Dictus samples remain:
+This project ensures that all Clustron Zaris samples remain:
 
 -   Clean\
 -   Isolated\

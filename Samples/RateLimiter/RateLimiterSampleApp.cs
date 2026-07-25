@@ -1,21 +1,21 @@
 using System;
 using System.Threading.Tasks;
-using Clustron.Dictus.Abstractions;
-using Clustron.Dictus.Client;
-using Clustron.Dictus.Samples.Shared;
+using Clustron.Zaris.Abstractions;
+using Clustron.Zaris.Client;
+using Clustron.Zaris.Samples.Shared;
 
-namespace Clustron.Dictus.Sample.RateLimiter;
+namespace Clustron.Zaris.Sample.RateLimiter;
 
 internal class RateLimiterSampleApp
 {
-    private readonly IDictusClientProvider _provider;
+    private readonly IZarisClientProvider _provider;
 
     private const string StoreName = "teststore";
     private const int MaxRequests = 5;
 
     private static readonly TimeSpan Window = TimeSpan.FromSeconds(10);
 
-    public RateLimiterSampleApp(IDictusClientProvider provider)
+    public RateLimiterSampleApp(IZarisClientProvider provider)
     {
         _provider = provider;
     }
@@ -52,13 +52,13 @@ internal class RateLimiterSampleApp
     // ============================================================
 
     private async Task<bool> IsAllowedAsync(
-        IDictusClient client,
+        IZarisClient client,
         SampleContext context,
         string userId)
     {
         var windowKey = GetWindowKey(context, userId);
 
-        var counters = ((IDictus)client).Counters;
+        var counters = ((IZaris)client).Counters;
 
         var result = await counters.AddAsync(
             windowKey,

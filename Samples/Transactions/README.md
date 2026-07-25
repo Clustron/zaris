@@ -1,6 +1,6 @@
-# 🚀 Clustron Dictus — Transaction Sample
+# 🚀 Clustron Zaris — Transaction Sample
 
-This sample demonstrates how to use **Transactions in Clustron Dictus** to perform **atomic multi-key operations**.
+This sample demonstrates how to use **Transactions in Clustron Zaris** to perform **atomic multi-key operations**.
 
 It shows how applications can safely modify multiple keys while maintaining **data consistency**.
 
@@ -28,7 +28,7 @@ The fastest way to run this sample is using **InProc mode**.
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -68,7 +68,7 @@ To run against a real distributed cluster, switch to **Remote mode**:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -83,12 +83,12 @@ To run against a real distributed cluster, switch to **Remote mode**:
 
 Before running:
 
-- Ensure Dictus servers are running  
+- Ensure Zaris servers are running  
 - Ensure the store exists  
 - Ensure ports match  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dictus/getting-started/overview/
+https://clustron.io/docs/clustron/zaris/getting-started/overview/
 
 ---
 
@@ -101,7 +101,7 @@ https://clustron.io/docs/clustron/dictus/getting-started/overview/
 
 # 🧠 How Transactions Work
 
-Clustron Dictus uses **optimistic multi-key transactions**.
+Clustron Zaris uses **optimistic multi-key transactions**.
 
 A transaction:
 
@@ -205,7 +205,7 @@ B removed
 
 # 📦 Summary
 
-This sample demonstrates how Clustron Dictus enables:
+This sample demonstrates how Clustron Zaris enables:
 
 - Reliable multi-key operations  
 - Safe distributed updates  
@@ -218,4 +218,4 @@ Use transactions to build:
 - Inventory management  
 - Distributed coordination  
 
-Clustron Dictus provides **simple APIs with strong consistency guarantees**.
+Clustron Zaris provides **simple APIs with strong consistency guarantees**.

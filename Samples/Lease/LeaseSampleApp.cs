@@ -1,20 +1,20 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Clustron.Dictus.Abstractions;
-using Clustron.Dictus.Client;
-using Clustron.Dictus.Client.Helpers;
-using Clustron.Dictus.Samples.Shared;
+using Clustron.Zaris.Abstractions;
+using Clustron.Zaris.Client;
+using Clustron.Zaris.Client.Helpers;
+using Clustron.Zaris.Samples.Shared;
 
-namespace Clustron.Dictus.Sample.Lease;
+namespace Clustron.Zaris.Sample.Lease;
 
 internal class LeaseSampleApp
 {
-    private readonly IDictusClientProvider _provider;
+    private readonly IZarisClientProvider _provider;
 
     private const string StoreName = "teststore";
 
-    public LeaseSampleApp(IDictusClientProvider provider)
+    public LeaseSampleApp(IZarisClientProvider provider)
     {
         _provider = provider;
     }
@@ -30,9 +30,9 @@ internal class LeaseSampleApp
         // Start clean
         await client.ClearAsync(new ClearRequest(context.Prefix));
 
-        var dictus = (IDictus)client;
-        var leases = dictus.Leases;
-        var watch = dictus.Watch;
+        var zaris = (IZaris)client;
+        var leases = zaris.Leases;
+        var watch = zaris.Watch;
 
         // ============================================================
         // Grant Lease & Attach Keys

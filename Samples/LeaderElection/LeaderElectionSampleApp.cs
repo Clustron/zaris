@@ -1,20 +1,20 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Clustron.Dictus.Abstractions;
-using Clustron.Dictus.Client;
-using Clustron.Dictus.Client.Helpers;
-using Clustron.Dictus.Samples.Shared;
+using Clustron.Zaris.Abstractions;
+using Clustron.Zaris.Client;
+using Clustron.Zaris.Client.Helpers;
+using Clustron.Zaris.Samples.Shared;
 
-namespace Clustron.Dictus.Sample.LeaderElection;
+namespace Clustron.Zaris.Sample.LeaderElection;
 
 internal class LeaderElectionSampleApp
 {
-    private readonly IDictusClientProvider _provider;
+    private readonly IZarisClientProvider _provider;
 
     private const string StoreName = "teststore";
 
-    public LeaderElectionSampleApp(IDictusClientProvider provider)
+    public LeaderElectionSampleApp(IZarisClientProvider provider)
     {
         _provider = provider;
     }
@@ -30,9 +30,9 @@ internal class LeaderElectionSampleApp
 
         await client.ClearAsync(new ClearRequest(context.Prefix));
 
-        var dictus = (IDictus)client;
-        var leases = dictus.Leases;
-        var watch = dictus.Watch;
+        var zaris = (IZaris)client;
+        var leases = zaris.Leases;
+        var watch = zaris.Watch;
 
         ConsoleHelper.Info($"Election Key: {electionKey}");
 
@@ -68,7 +68,7 @@ internal class LeaderElectionSampleApp
     // ============================================================
 
     private async Task RunNodeAsync(
-        IDictusClient client,
+        IZarisClient client,
         ILeasesClient leases,
         IWatchClient watch,
         string electionKey,

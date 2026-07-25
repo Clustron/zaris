@@ -2,21 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Clustron.Dictus.Abstractions;
-using Clustron.Dictus.Client;
-using Clustron.Dictus.Samples.Shared;
-using Clustron.Dictus.Samples.Shared.Models;
+using Clustron.Zaris.Abstractions;
+using Clustron.Zaris.Client;
+using Clustron.Zaris.Samples.Shared;
+using Clustron.Zaris.Samples.Shared.Models;
 
-namespace Clustron.Dictus.Sample.Bulk;
+namespace Clustron.Zaris.Sample.Bulk;
 
 internal class BulkSampleApp
 {
-    private readonly IDictusClientProvider _provider;
+    private readonly IZarisClientProvider _provider;
 
-    // Must match appsettings.json → Dictus:Stores:<name>
+    // Must match appsettings.json → Zaris:Stores:<name>
     private const string StoreName = "teststore";
 
-    public BulkSampleApp(IDictusClientProvider provider)
+    public BulkSampleApp(IZarisClientProvider provider)
     {
         _provider = provider;
     }

@@ -1,10 +1,10 @@
-# 🚀 Clustron Dictus — HybridCache Sample
+# 🚀 Clustron Zaris — HybridCache Sample
 
 This sample demonstrates how to use **Clustron HybridCache (L1 + L2 caching)** to achieve high performance with consistency.
 
 It combines:
 - **L1 (InProc cache)** → ultra-fast local reads  
-- **L2 (Clustron Dictus)** → distributed, consistent storage  
+- **L2 (Clustron Zaris)** → distributed, consistent storage  
 
 ---
 
@@ -12,7 +12,7 @@ It combines:
 
 This sample shows how to:
 
-- Use HybridCache with Clustron Dictus
+- Use HybridCache with Clustron Zaris
 - Configure L1 (local) and L2 (distributed) cache
 - Use GetOrCreate pattern
 - Observe L1 cache hits
@@ -30,7 +30,7 @@ Run instantly using **InProc mode**:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -55,7 +55,7 @@ dotnet run
 HybridCache uses two layers:
 
 - **L1 (Local Cache)** → fast, in-memory, per-instance  
-- **L2 (Clustron Dictus)** → shared, distributed cache  
+- **L2 (Clustron Zaris)** → shared, distributed cache  
 
 The client is resolved using Clustron’s provider model:
 
@@ -76,7 +76,7 @@ Switch to **Remote mode** for real distributed caching:
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -91,12 +91,12 @@ Switch to **Remote mode** for real distributed caching:
 
 Before running:
 
-- Ensure Dictus servers are running  
+- Ensure Zaris servers are running  
 - Ensure the store exists  
 - Ensure ports match  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dictus/getting-started/overview/
+https://clustron.io/docs/clustron/zaris/getting-started/overview/
 
 ---
 
@@ -177,7 +177,7 @@ await cache.RemoveByTagAsync("products");
 
 # 📦 Summary
 
-This sample demonstrates how Clustron Dictus enables:
+This sample demonstrates how Clustron Zaris enables:
 
 - High-performance caching  
 - Reduced latency  

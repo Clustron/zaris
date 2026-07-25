@@ -1,8 +1,8 @@
-using Clustron.Dictus.HybridCache;
-using Clustron.Dictus.Samples.Shared;
+using Clustron.Zaris.HybridCache;
+using Clustron.Zaris.Samples.Shared;
 using Microsoft.Extensions.Caching.Hybrid;
 
-namespace Clustron.Dictus.Sample.HybridCache;
+namespace Clustron.Zaris.Sample.HybridCache;
 
 internal class HybridCacheSampleApp
 {

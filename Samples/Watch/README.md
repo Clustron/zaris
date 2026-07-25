@@ -1,6 +1,6 @@
-# 🚀 Clustron Dictus — Watch Sample
+# 🚀 Clustron Zaris — Watch Sample
 
-This sample demonstrates how to use the **Watch API** in Clustron Dictus to build **real-time, reactive distributed systems**.
+This sample demonstrates how to use the **Watch API** in Clustron Zaris to build **real-time, reactive distributed systems**.
 
 Instead of polling for changes, your application can subscribe to updates and react instantly when data changes.
 
@@ -25,11 +25,11 @@ This sample shows how to:
 
 The fastest way to run this sample is using **InProc mode**.
 
-This runs Clustron Dictus **inside your application** — no servers, no setup.
+This runs Clustron Zaris **inside your application** — no servers, no setup.
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "InProc"
@@ -71,7 +71,7 @@ Once you're comfortable, you can switch to a real distributed setup using **Remo
 
 ```json
 {
-  "Dictus": {
+  "Zaris": {
     "Stores": {
       "teststore": {
         "Mode": "Remote",
@@ -86,12 +86,12 @@ Once you're comfortable, you can switch to a real distributed setup using **Remo
 
 Before running:
 
-- Ensure Dictus servers are running  
+- Ensure Zaris servers are running  
 - Ensure the store exists  
 - Ensure ports match  
 
 👉 Full setup guide:  
-https://clustron.io/docs/clustron/dictus/getting-started/overview/
+https://clustron.io/docs/clustron/zaris/getting-started/overview/
 
 ---
 
@@ -156,7 +156,7 @@ Each event includes:
 
 # 📦 Summary
 
-This sample demonstrates how Clustron Dictus enables:
+This sample demonstrates how Clustron Zaris enables:
 
 - Reactive systems
 - Event-driven microservices

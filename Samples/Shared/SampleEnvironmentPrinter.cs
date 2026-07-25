@@ -1,19 +1,19 @@
 using System;
 using System.Linq;
-using Clustron.Dictus.Client;
-using Clustron.Dictus.Client.Helpers;
+using Clustron.Zaris.Client;
+using Clustron.Zaris.Client.Helpers;
 
-namespace Clustron.Dictus.Samples.Shared;
+namespace Clustron.Zaris.Samples.Shared;
 
 public static class SampleEnvironmentPrinter
 {
-    public static void Print(DictusOptions options, DictusClientMode mode)
+    public static void Print(ZarisOptions options, ZarisClientMode mode)
     {
         Console.WriteLine();
 
         Console.WriteLine($"Cluster : {options.ClusterId}");
 
-        if (mode == DictusClientMode.InProc)
+        if (mode == ZarisClientMode.InProc)
         {
             Console.WriteLine("Mode    : InProc (embedded store)");
             Console.WriteLine("Hint    : Set \"Mode\": \"Remote\" and configure Seeds to connect to a cluster");
