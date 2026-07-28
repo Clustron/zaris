@@ -36,7 +36,7 @@ So in attach mode security has to be **baked in declaratively**, which is exactl
   ```jsonc
   "security": {
     "enabled": true,
-    "issuer": "keyvus://clustron-dictus",
+    "issuer": "keyvus://clustron-zaris",
     "publicKeys": [ { "keyId": "…", "spkiBase64": "…" } ],   // verifies tokens
     "tls": {
       "enabled": true,
@@ -61,13 +61,13 @@ So in attach mode security has to be **baked in declaratively**, which is exactl
 
 | Image | Built from (source repo) |
 |---|---|
-| `clustron-dictus-node:local` | `docker/Dockerfile.node` |
-| `clustron-dictus-machine:local` | `docker/Dockerfile.machine` |
+| `clustron-zaris-node:local` | `docker/Dockerfile.node` |
+| `clustron-zaris-machine:local` | `docker/Dockerfile.machine` |
 
 Build them in the source repo, e.g.:
 ```
-docker build -t clustron-dictus-node:local    -f docker/Dockerfile.node    .
-docker build -t clustron-dictus-machine:local -f docker/Dockerfile.machine .
+docker build -t clustron-zaris-node:local    -f docker/Dockerfile.node    .
+docker build -t clustron-zaris-machine:local -f docker/Dockerfile.machine .
 ```
 
 **2. Secrets.** The `secrets/` directory holds **private keys** and is intentionally **not committed**.

@@ -45,7 +45,7 @@
   },
   "security": {
     "enabled": true,
-    "issuer": "keyvus://clustron-dictus",
+    "issuer": "keyvus://clustron-zaris",
     "publicKeys": [
       {
         "keyId": "4761a6b40d1f4ce7929536107afb7993",

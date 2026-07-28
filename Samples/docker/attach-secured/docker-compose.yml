@@ -16,8 +16,8 @@
 #
 # PREREQUISITES
 #   1. Build (or pull) the images — this sample references them by tag, it does not build them:
-#        clustron-dictus-node:local        (from docker/Dockerfile.node    in the source repo)
-#        clustron-dictus-machine:local     (from docker/Dockerfile.machine in the source repo)
+#        clustron-zaris-node:local        (from docker/Dockerfile.node    in the source repo)
+#        clustron-zaris-machine:local     (from docker/Dockerfile.machine in the source repo)
 #   2. Generate ./secrets once — see ./secrets/README.md. (The dir is gitignored; it holds private keys.)
 #
 # Endpoints once up:  Console http://localhost:18101 · Mgmt http://localhost:17801 · Nodes localhost:17861..17864
@@ -25,7 +25,7 @@
 name: demostore-secure
 
 x-node: &node
-  image: clustron-dictus-node:local
+  image: clustron-zaris-node:local
   restart: unless-stopped
   networks: [zaris]
   healthcheck:
@@ -77,7 +77,7 @@ services:
     ports: ["17864:7861"]
 
   demostore-manager:
-    image: clustron-dictus-machine:local
+    image: clustron-zaris-machine:local
     container_name: demostore-manager
     hostname: demostore-manager
     restart: unless-stopped
@@ -105,7 +105,7 @@ services:
   # One-shot: logs in as admin, binds the workspace, and registers demostore (tlsEnabled) so the manager/console
   # talk to it over TLS with a token. Runs once, then exits 0.
   demostore-attach:
-    image: clustron-dictus-machine:local
+    image: clustron-zaris-machine:local
     container_name: demostore-attach
     depends_on:
       demostore-manager: { condition: service_healthy }
@@ -124,7 +124,7 @@ services:
 
   # Idle box on the cluster network for running a client (Connect-ZrStore ...) by hand.
   demostore-client:
-    image: clustron-dictus-machine:local
+    image: clustron-zaris-machine:local
     container_name: demostore-client
     hostname: demostore-client
     networks: [zaris]

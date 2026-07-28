@@ -8,8 +8,8 @@ They all reference the two Zaris images by tag rather than building them:
 
 | Image | Built from |
 |---|---|
-| `clustron-dictus-node:local` | `docker/Dockerfile.node` (source repo) |
-| `clustron-dictus-machine:local` | `docker/Dockerfile.machine` (source repo) |
+| `clustron-zaris-node:local` | `docker/Dockerfile.node` (source repo) |
+| `clustron-zaris-machine:local` | `docker/Dockerfile.machine` (source repo) |
 
 Build those once before running any sample.
 
