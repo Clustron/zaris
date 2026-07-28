@@ -1,0 +1,81 @@
+{
+  "$schema": "https://schemas.clustron.io/zaris/v1/store.schema.json",
+  "//": "Shared config for the 4 demostore node containers. Each container sets CLUSTRON_NODE_ID to the node it IS; peers are addressed by docker-compose service name (Docker DNS). clusterId is the store name the console/CLI use and the applicationId the nodes publish counters under.",
+  "clusterId": "demostore",
+  "//partitions": "1 partition per node with RF 2 on 4 instances = 2 partitions: the mapless-mint partitioner mints one partition per preferredPrimary node (n0, n2) and places each partition's replica on a remaining node (n1, n3). So every node holds exactly one partition (2 primary + 2 replica) — one-per-node, fully RF 2.",
+  "nodes": [
+    {
+      "id": "demostore-n0",
+      "host": "demostore-n0",
+      "clusterPort": 7811,
+      "clientPort": 7861,
+      "preferredPrimary": true
+    },
+    {
+      "id": "demostore-n1",
+      "host": "demostore-n1",
+      "clusterPort": 7811,
+      "clientPort": 7861
+    },
+    {
+      "id": "demostore-n2",
+      "host": "demostore-n2",
+      "clusterPort": 7811,
+      "clientPort": 7861,
+      "preferredPrimary": true
+    },
+    {
+      "id": "demostore-n3",
+      "host": "demostore-n3",
+      "clusterPort": 7811,
+      "clientPort": 7861
+    }
+  ],
+  "replication": {
+    "factor": 2,
+    "mode": "Async",
+    "quorum": "All",
+    "syncAckTimeoutSeconds": 5
+  },
+  "//pushMetrics": "Bake the manager's counter-publishing URL so each orchestrator-run node publishes its counters to the attached manager on boot (attach nodes get no injected target the way supervisor forks do).",
+  "pushMetrics": {
+    "pushTargetUrl": "http://demostore-manager:7801",
+    "rollingWindowSeconds": 120,
+    "timeoutMilliseconds": 60000
+  },
+  "security": {
+    "enabled": true,
+    "issuer": "keyvus://clustron-dictus",
+    "publicKeys": [
+      {
+        "keyId": "4761a6b40d1f4ce7929536107afb7993",
+        "spkiBase64": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxutiewY5vGmVqIiZvw4+gAQQYmzXqL2cZpDqf7YSGtq2+PHEks5H96amDQUNKGOVDf35sui0DwfRia8W5WBrQ0M8wq7xHGDwNEgdTot55122yoyiwbTv6j6oBn34O4u6RHgw5yGPhYE2lHPxFkRZESXBWOb84BpCGw0xNLP3oVYx6TysR+OGFXSINqwDeyink8e/MrTVE+y4eCJKWKNvZVZwOg3v3cG9ekR8JGizaUBaOPopgU0k3jzWd6txkHnhrf6bk0Bx/POgF+WWfcjWSDzVdSiNAjVwFGW5AOAI9x53yHnyE93y9LFBux4G8KBoHKCk1KzvcnG5E36QBtnrTQIDAQAB"
+      }
+    ],
+    "tls": {
+      "enabled": true,
+      "mode": "MutualTls",
+      "trustAnchors": [
+        {
+          "keyId": "cluster-ca",
+          "pem": "-----BEGIN CERTIFICATE-----\nMIIDDjCCAfagAwIBAgIIWa25v7hWViQwDQYJKoZIhvcNAQELBQAwJTEjMCEGA1UE\nAxMaY2x1c3Ryb24tZGljdHVzLWNsdXN0ZXItY2EwHhcNMjYwNzI4MDc1MzM5WhcN\nMzYwNzI1MDc1ODM5WjAlMSMwIQYDVQQDExpjbHVzdHJvbi1kaWN0dXMtY2x1c3Rl\nci1jYTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAIgZADmXCuD1ONc+\nTe7gOyHbVD/GsFNdvyG47pl5tMLDTXHOU2DMCHqlFM/C0b500ouPC3sxKaJNo+WV\nyyO1gPCs01mR/fPYR0s2B2PYz/KyNAn4YBDFVHiDBj0ETixrP+Rt/zRah6lCcLx5\nm/QpdnRn3LBfg9zG4ZxFKs38mXOVGeJLZLZ/f9KkUILcGrfkMJbTqM7/DmE9To7U\n3FzfXfQnTjig7SP9ewgZypBzHUQmhvV23eFnaImtciEpCv7QAepFp7ucziwGvl+K\nfYvbz+goyN2ldxxYA1WOyezpSLucJBIyiqCSAj481BbbiDEUOgsPhsznGC3AtenX\nYnH/p8UCAwEAAaNCMEAwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAQYw\nHQYDVR0OBBYEFFKwL8hSTSFR0uKGSbIzzks9DPsqMA0GCSqGSIb3DQEBCwUAA4IB\nAQBGBetOPQ1orEH3AT2tWo36PyFBexA4rHqZ6zd/IgJzn5R3+g3KTekvHjIr2aUn\nIxpIuKs33ssGK6OVXM6zKKqxiZ+RcX0DLxpO9TijsYRgLBfMmwVM6xuYySXFRsfx\nAX1/Ox7SPH3dQXk+yeRd5kS6Y4sz21/QPwaU2XgzgzOTl7D/MCJLunRe51vJ3BIz\n7riGt92l83nXRLdWmr9jDpgSPI8ncv2QY9IYVoUKNuNfn+Ei1sm9UltgyRFvb4+/\ns13QZvHftn++ZFA8ZmFhV5uYOGovv4ojlq+SVaHcnps/A5SSEqeHCM/mOUVjbEr1\ndYPO/3/2T0jvS5WXk0depuaI\n-----END CERTIFICATE-----"
+        }
+      ]
+    }
+  },
+  "logging": {
+    "logLevel": {
+      "Default": "Warning",
+      "Microsoft": "Warning",
+      "System": "Warning",
+      "Clustron.Nodus.Core": "Information",
+      "Clustron.Zaris": "Information"
+    },
+    "file": {
+      "enabled": false
+    },
+    "console": {
+      "enabled": true
+    }
+  }
+}

@@ -1,0 +1,138 @@
+# Clustron.Zaris deployment sample — ATTACH mode, SECURED (token auth + mutual TLS), fully declarative.
+#
+#   docker compose -p demostore-secure up -d
+#
+# A 4-node "demostore" cluster + a management manager come up ALREADY token- and TLS-secured on the very first
+# `up` — there is no runtime "enable security" step. This is the *mounted-secrets* model ("Model B"): the PKI is
+# generated once, ahead of time, and mounted read-only:
+#
+#   * the manager mounts its whole security dir  -> ./secrets/manager-security  (fixed signing key + cluster CA + admin)
+#   * each node mounts its own pre-issued leaf   -> ./secrets/demostore-n<i>.pfx
+#   * the node config carries the cluster CA as a trust anchor -> ./config/demostore.json (security.tls.trustAnchors)
+#
+# ATTACH mode = the orchestrator (this compose) owns the node lifecycle; the manager only *observes* them. So security
+# cannot be pushed from the manager at runtime — it must be baked into the node config + mounted certs, which is
+# exactly what this sample does.
+#
+# PREREQUISITES
+#   1. Build (or pull) the images — this sample references them by tag, it does not build them:
+#        clustron-dictus-node:local        (from docker/Dockerfile.node    in the source repo)
+#        clustron-dictus-machine:local     (from docker/Dockerfile.machine in the source repo)
+#   2. Generate ./secrets once — see ./secrets/README.md. (The dir is gitignored; it holds private keys.)
+#
+# Endpoints once up:  Console http://localhost:18101 · Mgmt http://localhost:17801 · Nodes localhost:17861..17864
+
+name: demostore-secure
+
+x-node: &node
+  image: clustron-dictus-node:local
+  restart: unless-stopped
+  networks: [zaris]
+  healthcheck:
+    test: ["CMD-SHELL", "nc -z 127.0.0.1 7861 || exit 1"]
+    interval: 10s
+    timeout: 3s
+    retries: 12
+    start_period: 20s
+
+services:
+  demostore-n0:
+    <<: *node
+    container_name: demostore-n0
+    hostname: demostore-n0
+    environment: { CLUSTRON_NODE_ID: demostore-n0 }
+    volumes:
+      - ./config/demostore.json:/config/clustron.json:ro
+      - ./secrets/demostore-n0.pfx:/var/lib/clustron/certs/demostore-n0.pfx:ro   # this node's pre-issued leaf
+    ports: ["17861:7861"]
+
+  demostore-n1:
+    <<: *node
+    container_name: demostore-n1
+    hostname: demostore-n1
+    environment: { CLUSTRON_NODE_ID: demostore-n1 }
+    volumes:
+      - ./config/demostore.json:/config/clustron.json:ro
+      - ./secrets/demostore-n1.pfx:/var/lib/clustron/certs/demostore-n1.pfx:ro
+    ports: ["17862:7861"]
+
+  demostore-n2:
+    <<: *node
+    container_name: demostore-n2
+    hostname: demostore-n2
+    environment: { CLUSTRON_NODE_ID: demostore-n2 }
+    volumes:
+      - ./config/demostore.json:/config/clustron.json:ro
+      - ./secrets/demostore-n2.pfx:/var/lib/clustron/certs/demostore-n2.pfx:ro
+    ports: ["17863:7861"]
+
+  demostore-n3:
+    <<: *node
+    container_name: demostore-n3
+    hostname: demostore-n3
+    environment: { CLUSTRON_NODE_ID: demostore-n3 }
+    volumes:
+      - ./config/demostore.json:/config/clustron.json:ro
+      - ./secrets/demostore-n3.pfx:/var/lib/clustron/certs/demostore-n3.pfx:ro
+    ports: ["17864:7861"]
+
+  demostore-manager:
+    image: clustron-dictus-machine:local
+    container_name: demostore-manager
+    hostname: demostore-manager
+    restart: unless-stopped
+    init: true
+    networks: [zaris]
+    environment:
+      ZARIS_MGMT_MODE: attach                                    # observe the nodes; do not fork/own them
+    volumes:
+      - ./secrets/manager-security:/var/lib/clustron/security    # fixed signing key + CA + admin + enforcement flag
+    depends_on:
+      demostore-n0: { condition: service_healthy }
+      demostore-n1: { condition: service_healthy }
+      demostore-n2: { condition: service_healthy }
+      demostore-n3: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 7801 || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 18
+      start_period: 20s
+    ports:
+      - "18101:7810"    # web console
+      - "17801:7801"    # management api
+
+  # One-shot: logs in as admin, binds the workspace, and registers demostore (tlsEnabled) so the manager/console
+  # talk to it over TLS with a token. Runs once, then exits 0.
+  demostore-attach:
+    image: clustron-dictus-machine:local
+    container_name: demostore-attach
+    depends_on:
+      demostore-manager: { condition: service_healthy }
+    networks: [zaris]
+    restart: "no"
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        set -e
+        T=$$(curl -s -X POST http://demostore-manager:7801/security/login -H 'Content-Type: application/json' -d '{"username":"admin","password":"admin"}' | grep -oE '"token":"[^"]*"' | head -1 | cut -d'"' -f4)
+        curl -fsS -X POST http://demostore-manager:7801/admin/v1/workspace/binding -H 'Content-Type: application/json' -H "Authorization: Bearer $$T" \
+          -d '{"workspaceId":"demostore-ws","workspaceName":"demostore","mode":"attach","roster":["demostore-manager:7801"]}'
+        curl -fsS -X POST http://demostore-manager:7801/admin/v1/stores/demostore/register -H 'Content-Type: application/json' -H "Authorization: Bearer $$T" \
+          -d '{"replicationFactor":2,"partitionCount":2,"tlsEnabled":true,"nodes":[{"nodeId":"demostore-n0","host":"demostore-n0","clientPort":7861,"clusterPort":7811},{"nodeId":"demostore-n1","host":"demostore-n1","clientPort":7861,"clusterPort":7811},{"nodeId":"demostore-n2","host":"demostore-n2","clientPort":7861,"clusterPort":7811},{"nodeId":"demostore-n3","host":"demostore-n3","clientPort":7861,"clusterPort":7811}]}'
+        echo "" && echo "[attach] secured demostore bound + registered (token + TLS)"
+
+  # Idle box on the cluster network for running a client (Connect-ZrStore ...) by hand.
+  demostore-client:
+    image: clustron-dictus-machine:local
+    container_name: demostore-client
+    hostname: demostore-client
+    networks: [zaris]
+    restart: unless-stopped
+    entrypoint: ["sleep", "infinity"]
+    depends_on:
+      demostore-manager: { condition: service_healthy }
+
+networks:
+  zaris:
+    driver: bridge

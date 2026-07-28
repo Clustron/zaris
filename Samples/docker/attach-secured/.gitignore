@@ -1,0 +1,5 @@
+# The PKI is generated per environment and contains private keys — never commit it.
+# Keep this .gitignore and secrets/README.md; ignore everything else under secrets/.
+secrets/*
+!secrets/README.md
+!secrets/.gitignore
