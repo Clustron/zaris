@@ -1,8 +1,8 @@
 # Clustron Zaris
 [![NuGet](https://img.shields.io/nuget/v/Clustron.Zaris.Client)](https://www.nuget.org/packages/Clustron.Zaris.Client)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/Clustron.Zaris.Client)](https://www.nuget.org/packages/Clustron.Zaris.Client)
-[![License](https://img.shields.io/github/license/zeroheartbeat/clustron-dkv)](https://github.com/zeroheartbeat/clustron-dkv/blob/main/LICENSE)
-[![Stars](https://img.shields.io/github/stars/zeroheartbeat/clustron-dkv)](https://github.com/zeroheartbeat/clustron-dkv/stargazers)
+[![License](https://img.shields.io/github/license/zeroheartbeat/clustron-zaris)](https://github.com/zeroheartbeat/clustron-zaris/blob/main/LICENSE)
+[![Stars](https://img.shields.io/github/stars/zeroheartbeat/clustron-zaris)](https://github.com/zeroheartbeat/clustron-zaris/stargazers)
 
 **Clustron Zaris is a high-performance distributed key-value store for
 .NET designed for modern microservices and cloud-native applications.**
@@ -85,7 +85,7 @@ Clustron is designed to help developers build **distributed coordination, state 
 To run a local cluster, follow the **server installation guide**:
 
 📖 Server Setup Guide\
-https://github.com/zeroheartbeat/clustron-dkv/blob/main/docs/getting-started.md
+https://github.com/zeroheartbeat/clustron-zaris/blob/main/docs/getting-started.md
 
 The guide walks you through:
 

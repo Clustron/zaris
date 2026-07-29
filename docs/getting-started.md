@@ -6,7 +6,7 @@ Follow the steps below to install and run Clustron Zaris on a Windows machine.
 
 ## 1. Download the Release
 
-1. Download `clustron-dkv-0.2.1-win-x64.zip` from the **Releases** page.
+1. Download `clustron-zaris-0.2.1-win-x64.zip` from the **Releases** page.
 2. Extract the ZIP file to a folder of your choice.
 
 ---
