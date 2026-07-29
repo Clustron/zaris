@@ -1,124 +1,106 @@
-# Clustron Zaris -- Samples
+# Clustron Zaris — Samples
 
-This folder contains official usage samples for the Clustron Zaris .NET
-Client.
+Official, runnable samples for the **Clustron Zaris** .NET client. Each sample is
+a self-contained console app that demonstrates one feature area and runs in either
+mode without code changes:
 
-Each sample demonstrates a specific feature of Zaris and follows a
-consistent structure:
+- **InProc** — an embedded in-memory store; no server required (just `dotnet run`).
+- **Remote** — connects to a running Zaris cluster over the network.
 
--   Supports both InProc and Remote modes
--   Uses appsettings.json for configuration
--   Automatically isolates keys per session
--   Cleans up created data after execution
+Every sample isolates its keys per run, prints a clear pass/fail line, and cleans
+up the data it creates.
 
-------------------------------------------------------------------------
+---
 
-## Available Samples
+## Samples
 
-### 1. Basic Sample
+| Project | Demonstrates |
+|---|---|
+| **Basic** | PUT/GET, metadata (TTL, labels, content-type), a counter, TTL expiry, cleanup |
+| **Bulk** | Batch `PutMany`/`GetMany`/`DeleteMany` and `Count` |
+| **CAS** | Compare-and-swap: put-if-absent, if-match(version), conflict detection, conditional delete |
+| **Counters** | Atomic add, get/set, Min/Max bounds, counter TTL |
+| **DistributedJobQueue** | A producer + competing workers claiming/completing jobs |
+| **HybridCache** | `HybridCache` with an in-memory L1 over a distributed L2, tags, L1/L2 expiry |
+| **IDistributedCache** | The standard ASP.NET `IDistributedCache` (Set/Get/Refresh/Remove) over Zaris |
+| **LeaderElection** | Lease-based leader election across simulated nodes, with watch |
+| **Lease** | Grant a lease, attach keys, auto-expiry, keep-alive, revoke |
+| **RateLimiter** | Fixed-window rate limiting built on counters |
+| **Search** | Label / secondary-index scan and query |
+| **Transactions** | Multi-key transaction commit and rollback |
+| **Watch** | Watch a key and a prefix — initial snapshot plus live change events |
 
-Demonstrates: - PUT / GET - Metadata (TTL, labels, content type) -
-Counters - TTL expiration - Cleanup
+**Shared** is a library the executables reference (console helpers, config binding,
+per-run key isolation, the pass/fail run wrapper). It is not a runnable sample.
 
-Project: Clustron.Zaris.Sample.Basic
+---
 
-------------------------------------------------------------------------
+## Running a sample
 
-### 2. Counters Sample
-
-Demonstrates: - Atomic increment - Get counter value - Set counter
-value - Min / Max bounds - TTL on counters
-
-Project: Clustron.Zaris.Sample.Counters
-
-------------------------------------------------------------------------
-
-### 3. Lease Sample
-
-Demonstrates: - Grant lease - Attach keys to lease - Automatic expiry -
-KeepAlive - Revoke
-
-Project: Clustron.Zaris.Sample.Lease
-
-------------------------------------------------------------------------
-
-### 4. TTL Sample (Placeholder)
-
-Reserved for demonstrating advanced TTL scenarios. Not implemented yet.
-
-Project: Clustron.Zaris.Sample.Ttl
-
-------------------------------------------------------------------------
-
-### 5. Watch Sample (Placeholder)
-
-Reserved for demonstrating watch / streaming APIs. Not implemented yet.
-
-Project: Clustron.Zaris.Sample.Watch
-
-------------------------------------------------------------------------
-
-## Shared Infrastructure
-
-All samples depend on:
-
-Clustron.Zaris.Samples.Shared
-
-This project provides:
-
--   Console formatting helpers
--   Configuration binding
--   Automatic key prefix isolation
--   Cleanup tracking utilities
--   Shared models
-
-------------------------------------------------------------------------
-
-## Running a Sample
-
-1.  Navigate to the desired sample project.
-2.  Edit appsettings.json.
-3.  Run:
-
+```bash
+cd Basic          # or any sample folder
 dotnet run
+```
 
-------------------------------------------------------------------------
+By default samples run **InProc**, so no server is needed. To target a running
+cluster, set the store's mode to `Remote` (see below) or set the environment
+variable `ZARIS_SAMPLE_MODE=Remote` before running.
 
-## Configuration Modes
+---
 
-### InProc (Default)
+## Configuration
 
-Runs an embedded in-memory store. No server setup required.
+Each sample reads `appsettings.json`. Stores are configured under
+`Zaris:Stores:<storeName>`; the samples use the store name **`teststore`**:
 
-Example:
+**InProc** (default — embedded, no server):
 
-{ "Zaris": { "ClusterId": "sample-cluster", "Mode": "InProc",
-"LogFilePath": "logs/zaris.log" } }
+```json
+{
+  "Zaris": {
+    "Stores": {
+      "teststore": { "Mode": "InProc" }
+    }
+  }
+}
+```
 
-------------------------------------------------------------------------
+**Remote** (connect to a running cluster):
 
-### Remote Mode
+```json
+{
+  "Zaris": {
+    "Stores": {
+      "teststore": {
+        "Mode": "Remote",
+        "Seeds": [
+          { "Host": "127.0.0.1", "Port": 7990 }
+        ]
+      }
+    }
+  }
+}
+```
 
-Connects to a running Zaris cluster.
+- `Mode` — `InProc` or `Remote`.
+- `Seeds[]` — one entry per node client endpoint. `Port` is the **client port**
+  chosen when the store was created (`New-ZrStore -BaseClientPort`; each instance
+  is `BaseClientPort + i`).
 
-{ "Zaris": { "ClusterId": "my-store", "Mode": "Remote", "RemoteHost":
-"127.0.0.1", "RemotePort": 4100, "LogFilePath": "logs/zaris.log" } }
+Environment overrides use the standard .NET double-underscore syntax, e.g.
+`Zaris__Stores__teststore__Mode=Remote` and
+`Zaris__Stores__teststore__Seeds__0__Host` / `__Port`.
 
--   ClusterId → Store ID you created
--   RemoteHost → IP of Zaris server (seed node)
--   RemotePort → ClientPort selected during store creation
+---
 
-------------------------------------------------------------------------
+## Suggested order
 
-## Recommended Learning Order
+Start with **Basic**, then **Counters**, **Bulk**, and **CAS** for the core data
+plane; **Watch** and **Transactions** for consistency; **Lease**,
+**LeaderElection**, and **RateLimiter** for coordination; and
+**IDistributedCache** / **HybridCache** for the ASP.NET caching integrations.
 
-1.  Basic
-2.  Counters
-3.  Lease
-4.  TTL (when implemented)
-5.  Watch (when implemented)
+---
 
-------------------------------------------------------------------------
-
-These samples establish the baseline developer experience for Clustron
-Zaris usage and demonstrate production-style client interaction patterns.
+These samples are the baseline developer experience for Clustron Zaris and
+illustrate production-style client patterns.
