@@ -36,7 +36,7 @@ So in attach mode security has to be **baked in declaratively**, which is exactl
   ```jsonc
   "security": {
     "enabled": true,
-    "issuer": "keyvus://clustron-zaris",
+    "issuer": "clustron://zaris",
     "publicKeys": [ { "keyId": "…", "spkiBase64": "…" } ],   // verifies tokens
     "tls": {
       "enabled": true,
