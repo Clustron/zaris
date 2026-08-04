@@ -13,7 +13,7 @@ internal class BulkSampleApp
 {
     private readonly IZarisClientProvider _provider;
 
-    // Must match appsettings.json → Zaris:Stores:<name>
+    // Must match appsettings.json → ConnectionStrings:<name>
     private const string StoreName = "teststore";
 
     public BulkSampleApp(IZarisClientProvider provider)

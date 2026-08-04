@@ -12,8 +12,7 @@ ConsoleHelper.Header("Clustron Zaris – Basic Transaction Sample");
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        services.AddClustronZarisStores(
-            context.Configuration.GetSection("Zaris:Stores"));
+        services.AddClustronZarisFromConnectionStrings(context.Configuration);
 
         services.AddSingleton<TransactionsBasicSampleApp>();
     })

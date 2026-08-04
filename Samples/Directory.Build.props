@@ -4,6 +4,6 @@
          repo. The sanity harness overrides this (-p:ClustronZarisVersion=...) so the samples
          always build against the freshly packed build; the default keeps them buildable
          standalone. -->
-    <ClustronZarisVersion Condition="'$(ClustronZarisVersion)' == ''">0.3.0</ClustronZarisVersion>
+    <ClustronZarisVersion Condition="'$(ClustronZarisVersion)' == ''">0.4.0</ClustronZarisVersion>
   </PropertyGroup>
 </Project>

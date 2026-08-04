@@ -13,12 +13,11 @@ ConsoleHelper.Header("Clustron Zaris – HybridCache Sample");
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        var stores = context.Configuration.GetSection("Zaris:Stores");
 
         // -----------------------------------------------------
         // L2 (Remote store from config)
         // -----------------------------------------------------
-        services.AddClustronZarisStores(stores);
+        services.AddClustronZarisFromConnectionStrings(context.Configuration);
 
         // -----------------------------------------------------
         // Hybrid Cache (L1 + L2)

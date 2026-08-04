@@ -15,8 +15,7 @@ var host = Host.CreateDefaultBuilder(args)
         // -----------------------------------------------------
         // Register Zaris (from config)
         // -----------------------------------------------------
-        services.AddClustronZarisStores(
-            context.Configuration.GetSection("Zaris:Stores"));
+        services.AddClustronZarisFromConnectionStrings(context.Configuration);
 
 
         // App

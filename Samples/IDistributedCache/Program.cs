@@ -13,12 +13,11 @@ ConsoleHelper.Header("Clustron Zaris – DistributedCache Sample");
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
-        var stores = context.Configuration.GetSection("Zaris:Stores");
 
         // -----------------------------------------------------
         // Register Zaris (from config)
         // -----------------------------------------------------
-        services.AddClustronZarisStores(stores);
+        services.AddClustronZarisFromConnectionStrings(context.Configuration);
 
         // -----------------------------------------------------
         // Register Distributed Cache
