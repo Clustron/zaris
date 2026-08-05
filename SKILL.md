@@ -34,13 +34,19 @@ No infrastructure. Add the SDK and run Zaris inside the app process.
 dotnet add package Clustron.Zaris.SDK
 ```
 
+In-process is just a connection string — `zaris://inproc/demo` — registered the same way as a cluster; only the string differs. Put it in `appsettings.json`:
+
+```json
+{ "ConnectionStrings": { "demo": "zaris://inproc/demo" } }
+```
+
 Wire it up (adjust to the user's DI/host style):
 
 ```csharp
-using Clustron.Zaris.SDK;
+using Clustron.Zaris.Client.DependencyInjection;
 
 var services = new ServiceCollection();
-services.AddClustronZaris("demo", b => b.UseInProc());  // "demo" = store name
+services.AddClustronZaris(configuration, "demo");  // reads ConnectionStrings:demo
 var sp = services.BuildServiceProvider();
 
 var provider = sp.GetRequiredService<IZarisClientProvider>();
