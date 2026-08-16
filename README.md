@@ -1,6 +1,6 @@
 # Clustron Zaris
-[![NuGet](https://img.shields.io/nuget/v/Clustron.Zaris.Client)](https://www.nuget.org/packages/Clustron.Zaris.Client)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/Clustron.Zaris.Client)](https://www.nuget.org/packages/Clustron.Zaris.Client)
+[![NuGet](https://img.shields.io/nuget/v/Clustron.Zaris.SDK)](https://www.nuget.org/packages/Clustron.Zaris.SDK)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/Clustron.Zaris.SDK)](https://www.nuget.org/packages/Clustron.Zaris.SDK)
 [![License](https://img.shields.io/github/license/zeroheartbeat/clustron-zaris)](https://github.com/zeroheartbeat/clustron-zaris/blob/main/LICENSE)
 [![Stars](https://img.shields.io/github/stars/zeroheartbeat/clustron-zaris)](https://github.com/zeroheartbeat/clustron-zaris/stargazers)
 
@@ -103,7 +103,7 @@ The guide walks you through:
 Install the Clustron client from NuGet:
 
 ``` bash
-dotnet add package Clustron.Zaris.Client
+dotnet add package Clustron.Zaris.SDK
 ```
 
 Using Clustron from a .NET application is simple.
