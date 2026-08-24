@@ -1,10 +1,10 @@
 <Project>
   <PropertyGroup>
     <!-- Version of the Clustron Zaris packages the samples consume. Defaults to the FLOATING
-         "latest 1.x" (NuGet resolves 1.* to the highest published 1.x on nuget.org), so the
-         samples automatically track every minor/patch release with NO per-release edit. Only a
-         MAJOR bump (2.0.0) needs a one-time change here to 2.*. The sanity harness still overrides
-         this (-p:ClustronZarisVersion=<exact>) to build against the freshly packed local build. -->
-    <ClustronZarisVersion Condition="'$(ClustronZarisVersion)' == ''">1.*</ClustronZarisVersion>
+         "latest 2.x" (NuGet resolves 2.* to the highest published 2.x on nuget.org), so the
+         samples automatically track every minor/patch release with NO per-release edit. Only the
+         next MAJOR bump (3.0.0) needs a one-time change here to 3.*. The sanity harness still
+         overrides this (-p:ClustronZarisVersion=<exact>) to build against the freshly packed build. -->
+    <ClustronZarisVersion Condition="'$(ClustronZarisVersion)' == ''">2.*</ClustronZarisVersion>
   </PropertyGroup>
 </Project>
