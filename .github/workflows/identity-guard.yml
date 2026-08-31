@@ -1,0 +1,33 @@
+name: identity-guard
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Enforce identity + forbidden-token policy
+        shell: bash
+        run: |
+          OK="heartbeats.zero@gmail.com"; GH="noreply@github.com"
+          CT=$(printf '%s' "ZmFpc2FsfGRpeWF0ZWNofG5jYWNoZS1hZG1pbnwyMFwuMjAwXC4yMFwuMjA=" | base64 -d)
+          MT=$(printf '%s' "ZmFpc2FsfGRpeWF0ZWNofG5jYWNoZS1hZG1pbnwyMFwuMjAwXC4yMFwuMjB8W0NjXW8tW0FhXXV0aG9yZWQtW0JiXXk6LipbQ2NdbGF1ZGV8bm9yZXBseUBhbnRocm9waWNcLmNvbXxbQ2NdbGF1ZGUtW1NzXWVzc2lvbnxjbGF1ZGVcLmFp" | base64 -d)
+          bad=0
+          # 1) author + committer identity across ALL history
+          while read -r ae ce; do
+            case "$ae" in "$OK"|"$GH") : ;; *) echo "::error::author <$ae> not allowed"; bad=1;; esac
+            case "$ce" in "$OK"|"$GH") : ;; *) echo "::error::committer <$ce> not allowed"; bad=1;; esac
+          done < <(git log --all --format='%ae %ce')
+          # 2) forbidden tokens in any commit message (names + Claude co-author vectors)
+          if git log --all --format='%B' | grep -inE "$MT" >/dev/null; then
+            echo "::error::forbidden token in a commit message"; bad=1
+          fi
+          # 3) forbidden names in current tree content (excluding this guard file)
+          if git grep -inE "$CT" -- . ':!.github/workflows/identity-guard.yml' ':!.githooks' 2>/dev/null | grep -q .; then
+            echo "::error::forbidden token in tracked content"; bad=1
+          fi
+          [ "$bad" = 0 ] && echo "identity-guard: clean" || exit 1
