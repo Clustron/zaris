@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LiveBetting.Core/LiveBetting.Core.csproj" />
+    <Project Path="src/LiveBetting.Demo/LiveBetting.Demo.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/LiveBetting.Tests/LiveBetting.Tests.csproj" />
+  </Folder>
+</Solution>

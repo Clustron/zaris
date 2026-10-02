@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Clustron.Zaris.Abstractions" Version="$(ZarisVersion)" />
+    <PackageReference Include="Clustron.Zaris.Client" Version="$(ZarisVersion)" />
+    <PackageReference Include="Clustron.Zaris.InProc" Version="$(ZarisVersion)" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>RateLimiterGateway.Downstream</RootNamespace>
+    <AssemblyName>RateLimiterGateway.Downstream</AssemblyName>
+  </PropertyGroup>
+</Project>

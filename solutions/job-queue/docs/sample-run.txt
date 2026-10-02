@@ -1,0 +1,30 @@
+[02:06:16.361] Connecting to embedded (InProc) Zaris store ...
+[02:06:16.452] Enqueuing 80 jobs across 4 producers (good=72, poison=8, of which crash-once=12, flaky=10, delayed=10) ...
+[02:06:16.567] Enqueued. Initial depth: ready-due=70 scheduled=10 in-flight=0 lease-expired=0 dlq=0
+[02:06:16.568] Starting 8 competing workers ...
+[02:06:16.594]   depth: ready-due=61 scheduled=10 in-flight=9 lease-expired=0 dlq=0
+[02:06:16.902]   depth: ready-due=1 scheduled=8 in-flight=12 lease-expired=0 dlq=8
+[02:06:17.205]   depth: ready-due=0 scheduled=1 in-flight=1 lease-expired=0 dlq=8
+[02:06:17.507]   depth: ready-due=0 scheduled=0 in-flight=0 lease-expired=0 dlq=8
+
+[02:06:17.509] ==================== RESULTS ====================
+[02:06:17.513] Good jobs completed      : 72/72  ✓
+[02:06:17.513] Dead-letter queue        : 8 jobs ✓  -> [poison-0, poison-1, poison-2, poison-3, poison-4, poison-5, poison-6, poison-7]
+[02:06:17.513] Active set drained        : 0 remaining ✓
+[02:06:17.513] No loss (all terminal)   : ✓ every job accounted for
+[02:06:17.513] At-least-once deliveries : 120 handler runs for 80 jobs (>= 80) ✓
+[02:06:17.513] No double-complete       : 72 authoritative completions == 72 good jobs ✓
+[02:06:17.513] Crashes requeued         : 12 crashes injected; crash-once jobs all completed via lease-expiry reclaim
+[02:06:17.513] Retries (backoff)        : 28 transient failures re-scheduled; dead-lettered deliveries: 8
+
+[02:06:17.513] Per-worker tallies:
+[02:06:17.513]   worker-0: claimed=14 completed=8 retried=3 dlq=1 crashed=2 lostLease=0
+[02:06:17.513]   worker-1: claimed=16 completed=12 retried=1 dlq=0 crashed=3 lostLease=0
+[02:06:17.513]   worker-2: claimed=15 completed=10 retried=4 dlq=1 crashed=0 lostLease=0
+[02:06:17.513]   worker-3: claimed=15 completed=8 retried=5 dlq=1 crashed=1 lostLease=0
+[02:06:17.513]   worker-4: claimed=14 completed=8 retried=4 dlq=1 crashed=1 lostLease=0
+[02:06:17.513]   worker-5: claimed=15 completed=10 retried=1 dlq=2 crashed=2 lostLease=0
+[02:06:17.513]   worker-6: claimed=17 completed=9 retried=4 dlq=1 crashed=3 lostLease=0
+[02:06:17.513]   worker-7: claimed=14 completed=7 retried=6 dlq=1 crashed=0 lostLease=0
+
+[02:06:17.513] ALL GUARANTEES HELD ✓

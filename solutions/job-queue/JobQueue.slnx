@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/JobQueue.Core/JobQueue.Core.csproj" />
+    <Project Path="src/JobQueue.Demo/JobQueue.Demo.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/JobQueue.Tests/JobQueue.Tests.csproj" />
+  </Folder>
+</Solution>

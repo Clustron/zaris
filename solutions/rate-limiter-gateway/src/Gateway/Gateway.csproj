@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>RateLimiterGateway.Gateway</RootNamespace>
+    <AssemblyName>RateLimiterGateway.Gateway</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RateLimiting\RateLimiting.csproj" />
+  </ItemGroup>
+</Project>

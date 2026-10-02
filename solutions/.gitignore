@@ -1,0 +1,4 @@
+# Build artifacts for the example solutions
+[Bb]in/
+[Oo]bj/
+*.user

@@ -1,0 +1,68 @@
+================ Zaris Leaderboard + Presence — End-to-End Simulation ================
+server         : http://127.0.0.1:5080
+players        : 400
+score submits  : 4,000 across 40 concurrent workers
+transport      : HTTP REST -> Zaris sorted set/pub-sub -> SignalR live push
+=====================================================================================
+[server] started.
+[client] SignalR connected and subscribed to board + presence.
+
+[phase 1] 400 players sending heartbeats (coming online)...
+[phase 1] online now = 400
+
+[phase 2] 4,000 concurrent score submissions...
+[phase 2] 4,000 submits OK in 34.06s = 117 ops/sec
+
+[phase 3] verifying leaderboard correctness against local oracle...
+[phase 3] players on board      : 400 (expected 400)
+[phase 3] score sum (server)    : 22,074
+[phase 3] score sum (oracle)    : 22,074
+[phase 3] per-player mismatches : 0
+[phase 3] strictly ordered      : True
+[phase 3] RESULT                : CORRECT ✓
+
+---- TOP 15 (all-time) ----
+rank  player           score
+   1  player087          117
+   2  player070          107
+   3  player221          102
+   4  player015          102
+   5  player321          101
+   6  player377          100
+   7  player330          100
+   8  player209           99
+   9  player155           99
+  10  player230           98
+  11  player176           98
+  12  player197           97
+  13  player319           95
+  14  player002           95
+  15  player136           93
+
+---- neighbors of player236 (rank 201) ----
+  #198  player384          53
+  #199  player379          53
+  #200  player279          53
+  #201  player236          53   <-- you
+  #202  player223          53
+  #203  player202          53
+  #204  player152          53
+
+[phase 4] presence decay: keeping 50 players alive, letting the rest go idle...
+   t+2s  online=  50   player399 (idle) = Offline
+   t+4s  online=  50   player399 (idle) = Offline
+   t+6s  online=  50   player399 (idle) = Offline
+
+---- live push (SignalR) ----
+leaderboard events received by live client : 4,000 (of 4,000 submits)
+presence events received by live client    : 850
+last change seen live                      : player201 -> score 65, rank 125
+
+---- durable audit stream (newest 5, replayed from Zaris stream) ----
+  20:38:50.523  player201    +8   ->     65 (rank 125)
+  20:38:50.506  player388    +2   ->     21 (rank 390)
+  20:38:50.512  player329    +1   ->     64 (rank 129)
+  20:38:50.503  player245    +7   ->     67 (rank 108)
+  20:38:50.501  player371    +10  ->     76 (rank 52)
+
+================ Simulation complete ================

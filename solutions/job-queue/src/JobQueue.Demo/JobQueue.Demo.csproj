@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>JobQueue.Demo</RootNamespace>
+    <AssemblyName>JobQueue.Demo</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JobQueue.Core\JobQueue.Core.csproj" />
+  </ItemGroup>
+
+</Project>

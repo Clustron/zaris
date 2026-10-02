@@ -1,0 +1,66 @@
+Connected to embedded Zaris store  zaris://inproc/betting-demo
+
+==============================================================================
+1. LIVE ODDS FEED  (Zaris pub/sub + durable stream)
+==============================================================================
+   live  » OddsChanged v2  home=1.90  draw=3.30  away=3.80
+   live  » OddsChanged v3  home=1.95  draw=3.30  away=3.75
+   live  » OddsChanged v4  home=2.00  draw=3.30  away=3.70
+   live  » OddsChanged v5  home=2.05  draw=3.30  away=3.65
+   live  » Suspended   v5  home=2.05  draw=3.30  away=3.65
+   live  » Resumed     v6  home=1.55  draw=3.90  away=5.00
+   pub/sub delivered 6 live events to the subscriber.
+   durable stream holds 6 replayable feed events (newest: Resumed).
+   [PASS] live feed delivered over pub/sub and is durably replayable from the stream
+
+==============================================================================
+2. RACE-FREE WALLET DEBIT  (1000 concurrent placements on ONE wallet)
+==============================================================================
+   1000 concurrent bets in 693 ms  →  accepted=666  insufficient-funds=334
+   wallet: opening 1000.00  final 1.00  (each accepted bet staked 1.50)
+   [PASS] every accepted debit applied against a fresh balance (exact, no lost update)
+   [PASS] wallet never went negative
+   [PASS] accepted exactly as many bets as the balance could fund — not one more
+   [PASS] no bet both insufficient-and-accepted (counts reconcile)
+
+==============================================================================
+3. IDEMPOTENT PLACEMENT  (same client bet id submitted many times)
+==============================================================================
+   30 concurrent submissions of bet id 'ticket-9'  →  accepted-results=30  flagged-as-replay=29
+   wallet: 100.00  →  60.00   (stake 40.00 debited exactly once)
+   [PASS] stake debited exactly once despite 30 submissions
+   [PASS] all submissions reported the same (accepted) outcome
+
+==============================================================================
+4. ODDS-STALENESS PROTECTION  (requote + native write-time TTL)
+==============================================================================
+   quoted 2.00, live 2.60, tolerance 0.10  →  Rejected/OddsChanged, requote=2.60
+   requote token stored with write-time TTL — remaining 15.0s (self-reclaims, no delete).
+   [PASS] stale bet rejected and requoted, not struck on stale odds
+   [PASS] no stake taken on a requote
+   [PASS] requote token carries a live TTL set at write time
+
+==============================================================================
+5. BETTING STORM + SUSPENSION + EXACTLY-ONCE SETTLEMENT
+==============================================================================
+   400 bettors, 461 placement calls into a live, suspending market in 48 ms:
+      accepted results     : 252  (202 distinct bets placed; retries resolved to the same outcome)
+      rejected (stale odds): 80
+      rejected (funds)     : 49
+      rejected (suspended) : 80
+      duplicate retries    : 61 (no second bet, no second debit)
+   SETTLE winner=home: settled=202 won=104 lost=98 staked=2913.00 paid=3174.88
+
+   MONEY-SAFETY AUDIT
+   [PASS] no wallet is negative
+   [PASS] money staked during storm == total stake settled (no double-spend)
+   [PASS] conservation: opening float == final wallets + house net (stakes - payouts)
+
+   EXACTLY-ONCE SETTLEMENT
+   [PASS] re-running settlement 3x pays nobody twice (balances unchanged)
+   [PASS] durable settlement log holds one record per settled bet
+   durable settlement log: 202 records (replayable from Zaris stream).
+
+==============================================================================
+RESULT: ALL MONEY-SAFETY & EXACTLY-ONCE INVARIANTS HELD  ✅
+==============================================================================

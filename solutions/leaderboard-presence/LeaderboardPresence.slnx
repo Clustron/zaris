@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LeaderboardPresence.Api/LeaderboardPresence.Api.csproj" />
+    <Project Path="src/LeaderboardPresence.Core/LeaderboardPresence.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/LeaderboardPresence.Tests/LeaderboardPresence.Tests.csproj" />
+  </Folder>
+</Solution>

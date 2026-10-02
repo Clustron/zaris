@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>FeatureFlags</RootNamespace>
+    <AssemblyName>FeatureFlags.Core</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Native Zaris client + the embedded (in-process) engine. The whole solution runs against an
+         InProc store so it is self-contained; swapping the connection string to zaris://host:port
+         would run it against a networked cluster with no code change. -->
+    <PackageReference Include="Clustron.Zaris.Client" Version="$(ZarisVersion)" />
+    <PackageReference Include="Clustron.Zaris.InProc" Version="$(ZarisVersion)" />
+  </ItemGroup>
+
+</Project>
