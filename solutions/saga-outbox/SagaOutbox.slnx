@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SagaOutbox.Core/SagaOutbox.Core.csproj" />
+    <Project Path="src/SagaOutbox.Demo/SagaOutbox.Demo.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SagaOutbox.Tests/SagaOutbox.Tests.csproj" />
+  </Folder>
+</Solution>

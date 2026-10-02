@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>RateLimiterGateway.RateLimiting</RootNamespace>
+    <AssemblyName>RateLimiterGateway.RateLimiting</AssemblyName>
+    <!-- Allow the InProc test connections to target the same embedded engine deterministically -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- The limiter core is storage-only; the middleware + reverse proxy use ASP.NET Core types,
+       so we reference the shared framework. The algorithms themselves (SlidingWindowLogLimiter,
+       TokenBucketLimiter) have no ASP.NET dependency and are unit-tested in isolation. -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Clustron.Zaris.Client" Version="$(ZarisVersion)" />
+    <PackageReference Include="Clustron.Zaris.InProc" Version="$(ZarisVersion)" />
+  </ItemGroup>
+
+</Project>

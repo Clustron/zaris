@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Downstream/Downstream.csproj" />
+    <Project Path="src/Gateway/Gateway.csproj" />
+    <Project Path="src/LoadDriver/LoadDriver.csproj" />
+    <Project Path="src/RateLimiting/RateLimiting.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/RateLimiting.Tests/RateLimiting.Tests.csproj" />
+  </Folder>
+</Solution>

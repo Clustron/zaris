@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FeatureFlags.Core/FeatureFlags.Core.csproj" />
+    <Project Path="src/FeatureFlags.Demo/FeatureFlags.Demo.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FeatureFlags.Tests/FeatureFlags.Tests.csproj" />
+  </Folder>
+</Solution>

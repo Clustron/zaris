@@ -1,0 +1,23 @@
+== Zaris distributed rate limiter — in-process demo ==
+downstream : http://localhost:5090
+gateways   : http://localhost:5081, http://localhost:5082, http://localhost:5083  (3 instances)
+
+── Scenario A: sliding-window log, anonymous (per-IP) ──────────────────
+   policy  : 20 requests / 10s window (GLOBAL, shared by all gateways)
+   offered : 600 concurrent GET /api/ping spread across 3 gateways
+   result  : admitted(200)=20  rateLimited(429)=580  other=0  in 0.258s
+   status  : [200:20, 429:580]
+   admitted spread across instances: [gw-1=9, gw-2=9, gw-3=2]  (sum proves ONE global limit, not per-instance)
+   per-instance limiting would have admitted up to 60; Zaris held it to the GLOBAL 20.
+   ASSERT A: PASS  (expected admitted == 20; actual 20)
+
+── Scenario B: token bucket, authenticated (per API key) ───────────────
+   policy  : capacity 100 tokens, refill 50/s (GLOBAL, shared by all gateways)
+   offered : 600 concurrent GET /api/ping with X-API-Key: demo-b91722eb
+   result  : admitted(200)=102  rateLimited(429)=498  other=0  in 0.057s
+   status  : [200:102, 429:498]
+   admitted spread across instances: [gw-1=31, gw-2=34, gw-3=37]  (sum proves ONE global limit, not per-instance)
+   expected admitted in [100, 106] (capacity + refill during 0.057s burst)
+   ASSERT B: PASS  (expected 100 <= admitted <= 106; actual 102)
+
+Downstream actually served 122 requests total (everything else was rejected at the gateway).

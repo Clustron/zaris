@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>FeatureFlags.Demo</RootNamespace>
+    <AssemblyName>FeatureFlags.Demo</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FeatureFlags.Core\FeatureFlags.Core.csproj" />
+  </ItemGroup>
+
+</Project>

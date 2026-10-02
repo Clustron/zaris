@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>SagaOutbox.Demo</RootNamespace>
+    <AssemblyName>SagaOutbox.Demo</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SagaOutbox.Core\SagaOutbox.Core.csproj" />
+  </ItemGroup>
+
+</Project>

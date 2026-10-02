@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>live-betting-demo</AssemblyName>
+    <RootNamespace>LiveBetting.Demo</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LiveBetting.Core\LiveBetting.Core.csproj" />
+  </ItemGroup>
+
+</Project>

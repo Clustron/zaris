@@ -1,0 +1,55 @@
+
+==============================================================================
+  SCENARIO 1  Happy path: order -> payment -> inventory -> shipping -> confirm
+==============================================================================
+  start: alice balance=$100.00, WIDGET stock=50, order total=$30.00
+     step done     -> ChargePayment
+     step done     -> ReserveInventory
+     step done     -> CreateShipment
+     step done     -> ConfirmOrder
+  saga result: Completed
+  end:   alice balance=$70.00, WIDGET available=48 reserved=2, shipment=Created, order=Confirmed
+  relaying outbox -> bus ...
+     consumer applied -> OrderPlaced (from order)
+     consumer applied -> OrderConfirmed (from order)
+     consumer applied -> PaymentCharged (from payment)
+     consumer applied -> InventoryReserved (from inventory)
+     consumer applied -> ShipmentCreated (from shipping)
+  bus records=5; distinct effects applied by consumer=5 (each exactly once ✓)
+
+==============================================================================
+  SCENARIO 2  Failure + compensation: inventory short -> refund payment, restock
+==============================================================================
+  start: bob balance=$100.00, GADGET stock=1, order wants 5
+     step done      -> ChargePayment
+     compensated    -> ChargePayment
+  saga result: Compensated  (reason: out of stock for GADGET)
+  end:   bob balance=$100.00 (refunded), GADGET available=1 reserved=0, order=Pending
+  payment fully refunded ✓
+
+==============================================================================
+  SCENARIO 3  Crash mid-saga -> resume from the persisted log, no double effects
+==============================================================================
+  start: carol balance=$100.00, GIZMO stock=10, order=3 @ $25.00
+     step done      -> ChargePayment
+     *** ReserveInventory committed at the service, orchestrator CRASHES before logging it ***
+     caught crash: simulated orchestrator crash
+  after crash: GIZMO available=7 reserved=3 (reservation DID commit), saga step 'ReserveInventory'=Pending (NOT yet logged)
+  resuming with a fresh orchestrator instance ...
+     step done      -> ReserveInventory
+     step done      -> CreateShipment
+     step done      -> ConfirmOrder
+  saga result: Completed
+  end:   carol balance=$75.00, GIZMO available=7 reserved=3, shipment=Created, order=Confirmed
+  charged once ($25.00), reserved once (3) despite the crash ✓
+
+==============================================================================
+  SCENARIO 4  Outbox relay is at-least-once; consumer inbox makes effects exactly-once
+==============================================================================
+     relay published then crashed: relay crashed after publishing event bef3442d8071446c9a7c593a48d20505, before marking it dispatched
+  bus gained 2 records for 1 logical event (at-least-once: duplicate on the bus)
+  consumer applied the duplicated PaymentCharged effect 1 time(s) ✓
+
+==============================================================================
+  DONE — all scenarios completed. State is consistent; no lost or duplicated effects.
+==============================================================================
