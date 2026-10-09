@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- Keep the sample self-contained; it does not reference the Shared console helpers. -->
+    <RootNamespace>Clustron.Zaris.Sample.Session</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The ASP.NET Core distributed session provider backed by Clustron Zaris. -->
+    <PackageReference Include="Clustron.Zaris.AspNetCore.Session" Version="$(ClustronZarisVersion)" />
+    <!-- Brings the embedded (InProc) engine so zaris://inproc/... works with no external cluster.
+         Omit this when you only ever connect to a networked cluster. -->
+    <PackageReference Include="Clustron.Zaris.InProc" Version="$(ClustronZarisVersion)" />
+    <!-- TestServer lets the selftest run the full session+cookie flow with no network port. -->
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="8.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
