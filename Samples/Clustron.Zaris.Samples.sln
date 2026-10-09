@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Batch", "Batch\Batch.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Expiration", "Expiration\Expiration.csproj", "{09FD1DCE-1C3B-47F7-90ED-74D6C8B97077}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Session", "Session\Session.csproj", "{32C14649-D332-4F19-B76A-D3B47B146358}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -335,6 +337,18 @@ Global
 		{09FD1DCE-1C3B-47F7-90ED-74D6C8B97077}.Release|x64.Build.0 = Release|Any CPU
 		{09FD1DCE-1C3B-47F7-90ED-74D6C8B97077}.Release|x86.ActiveCfg = Release|Any CPU
 		{09FD1DCE-1C3B-47F7-90ED-74D6C8B97077}.Release|x86.Build.0 = Release|Any CPU
+		{32C14649-D332-4F19-B76A-D3B47B146358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32C14649-D332-4F19-B76A-D3B47B146358}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32C14649-D332-4F19-B76A-D3B47B146358}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{32C14649-D332-4F19-B76A-D3B47B146358}.Debug|x64.Build.0 = Debug|Any CPU
+		{32C14649-D332-4F19-B76A-D3B47B146358}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{32C14649-D332-4F19-B76A-D3B47B146358}.Debug|x86.Build.0 = Debug|Any CPU
+		{32C14649-D332-4F19-B76A-D3B47B146358}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32C14649-D332-4F19-B76A-D3B47B146358}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32C14649-D332-4F19-B76A-D3B47B146358}.Release|x64.ActiveCfg = Release|Any CPU
+		{32C14649-D332-4F19-B76A-D3B47B146358}.Release|x64.Build.0 = Release|Any CPU
+		{32C14649-D332-4F19-B76A-D3B47B146358}.Release|x86.ActiveCfg = Release|Any CPU
+		{32C14649-D332-4F19-B76A-D3B47B146358}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

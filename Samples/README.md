@@ -33,6 +33,8 @@ up the data it creates.
 | **PubSub** | Publish/subscribe and pattern-subscribe with cluster-wide fan-out |
 | **RateLimiter** | Fixed-window rate limiting built on counters |
 | **Search** | Label / secondary-index scan and query |
+| **Session** | ASP.NET Core distributed `ISession` store over Zaris (per-session counter + self-test) |
+| **SessionState** | Classic ASP.NET (System.Web) `SessionStateStoreProvider` — `web.config` recipe |
 | **Sets** | Native set — add/remove, membership, count, random members, pop |
 | **SortedSets** | Native sorted set — scored members, rank/score ranges, increments (a leaderboard) |
 | **Streams** | Append-only event log with consumer groups — add/read/range, group read + ack |
@@ -107,7 +109,9 @@ Start with **Basic**, then **Counters**, **Bulk**, **Batch**, **CAS**, and
 **SortedSets**, and **Streams** for the native data structures, with **PubSub**
 for messaging; **Watch** and **Transactions** for consistency; **Lease**,
 **Locks**, **LeaderElection**, and **RateLimiter** for coordination; and
-**IDistributedCache** / **HybridCache** for the ASP.NET caching integrations.
+**IDistributedCache** / **HybridCache** for the ASP.NET caching integrations;
+and **Session** / **SessionState** for storing ASP.NET Core and classic ASP.NET
+session state in Zaris.
 
 ---
 
