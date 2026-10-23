@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    CDC sample: project the Zaris change feed into an in-memory inverted "index".
+    Run it with "dotnet run", passing the connection string and an optional key prefix as program
+    arguments (see README.md). A Put indexes the value's terms; a Delete removes the document. The
+    cluster's change feed must be enabled (changeFeed.enabled=true, or ZARIS_WAN_SYNC_FEED=1).
+
+    Change Data Capture is a Zaris 2.1.0 feature: ClustronZarisVersion must resolve to 2.1.0 or later.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Clustron.Zaris.Samples.Cdc.SearchIndexer</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The Clustron Zaris .NET SDK (client + embedded InProc engine). Version floats to the latest
+         2.x via Directory.Build.props; CDC requires 2.1.0+. -->
+    <PackageReference Include="Clustron.Zaris.SDK" Version="$(ClustronZarisVersion)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+  </ItemGroup>
+
+</Project>
