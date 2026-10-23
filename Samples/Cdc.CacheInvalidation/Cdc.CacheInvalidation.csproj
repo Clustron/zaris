@@ -1,26 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    CDC sample: consume the Zaris change feed to keep a local in-process cache coherent.
-    Run it with "dotnet run", passing the connection string and an optional key prefix as program
-    arguments (see README.md). The cluster's change feed must be enabled (changeFeed.enabled=true,
-    or ZARIS_WAN_SYNC_FEED=1). Runs until Ctrl+C.
-
-    Change Data Capture is a Zaris 2.1.0 feature: ClustronZarisVersion must resolve to 2.1.0 or later.
+    CDC "cache invalidation" sample. Same project shape as the other samples (host builder + Shared +
+    appsettings.json), with ONE difference: the change feed requires the server op-log and the
+    remote client, so appsettings.json defaults to a Remote connection string instead of InProc.
+    The change feed is a Zaris 2.1.0+ feature (ClustronZarisVersion resolves to 2.* via
+    Directory.Build.props).
   -->
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>Clustron.Zaris.Samples.Cdc.CacheInvalidation</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- The Clustron Zaris .NET SDK (client + embedded InProc engine). Version floats to the latest
-         2.x via Directory.Build.props; CDC requires 2.1.0+. -->
-    <PackageReference Include="Clustron.Zaris.SDK" Version="$(ClustronZarisVersion)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
