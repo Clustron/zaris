@@ -40,9 +40,25 @@ up the data it creates.
 | **Streams** | Append-only event log with consumer groups — add/read/range, group read + ack |
 | **Transactions** | Multi-key transaction commit and rollback |
 | **Watch** | Watch a key and a prefix — initial snapshot plus live change events |
+| **Cdc.CacheInvalidation** | Change Data Capture — consume the change feed to keep a local cache coherent |
+| **Cdc.SearchIndexer** | Change Data Capture — project the change feed into an inverted search index |
 
 **Shared** is a library the executables reference (console helpers, config binding,
 per-run key isolation, the pass/fail run wrapper). It is not a runnable sample.
+
+### Change Data Capture (CDC) — requires 2.1.0+
+
+The two **`Cdc.*`** samples use the durable, ordered, resumable **change feed**
+(`IZarisChangeFeedClient.OpenChangeFeed(...)`), new in **Zaris 2.1.0**. Unlike the samples above
+they connect to a **running cluster** (not InProc) that has the change feed enabled
+(`changeFeed.enabled = true` or `ZARIS_WAN_SYNC_FEED=1`), and take the connection string as a
+program argument — see each sample's README.
+
+**CDC or Watch?** Use **CDC** (the change feed) when a *missed* event is a correctness bug —
+ETL / outbox, audit logs, cache or index rebuilds, and anything you must be able to replay. Use
+the **[Watch](Watch)** sample for low-latency *latest-state* reactions — live dashboards, cache
+freshness, presence, config reload — where best-effort, live-from-now delivery is enough. See
+[**docs/cdc-vs-watch.md**](../docs/cdc-vs-watch.md) for the full decision rule.
 
 ---
 
