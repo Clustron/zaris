@@ -24,8 +24,8 @@ a common source of subtle bugs. This page is the decision rule.
 
 ## Choose CDC when a missed event breaks correctness
 
-Reach for the change feed (`Cdc.CacheInvalidation`, `Cdc.SearchIndexer`) when the consumer is
-**rebuilding or mirroring state** and must see **every** change, even across a restart:
+Reach for the change feed (`Cdc.AuditLog`, `Cdc.CacheInvalidation`) when the consumer is
+**recording or mirroring state** and must see **every** change, even across a restart:
 
 - **ETL / outbox** — forward every write to a warehouse, queue, or downstream service.
 - **Audit / event sourcing** — an append-only record of what changed, replayable from the start.
@@ -41,15 +41,16 @@ offset, so a crashed consumer resumes where it left off rather than losing the g
 var feed = (IZarisChangeFeedClient)client;
 var options = new ChangeFeedOptions
 {
-    KeyPrefix    = "catalog/",            // server-side filter
-    ConsumerName = "catalog-indexer",     // durable → resumable; omit for a one-shot anonymous tail
+    KeyPrefix    = "audit/",              // server-side filter
+    ConsumerName = "audit-logger",        // durable → resumable; a FRESH name replays from the start
     Kinds        = new[] { FeedEventKind.Put, FeedEventKind.Delete },
 };
 
+// Re-opening with the SAME ConsumerName resumes from the last committed offset (no replay),
+// so a restart never drops or re-processes changes it already handled.
 await foreach (ChangeEvent ev in feed.OpenChangeFeed(options, ct))
 {
-    if (ev.IsDelete) index.Remove(ev.Key);
-    else             index.Upsert(ev.Key, ev.Value);   // idempotent → a re-delivery is harmless
+    log.Record(ev.Key, ev.Kind, ev.Revision, ev.WriteUnixMs);   // idempotent → a re-delivery is harmless
 }
 ```
 
@@ -84,7 +85,7 @@ Ask: *"If my consumer is down for a minute and misses a change, is that a bug?"*
 
 ## See also
 
-- Samples: [`../Samples/Cdc.CacheInvalidation`](../Samples/Cdc.CacheInvalidation),
-  [`../Samples/Cdc.SearchIndexer`](../Samples/Cdc.SearchIndexer),
+- Samples: [`../Samples/Cdc.AuditLog`](../Samples/Cdc.AuditLog) (start here),
+  [`../Samples/Cdc.CacheInvalidation`](../Samples/Cdc.CacheInvalidation),
   [`../Samples/Watch`](../Samples/Watch)
 - [clustron.io/change-data-capture](https://clustron.io/change-data-capture)
